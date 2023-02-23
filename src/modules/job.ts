@@ -46,6 +46,10 @@ const resetPlayerJob = () => {
 
 // Open job wallet website
 const openJobWalletWebsite = async () => {
+  // Disable controls while card is open
+  WA.controls.disablePlayerControls()
+
+  // Open card
   jobWalletWebsite = await WA.ui.website.open({
     url: 'http://localhost:5173/views/jobWallet/jobWallet.html?name=test', // TODO : See how relative path ? --> Make config file with root ?
     allowApi: true,
@@ -65,6 +69,9 @@ const openJobWalletWebsite = async () => {
 const closeJobWalletWebsite = () => {
   jobWalletWebsite?.close()
   jobWalletWebsite = null
+
+  // Restore player controle after closing card
+  WA.controls.restorePlayerControls()
 }
 
 // Show menu bar button for job wallet
