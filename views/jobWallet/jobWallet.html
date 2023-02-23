@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <meta name="title" content="My job wallet">
+
+    <title>My job wallet</title>
+    <script src="https://play.workadventu.re/iframe_api.js"></script>
+    <script lang="ts">
+      document.addEventListener("DOMContentLoaded", () => {
+          WA.onInit().then(async () => {
+              const {
+                getDescription,
+                getPermissions,
+                getTitle,
+                getAttributes,
+                closeJobWalletWebsite
+              } = await import("./jobWallet.ts")
+
+              // Get html parts
+              const photo = document.getElementById('photo')
+              const title = document.getElementById('title')
+              const attributes = document.getElementById('attributes')
+              const description = document.getElementById('description')
+              const permissions = document.getElementById('permissions')
+
+              // User picture
+              const woka = await WA.player.getWokaPicture()
+              photo.setAttribute('src', woka)
+
+              // Card title
+              title.innerText = getTitle()
+
+              // User attributes
+              attributes.innerHTML = getAttributes()
+
+              // User job description
+              description.innerText = getDescription()
+
+              // User job permissions
+              permissions.appendChild(getPermissions())
+          })
+      })
+    </script>
+</head>
+    <body>
+        <div style="background: white; border-radius: 20px; overflow: hidden; border: 2px black solid;">
+            <div
+                id="title"
+                style="
+                    background-color: red;
+                    padding: 25px;
+                    border-bottom: 2px black solid;
+                    color: white;
+                    font-weight: bold;"
+            >
+            </div>
+            <div style="padding: 25px;">
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <img id="photo" src="" width="50px" height="50px" alt="Ma photo" style="border: 1px black solid;">
+                            </td>
+                            <td id="attributes">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div>
+                    <div id="description"></div>
+                    <div id="permissions"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
