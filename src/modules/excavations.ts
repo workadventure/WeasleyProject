@@ -5,7 +5,7 @@ import {ActionMessage} from "@workadventure/iframe-api-typings";
 let makeExcavationAction: ActionMessage|null = null
 
 // initiateExcavationZones
-const initiateExcavations = (excavationZones: Array<string> = ['excavationZone']) => {
+const initiateExcavations = (excavationZones: Array<string> = ['excavationZone'], callbacks : Array<Function>|null = null) => {
   if (canUser('makeExcavation')) {
     // Show all excavation tiles
     for (let i = 0; i < excavationZones.length; i++) {
@@ -32,7 +32,7 @@ const initiateExcavations = (excavationZones: Array<string> = ['excavationZone']
         })
 
         WA.state.onVariableChange(`${excavationZones[i]}Discovered`).subscribe(() => {
-          makeExcavations(excavationZones[i])
+          makeExcavations(excavationZones[i], callbacks ? callbacks[i] : null)
         })
       } else {
         WA.room.showLayer(`${excavationZones[i]}/found`)
@@ -42,7 +42,7 @@ const initiateExcavations = (excavationZones: Array<string> = ['excavationZone']
 }
 
 // Make excavation
-const makeExcavations = (excavationZone: string) => {
+const makeExcavations = (excavationZone: string, callback: Function|null = null) => {
   WA.room.hideLayer(`${excavationZone}/trace`)
   WA.room.showLayer(`${excavationZone}/search`)
 
@@ -50,6 +50,10 @@ const makeExcavations = (excavationZone: string) => {
     WA.room.showLayer(`${excavationZone}/found`)
     setTimeout(() => {
       WA.room.hideLayer(`${excavationZone}/search`)
+
+      if (callback) {
+        callback()
+      }
     }, 1000)
   }, 3000)
 }

@@ -23,7 +23,7 @@ const permissionsByJob: Record<Job, Record<Permissions, boolean>> = {
     readRunes: false,
     makeExcavation: false,
     findSecretPassages: true
-  }
+  },
 }
 
 // Name of the menubarbutton

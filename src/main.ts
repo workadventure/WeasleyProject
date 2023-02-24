@@ -1,16 +1,18 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import {job, excavations} from './modules';
+import {job, excavations, lobby, secretPassages} from './modules';
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {
     console.log('INITIALISATION')
     job.initiateJob()
-    job.setPlayerJob('archaeologist')
-
+    job.setPlayerJob('spy')
 
     console.log('HERE')
-    excavations.initiateExcavations(['excavation'])
+    excavations.initiateExcavations(['excavation'], [() => {console.log('test callback after excavation')}])
+    secretPassages.initiateSecretPassages(['secretPassage'], [() => {console.log('test callback after finding secret passage')}])
+
+    lobby.initiateLobby()
 }).catch(e => console.error(e));
 
 export {};
