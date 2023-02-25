@@ -63,6 +63,12 @@ const openJobWalletWebsite = async () => {
       width: "50vw",
     },
   })
+
+  WA.player.state.askForJobWalletWebsiteClose = false
+}
+
+const askForJobWalletWebsiteClose = () => {
+  WA.player.state.askForJobWalletWebsiteClose = true
 }
 
 // Close job wallet website
@@ -113,6 +119,11 @@ const initiateJob = () => {
     }
   });
 
+  WA.player.state.onVariableChange('askForJobWalletWebsiteClose').subscribe((value) => {
+    if (value) {
+      closeJobWalletWebsite()
+    }
+  })
 }
 
 // See if user has the permission passed as parameter
@@ -138,4 +149,5 @@ export {
   canUser,
   getUserPermissions,
   closeJobWalletWebsite,
+  askForJobWalletWebsiteClose,
 }

@@ -31,9 +31,15 @@ const getPermissions = () => {
   return ul
 }
 
+const closeJobWalletWebsite = () => {
+  console.log('coucou')
+  modules.job.askForJobWalletWebsiteClose()
+}
+
 export {
   getTitle,
   getAttributes,
   getDescription,
   getPermissions,
+  closeJobWalletWebsite
 }

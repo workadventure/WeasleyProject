@@ -26,6 +26,7 @@
               const attributes = document.getElementById('attributes')
               const description = document.getElementById('description')
               const permissions = document.getElementById('permissions')
+              const closeWebsiteWalletButton = document.getElementById('closeWalletWebsiteButton')
 
               // User picture
               const woka = await WA.player.getWokaPicture()
@@ -42,6 +43,11 @@
 
               // User job permissions
               permissions.appendChild(getPermissions())
+
+              // Close button event
+              closeWebsiteWalletButton.addEventListener("click", () => {
+                closeJobWalletWebsite()
+              })
           })
       })
     </script>
@@ -74,6 +80,11 @@
                     <div id="description"></div>
                     <div id="permissions"></div>
                 </div>
+            </div>
+            <div>
+                <button id="closeWalletWebsiteButton">
+                    test
+                </button>
             </div>
         </div>
     </body>
