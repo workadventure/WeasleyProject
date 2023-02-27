@@ -1,6 +1,7 @@
 export default {
   title: "Carte d'{job}",
   name: "Nom",
+  close: 'Fermer',
   jobs: {
     archaeologist: {
       name: 'Archéologue',

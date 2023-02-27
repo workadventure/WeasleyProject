@@ -31,8 +31,11 @@ const getPermissions = () => {
   return ul
 }
 
+const getCloseJobWalletWebsiteButtonText = () => {
+  return utils.translations.translate(`views.jobWallet.close`)
+}
+
 const closeJobWalletWebsite = () => {
-  console.log('coucou')
   modules.job.askForJobWalletWebsiteClose()
 }
 
@@ -41,5 +44,6 @@ export {
   getAttributes,
   getDescription,
   getPermissions,
-  closeJobWalletWebsite
+  closeJobWalletWebsite,
+  getCloseJobWalletWebsiteButtonText
 }

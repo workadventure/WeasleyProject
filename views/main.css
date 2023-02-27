@@ -1,0 +1,80 @@
+body {
+    /* COLORS */
+    --bg-color-info: rgb(86 234 255);
+    --bg-color-error: rgb(255 71 90);
+    --bg-color-success: rgb(162 113 167);
+}
+
+.text-align-center {
+    text-align: center;
+}
+
+.text-align-left {
+    text-align: left;
+}
+
+.text-align-right {
+    text-align: right;
+}
+
+.mt-1 {
+    margin-top: 0.5rem;
+}
+
+.mb-1 {
+    margin-bottom: 0.5rem;
+}
+
+.ml-1 {
+    margin-left: 0.5rem;
+}
+
+.mr-1 {
+    margin-right: 0.5rem;
+}
+
+.m-1 {
+    margin: 0.5rem
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.mb-2 {
+    margin-bottom: 1rem;
+}
+
+.ml-2 {
+    margin-left: 1rem;
+}
+
+.mr-2 {
+    margin-right: 1rem;
+}
+
+.m-2 {
+    margin: 1rem
+}
+
+.btn {
+    border-radius: 4px;
+    padding: 4px 16px;
+    font-size: 16px;
+    outline: none;
+    box-shadow: none;
+    border: 2px black solid;
+    height: 2.5rem;
+}
+
+.bg-success {
+    background-color: var(--bg-color-success);
+}
+
+.bg-error {
+    background-color: var(--bg-color-error);
+}
+
+.bg-info {
+    background-color: var(--bg-color-info);
+}

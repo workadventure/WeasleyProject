@@ -8,6 +8,7 @@
     <meta name="title" content="My job wallet">
 
     <title>My job wallet</title>
+    <link rel="stylesheet" href="../main.css">
     <script src="https://play.workadventu.re/iframe_api.js"></script>
     <script lang="ts">
       document.addEventListener("DOMContentLoaded", () => {
@@ -17,7 +18,8 @@
                 getPermissions,
                 getTitle,
                 getAttributes,
-                closeJobWalletWebsite
+                closeJobWalletWebsite,
+                getCloseJobWalletWebsiteButtonText
               } = await import("./jobWallet.ts")
 
               // Get html parts
@@ -45,6 +47,7 @@
               permissions.appendChild(getPermissions())
 
               // Close button event
+              closeWebsiteWalletButton.innerText = getCloseJobWalletWebsiteButtonText() // TODO : get translations
               closeWebsiteWalletButton.addEventListener("click", () => {
                 closeJobWalletWebsite()
               })
@@ -81,8 +84,8 @@
                     <div id="permissions"></div>
                 </div>
             </div>
-            <div>
-                <button id="closeWalletWebsiteButton">
+            <div class="text-align-right m-2">
+                <button class="btn bg-info" id="closeWalletWebsiteButton">
                     test
                 </button>
             </div>
