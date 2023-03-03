@@ -12,6 +12,8 @@ WA.onInit().then(() => {
     excavations.initiateExcavations(['excavation'], [() => {console.log('test callback after excavation')}])
     secretPassages.initiateSecretPassages(['secretPassage'], [() => {console.log('test callback after finding secret passage')}])
     hiddenZone.initiateHiddenZones([{stepIn: 'hiddenZoneFloor', hide: 'hiddenZoneTop'}])
+
+    console.log('LOBBY INITIALISATION')
     lobby.initiateLobby()
 }).catch(e => console.error(e));
 

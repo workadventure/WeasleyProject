@@ -1,104 +1,117 @@
-// TODO : see if we can lock the camera to see the full room (see all users to listen to variables of all users)
-
-// LOBBY INITIALISATION
+// Lobby initialisation : must be called in main.ts only
 import {PlayerVariableChanged} from "@workadventure/iframe-api-typings/front/Api/Iframe/players";
 import {RemotePlayerInterface} from "@workadventure/iframe-api-typings/front/Api/Iframe/Players/RemotePlayer";
-
-
-let invitedPlayer: RemotePlayerInterface|undefined
-let invitedByPlayer: RemotePlayerInterface|undefined
-
-WA.onInit().then(async () => {
-  // Authorize player tracking to watch variables
-  await WA.players.configureTracking();
-})
+import {UIWebsite} from "@workadventure/iframe-api-typings";
 
 const initiateLobby = async () => {
+  // Players tracking
+  await WA.players.configureTracking()
 
-  console.log('LOBBY INITIALISATION')
-
-  // Send invitation to remote players
-  WA.ui.onRemotePlayerClicked.subscribe((remotePlayer) => {
-    console.log('clicked', remotePlayer.state.hasBeenInvited) // TODO : WOKA détecte pas à chaque fois que tu as cliqué sur l'user alors que pourtant, il affiche "bloquer l"user"
-    // If player hasn't already been invited
-    if (!remotePlayer.state.hasBeenInvited) {
-
-      // Invite player --> TODO : translations
-      remotePlayer.addAction('Inviter le joueur', () => {
-        console.log('Vous avez invité le joueur : ', remotePlayer.name);
-        WA.player.state.saveVariable(
-          'isInviting',
-          remotePlayer.playerId, {
-            public: true
-          })
-
-        invitedPlayer = remotePlayer
-
-        // Open website for awaiting acceptation
-        openAwaitForAcceptationWebsite()
-      });
-    }
-  })
-
-  // receive invitation from remote players
+  // Receive invitations from other players
   WA.players.onVariableChange('isInviting').subscribe((event: PlayerVariableChanged) => {
-    if (event.value === WA.player.playerId) {
-      console.log('Vous avez reçu une invitation de ' + event.player.name)
-
-      // Save player that invited you
-      invitedByPlayer = event.player
-      WA.player.state.saveVariable(
-        'hasBeenInvited',
-          event.player.playerId, {
-          public: true
-        })
-
-      // Open website to accept or not invitation
-      openAcceptInviteWebsite()
+    if (event.value === WA.player.uuid) { // Works better than player id, but player MUST be logged
+      // TODO : open invitation
+      console.log('vous avez été invité par :' + event.player.name)
     }
   })
 
-  // Receive invitation cancellation from remote player --> TODO : see how with undefined or not
-}
-
-const openAwaitForAcceptationWebsite = () => {
-  // TODO : disable control and open website
-  console.log('TODO : Open website with cancel button and loading')
-}
-
-const openAcceptInviteWebsite = () => {
-  // TODO : disable control and open website
-  console.log('TODO : Open website with playerId in query url')
-}
-
-const onAcceptInvitation = () => {
-  // TODO : close website + timer ?
-  console.log('TODO : User accepted invitation')
-}
-
-const onRefuseInvitation = () => {
-  // TODO : re-enable controls and close website
-  console.log('TODO : User refused invitation')
-}
-
-const onCancelInvitation = () => {
-  // TODO : re-enable controls and close website
-  console.log('TODO : User cancelled invitation')
-
-  // Reset invited player variable
-  invitedPlayer = undefined
-  WA.player.state.saveVariable(
-    'hasBeenInvited',
-    null, {
+  // Save user image in variable so other users can get it
+  await WA.player.state.saveVariable(
+    'playerImage',
+    await WA.player.getWokaPicture(),
+    {
       public: true
-    })
+  })
+
+  // Know if user authenticated to prevent others users to invite him
+  await WA.player.state.saveVariable(
+    'isAuthenticated',
+    WA.player.isLogged,
+    {
+      public: true
+  })
+
+  // Watch variable to close website
+  WA.player.state.onVariableChange('askForPlayersListWebsiteClose').subscribe((value) => {
+    if (value) {
+      closePlayersListWebsite()
+    }
+  })
+
+  // Add button to open players list
+  // TODO : save in variable so that can be closed
+  // TODo : open and close function so that can be closed in modals
+  WA.ui.actionBar.addButton({
+    id: 'playerListButton',
+    label: 'Joueurs',
+    callback: () => {
+      if (!playerListWebsiteInstance) {
+        openPlayersListWebsite()
+      } else {
+        closePlayersListWebsite()
+      }
+    }
+  })
+}
+
+let playerListWebsiteInstance: UIWebsite|null
+const openPlayersListWebsite = async () => {
+  playerListWebsiteInstance =  await WA.ui.website.open({
+    url: 'http://localhost:5173/views/lobby/playerList.html', // TODO : See how relative path ? --> Make config file with root ?
+    allowApi: true,
+    allowPolicy: "",
+    position: {
+      vertical: "middle",
+      horizontal: "middle",
+    },
+    size: {
+      height: "50vh",
+      width: "50vw",
+    },
+  })
+
+  WA.player.state.askForPlayersListWebsiteClose = false
+}
+
+const closePlayersListWebsite = () => {
+    playerListWebsiteInstance?.close()
+    playerListWebsiteInstance = null
+}
+
+const askForPlayersListWebsiteClose = () => {
+  WA.player.state.askForPlayersListWebsiteClose = true
+}
+
+// Retrieve a list of all other users
+const getPlayersList = async () => {
+  await WA.players.configureTracking()
+  return WA.players.list()
+}
+
+// Know if user can invite player passed in parameter
+const canInvitePLayer = (player: RemotePlayerInterface) => {
+  // If player has invited someone
+  // If player has been invited by someone
+  if (player.state.isInviting || player.state.hasBeenInvited) {
+    return false
+  }
+  return true
+}
+
+const invitePlayer = (player: RemotePlayerInterface) => {
+  WA.player.state.saveVariable("isInviting", player.uuid, {
+    public: true,
+    persist: true,
+    ttl: 24 * 3600,
+    scope: "world",
+  });
 }
 
 export {
   initiateLobby,
-  onAcceptInvitation,
-  onCancelInvitation,
-  onRefuseInvitation,
-  openAcceptInviteWebsite,
-  openAwaitForAcceptationWebsite
+  getPlayersList,
+  invitePlayer,
+  canInvitePLayer,
+  closePlayersListWebsite,
+  askForPlayersListWebsiteClose
 }

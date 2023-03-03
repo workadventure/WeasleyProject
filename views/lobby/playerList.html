@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Players list</title>
+
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta name="robots" content="noindex">
+        <meta name="title" content="Players list">
+
+        <link rel="stylesheet" href="../main.css">
+
+        <style>
+            .player-line {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 20px;
+                border-bottom: 1px black solid;
+            }
+
+            .player-line img {
+                padding: 10px;
+                border: 1px black solid;
+            }
+        </style>
+
+        <script src="https://play.workadventu.re/iframe_api.js"></script>
+        <script lang="ts">
+          window.addEventListener("DOMContentLoaded", () => {
+            console.log('DOM content loaded')
+            WA.onInit().then(async () => {
+              const { generatePlayersListButtons, closePlayersListWebsite } = await import('./playerList.ts')
+
+              // Get HTML elements
+              const playerList = document.getElementById('playerList')
+              const closeButton = document.getElementById('close')
+
+              // Générer la liste des joueurs à proximité
+              if (playerList) {
+                console.log('GENERATION')
+                await generatePlayersListButtons(playerList)
+              }
+
+              // Bouton de fermeture
+              if (closeButton) {
+                closeButton.addEventListener("click", () => {
+                  console.log('Close website')
+                  closePlayersListWebsite()
+                })
+              }
+            })
+          })
+        </script>
+    </head>
+    <body>
+        <div class="bg-white p-2">
+            <div id="playerList">
+                Liste des joueurs autour de moi
+            </div>
+            <div>
+                <button class="btn bg-error mt-2 mb-2" id="close">
+                    FERMER
+                </button>
+            </div>
+        </div>
+    </body>
+</html>

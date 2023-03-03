@@ -7,7 +7,7 @@ import {ITiledMapTileLayer} from "@workadventure/tiled-map-type-guard/dist/ITile
 let findSecretPassageAction: ActionMessage|null = null
 
 // TODO : remove if useless
-const getAllLayerTilesCoordinates = async (layerName: string) => {
+/*const getAllLayerTilesCoordinates = async (layerName: string) => {
   const layers = await getLayersMap()
   console.log('Layers', layers)
 
@@ -16,7 +16,7 @@ const getAllLayerTilesCoordinates = async (layerName: string) => {
   console.log('Layer', layer)
   const boundaries = findLayerBoundaries(layer)
 
-}
+}*/
 
 const removeBlocksTiles = (zone: string) => {
   // TODO : we need map dimensions for this : variables in room ?
