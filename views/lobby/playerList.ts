@@ -62,12 +62,13 @@ const getPlayerButton = (player: RemotePlayerInterface) => {
     console.log("Tentative d'inviter " + player.name + ' : ' + player.playerId)
     // TODO : if can be invited (has not invited someone + is not invited by someone else)
     // TODO : OU on laisse plusieurs users pouvoir inviter le même user ?
-    if (modules.lobby.playerCanBeInvited(player)) {
+    modules.lobby.invitePlayer(player)
+    /*if (modules.lobby.canInvitePLayer(player)) {
       modules.lobby.invitePlayer(player)
     } else {
       // TODO : Toast website open ? or WOKA BANNER
       console.log('Player is not available') // TODO : translations
-    }
+    }*/
   })
 
   // Cannot invite player if he has already been invited or has already invited someone

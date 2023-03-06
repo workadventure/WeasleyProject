@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Invitation received</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta name="robots" content="noindex">
+        <meta name="title" content="Players list">
+
+        <link rel="stylesheet" href="../main.css">
+
+        <script src="https://play.workadventu.re/iframe_api.js"></script>
+        <script lang="ts">
+          window.addEventListener("DOMContentLoaded", () => {
+            console.log('DOM content loaded')
+            WA.onInit().then(async () => {
+              const {
+                getInvitorName,
+                acceptInvitation,
+                refuseInvitation
+              } = await import('./invitationReceived.ts')
+
+              const spanName     = document.getElementById('name')
+              const acceptButton = document.getElementById('accept')
+              const refuseButton = document.getElementById('refuse')
+
+              spanName.innerHTML = getInvitorName()
+
+              acceptButton.addEventListener("click", () => {
+                acceptInvitation()
+              })
+
+              refuseButton.addEventListener("click", () => {
+                refuseInvitation()
+              })
+            })
+          })
+        </script>
+    </head>
+    <body>
+        <div class="bg-white">
+            <div>
+                <span>Vous avez été invité par </span>
+                <span id="name"></span>
+            </div>
+            <div class="d-flex align-items-center justify-content-between">
+                <button id="refuse" class="btn bg-error">
+                    Refuser
+                </button>
+                <button id="accept" class="btn bg-success">
+                    Accepter
+                </button>
+            </div>
+        </div>
+    </body>
+</html>
