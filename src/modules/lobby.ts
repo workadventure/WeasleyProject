@@ -6,9 +6,9 @@ import {RemotePlayerInterface} from "@workadventure/iframe-api-typings/front/Api
 import {UIWebsite} from "@workadventure/iframe-api-typings";
 
 const initiateLobby = async () => {
-  WA.player.state.isInviting = null
-  WA.player.state.hasBeenInvited = null
-  WA.player.state.hasAcceptedInvitation = null
+  await WA.player.state.saveVariable('isInviting', null, {public: true})
+  await WA.player.state.saveVariable('hasBeenInvited', null, {public: true})
+  await WA.player.state.saveVariable('hasAcceptedInvitation', null, {public: true})
 
   // Players tracking
   await WA.players.configureTracking()
@@ -34,7 +34,7 @@ const initiateLobby = async () => {
   // Receive invitation cancel from invitor
   WA.players.onVariableChange('isInviting').subscribe((event: PlayerVariableChanged) => {
     if (!event.value && WA.player.state.hasBeenInvited === event.player.uuid) { // Works better than player id, but player MUST be logged
-      console.log(event.player.name + 'a annulé son invitation')
+      console.log(event.player.name + 'a annulé son invitation') // TODO : visual notification module
       WA.player.state.hasBeenInvited = null // Reset so that other users can invite current
       closeInvitationWebsite() // Close website because user cannot accept or refuse anymore
       resetInvitor()
@@ -45,6 +45,7 @@ const initiateLobby = async () => {
   WA.players.onVariableChange('hasAcceptedInvitation').subscribe((event: PlayerVariableChanged) => {
     console.log('Someone accepted en invitation', event.player.uuid)
     if (event.value === WA.player.uuid) { // Works better than player id, but player MUST be logged
+      openYouAreGoingToBeRedirectedWebsite()
       console.log('REDIRECTION VERS LE JEU ! pour :' + WA.player.name + ' et ' + event.player.name)
       // TODO : display modal with message : "Vous allez être ridirigé vers le jeu" with a button "C'est parti !"
     }
@@ -154,7 +155,7 @@ const getPlayersList = async () => {
 const canInvitePLayer = (player: RemotePlayerInterface) => {
   // If player has invited someone
   // If player has been invited by someone
-  if (player.state.isInviting || player.state.hasBeenInvited) {
+  if (!!player.state.isInviting || !!player.state.hasBeenInvited) {
     return false
   }
   return true
@@ -215,6 +216,7 @@ const acceptInvitation = () => {
       WA.player.state.hasBeenInvited, {
       public: true
     })
+    openYouAreGoingToBeRedirectedWebsite()
     console.log('accepted invitation', WA.player.state.hasAcceptedInvitation)
   } else {
     console.log('Oups, une erreur est survenue (no invitor)')
@@ -261,6 +263,22 @@ const cancelInvitation = () => {
 
 const askForCancelInvitation = () => {
   WA.player.state.askForCancelInvitation = true
+}
+
+const openYouAreGoingToBeRedirectedWebsite = async () => {
+  await WA.ui.website.open({
+    url: `${rootLink}/views/lobby/youAreGoingToBeRedirected.html`,
+    allowApi: true,
+    allowPolicy: "",
+    position: {
+      vertical: "middle",
+      horizontal: "middle",
+    },
+    size: {
+      height: "50vh",
+      width: "50vw",
+    },
+  })
 }
 
 export {

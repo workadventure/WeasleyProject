@@ -20,17 +20,23 @@
                 acceptInvitation,
                 refuseInvitation
               } = await import('./invitationReceived.ts')
+              const utils = await import('../../src/utils/index.js')
 
-              const spanName     = document.getElementById('name')
-              const acceptButton = document.getElementById('accept')
-              const refuseButton = document.getElementById('refuse')
+              const spanInvitation = document.getElementById('youHaveBeenInvited')
+              const spanName       = document.getElementById('name')
+              const acceptButton   = document.getElementById('accept')
+              const refuseButton   = document.getElementById('refuse')
+
+              spanInvitation.innerHTML = utils.translations.translate('modules.lobby.youHaveBeenInvitedBy')
 
               spanName.innerHTML = getInvitorName()
 
+              acceptButton.innerText = utils.translations.translate('modules.lobby.accept')
               acceptButton.addEventListener("click", () => {
                 acceptInvitation()
               })
 
+              refuseButton.innerText = utils.translations.translate('modules.lobby.refuse')
               refuseButton.addEventListener("click", () => {
                 refuseInvitation()
               })
@@ -41,7 +47,7 @@
     <body>
         <div class="bg-white">
             <div>
-                <span>Vous avez été invité par </span>
+                <span id="youHaveBeenInvited">Vous avez été invité par </span>
                 <span id="name"></span>
             </div>
             <div class="d-flex align-items-center justify-content-between">

@@ -17,20 +17,24 @@
               const {
                 cancelInvitation
               } = await import('./waitingForAnswer.ts')
+              const utils = await import('../../src/utils/index.js')
 
-              const cancelButton = document.getElementById('cancelButton')
+              const cancelButton     = document.getElementById('cancelButton')
+              const waitingForAnswer = document.getElementById('waitingForAnswer')
 
+              cancelButton.innerText = utils.translations.translate('modules.lobby.cancel')
               cancelButton.addEventListener("click", () => {
-                console.log('clicked')
                 cancelInvitation()
               })
+
+              waitingForAnswer.innerHTML = utils.translations.translate('modules.lobby.waitingForAnswer')
             })
           })
         </script>
     </head>
     <body>
         <div class="bg-white">
-            <div>
+            <div id="waitingForAnswer">
                 En attente de la réponse (TODO : translations)
             </div>
             <div>

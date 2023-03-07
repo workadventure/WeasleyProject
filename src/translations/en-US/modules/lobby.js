@@ -6,6 +6,11 @@ export default {
   cancel: 'Cancel',
   players: 'Players',
   connectToInvite: 'Log in to invite someone',
-  nonAuthenticated: 'Not authenticated',
-  waitingForAnswer: 'Waiting for an answer. Please wait.'
+  notAuthenticated: 'Not authenticated',
+  waitingForAnswer: 'Waiting for an answer. Please wait.',
+  youAreGoingToBeRedirected: 'You\'re going to be redirected to the game',
+  letSGo: 'Let\'s go !',
+  close: 'Close',
+  playerIsNotAvailable: 'Player is not available',
+  youHaveBeenInvitedBy: 'You have been invited by '
 }

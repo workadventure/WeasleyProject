@@ -2,7 +2,7 @@
 import * as modules from '../../src/modules/index.js'
 
 const getInvitorName = () => {
-  return 'TEST'
+  return 'TEST' // TODO
 }
 
 const refuseInvitation = () => {
