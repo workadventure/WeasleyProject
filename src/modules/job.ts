@@ -1,5 +1,6 @@
 import * as utils from '../utils'
 import {UIWebsite} from "@workadventure/iframe-api-typings";
+import {rootLink} from "../config";
 
 export type Job = 'archaeologist' | 'spy'
 export type Permissions =
@@ -51,7 +52,7 @@ const openJobWalletWebsite = async () => {
 
   // Open card
   jobWalletWebsite = await WA.ui.website.open({
-    url: 'http://localhost:5173/views/jobWallet/jobWallet.html?name=test', // TODO : See how relative path ? --> Make config file with root ?
+    url: `${rootLink}/views/jobWallet/jobWallet.html`,
     allowApi: true,
     allowPolicy: "",
     position: {
@@ -82,7 +83,7 @@ const closeJobWalletWebsite = () => {
 
 // Show menu bar button for job wallet
 const showJobWallet = () => {
-  WA.ui.actionBar.addButton({ // TODO : doc and types are not the same, see why
+  WA.ui.actionBar.addButton({
     id: buttonName,
     label: utils.translations.translate('modules.job.myJobWallet.label'),
     callback: async () => {

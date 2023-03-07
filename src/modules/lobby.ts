@@ -1,9 +1,10 @@
 // Lobby initialisation : must be called in main.ts only
+import { rootLink } from "../config";
+
 import {PlayerVariableChanged} from "@workadventure/iframe-api-typings/front/Api/Iframe/players";
 import {RemotePlayerInterface} from "@workadventure/iframe-api-typings/front/Api/Iframe/Players/RemotePlayer";
 import {UIWebsite} from "@workadventure/iframe-api-typings";
 
-let remotePlayer: RemotePlayerInterface|null = null
 const initiateLobby = async () => {
   WA.player.state.isInviting = null
   WA.player.state.hasBeenInvited = null
@@ -15,11 +16,9 @@ const initiateLobby = async () => {
   // Receive invitations from other players
   WA.players.onVariableChange('isInviting').subscribe((event: PlayerVariableChanged) => {
     if (event.value === WA.player.uuid) { // Works better than player id, but player MUST be logged
-      // TODO : open invitation
       console.log('vous avez été invité par :' + event.player.name)
       WA.player.state.hasBeenInvited = event.value
       openInvitationWebsite()
-      remotePlayer = event.player
     }
   })
 
@@ -29,7 +28,6 @@ const initiateLobby = async () => {
       console.log(event.player.name + 'a refusé votre invitation')
       WA.player.state.isInviting = null // Reset is inviting so that other users can invite current
       // TODO : Close waiting for answer website
-      remotePlayer = null
     }
   })
 
@@ -39,15 +37,16 @@ const initiateLobby = async () => {
       console.log(event.player.name + 'a annulé son invitation')
       WA.player.state.hasBeenInvited = null // Reset so that other users can invite current
       closeInvitationWebsite() // Close website because user cannot accept or refuse anymore
-      remotePlayer = null
+      resetInvitor()
     }
   })
 
-  // Receive invitation acceptation // TODO : Not working
+  // Receive invitation acceptation
   WA.players.onVariableChange('hasAcceptedInvitation').subscribe((event: PlayerVariableChanged) => {
     console.log('Someone accepted en invitation', event.player.uuid)
     if (event.value === WA.player.uuid) { // Works better than player id, but player MUST be logged
       console.log('REDIRECTION VERS LE JEU ! pour :' + WA.player.name + ' et ' + event.player.name)
+      // TODO : display modal with message : "Vous allez être ridirigé vers le jeu" with a button "C'est parti !"
     }
   })
 
@@ -77,44 +76,49 @@ const initiateLobby = async () => {
   WA.player.state.onVariableChange('askForPlayersInvitationWebsiteClose').subscribe((value) => {
     if (value) {
       closeInvitationWebsite()
+      resetInvitor()
+    }
+  })
+
+  WA.player.state.onVariableChange('askForCancelInvitation').subscribe((value) => {
+    console.log('askForCancelInvitation changed', value)
+    if (value) {
+      console.log('value')
+      closeWaitingForAnswerWebsite()
+      resetInvited()
+    }
+  })
+
+  WA.player.state.onVariableChange('isInviting').subscribe((value) => {
+    if (value) {
+      // Close players list
+      closePlayersListWebsite()
+
+      // Open waiting modal
+      openWaitingForAnswerWebsite()
     }
   })
 
   // Add button to open players list
-  // TODO : save in variable so that can be closed
-  // TODo : open and close function so that can be closed in modals
   WA.ui.actionBar.addButton({
     id: 'playerListButton',
-    label: 'Joueurs',
+    label: 'Joueurs', // TODO  :translations
     callback: () => {
-      if (!playerListWebsiteInstance) {
-        openPlayersListWebsite()
-      } else {
-        closePlayersListWebsite()
+      if (!waitingForAnswerWebsite) {
+        if (!playerListWebsiteInstance) {
+          openPlayersListWebsite()
+        } else {
+          closePlayersListWebsite()
+        }
       }
     }
   })
 }
 
-// TODO : See if usefull or not
-const remotePlayerTracking = (player: RemotePlayerInterface) => {
-  player.state.onVariableChange('isInviting').subscribe(() => {
-    console.log('Remote player variable isInviting changed')
-  })
-
-  player.state.onVariableChange('hasBeenInvited').subscribe(() => {
-    console.log('Remote player variable hasBeenInvited changed')
-  })
-
-  player.state.onVariableChange('hasAcceptedInvitation').subscribe(() => {
-    console.log('Remote player variable hasAcceptedInvitation changed')
-  })
-}
-
-let playerListWebsiteInstance: UIWebsite|null
+let playerListWebsiteInstance: UIWebsite|null = null
 const openPlayersListWebsite = async () => {
   playerListWebsiteInstance =  await WA.ui.website.open({
-    url: 'http://localhost:5173/views/lobby/playerList.html', // TODO : See how relative path ? --> Make config file with root ?
+    url: `${rootLink}/views/lobby/playerList.html`,
     allowApi: true,
     allowPolicy: "",
     position: {
@@ -131,6 +135,7 @@ const openPlayersListWebsite = async () => {
 }
 
 const closePlayersListWebsite = () => {
+  console.log('close player list', playerListWebsiteInstance)
     playerListWebsiteInstance?.close()
     playerListWebsiteInstance = null
 }
@@ -162,14 +167,13 @@ const invitePlayer = (player: RemotePlayerInterface) => {
     ttl: 24 * 3600,
     scope: "world",
   });
-  remotePlayer = player
 }
 
 let invitationWebsiteInstance:UIWebsite|null = null
 // Open invitation modal so that user can accept or refuse
 const openInvitationWebsite = async () => {
   invitationWebsiteInstance =  await WA.ui.website.open({
-    url: 'http://localhost:5173/views/lobby/invitationReceived.html', // TODO : See how relative path ? --> Make config file with root ?
+    url: `${rootLink}/views/lobby/invitationReceived.html`,
     allowApi: true,
     allowPolicy: "",
     position: {
@@ -190,6 +194,9 @@ const closeInvitationWebsite = () => {
   console.log('close invitation')
   invitationWebsiteInstance?.close()
   invitationWebsiteInstance = null
+}
+
+const resetInvitor = () => {
   WA.player.state.hasBeenInvited = null // Set has been invited to false so that other players can invite current user
 }
 
@@ -212,7 +219,48 @@ const acceptInvitation = () => {
   } else {
     console.log('Oups, une erreur est survenue (no invitor)')
   }
-  // closeInvitationWebsite()
+  closeInvitationWebsite()
+}
+
+let waitingForAnswerWebsite: UIWebsite|null = null
+const openWaitingForAnswerWebsite = async () => {
+  console.log('open waiting for answer website')
+  waitingForAnswerWebsite =  await WA.ui.website.open({
+    url: `${rootLink}/views/lobby/waitingForAnswer.html`,
+    allowApi: true,
+    allowPolicy: "",
+    position: {
+      vertical: "middle",
+      horizontal: "middle",
+    },
+    size: {
+      height: "50vh",
+      width: "50vw",
+    },
+  })
+  WA.player.state.askForCancelInvitation = false
+  console.log(waitingForAnswerWebsite)
+}
+
+const closeWaitingForAnswerWebsite = () => {
+  console.log('close waiting for answer website')
+  waitingForAnswerWebsite?.close()
+  waitingForAnswerWebsite = null
+}
+
+const resetInvited = () => {
+  console.log('RESET INVITED')
+  console.log('waitingForAnswerWebsite', waitingForAnswerWebsite)
+  WA.player.state.isInviting = null
+}
+
+const cancelInvitation = () => {
+  console.log('cancel invitation')
+  resetInvited()
+}
+
+const askForCancelInvitation = () => {
+  WA.player.state.askForCancelInvitation = true
 }
 
 export {
@@ -225,5 +273,9 @@ export {
   openInvitationWebsite,
   closeInvitationWebsite,
   askForCloseInvitationWebsite,
-  acceptInvitation
+  acceptInvitation,
+  openWaitingForAnswerWebsite,
+  closeWaitingForAnswerWebsite,
+  cancelInvitation,
+  askForCancelInvitation
 }

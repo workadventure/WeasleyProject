@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Players list</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta name="robots" content="noindex">
+        <meta name="title" content="Players list">
+
+        <link rel="stylesheet" href="../main.css">
+
+        <script src="https://play.workadventu.re/iframe_api.js"></script>
+        <script lang="ts">
+          window.addEventListener("DOMContentLoaded", () => {
+            WA.onInit().then(async () => {
+              const {
+                cancelInvitation
+              } = await import('./waitingForAnswer.ts')
+
+              const cancelButton = document.getElementById('cancelButton')
+
+              cancelButton.addEventListener("click", () => {
+                console.log('clicked')
+                cancelInvitation()
+              })
+            })
+          })
+        </script>
+    </head>
+    <body>
+        <div class="bg-white">
+            <div>
+                En attente de la réponse (TODO : translations)
+            </div>
+            <div>
+                <button id="cancelButton" class="btn bg-error">
+                    Annuler (TODO : Translations)
+                </button>
+            </div>
+        </div>
+    </body>
+</html>
