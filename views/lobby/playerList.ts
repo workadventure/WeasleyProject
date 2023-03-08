@@ -18,10 +18,7 @@ const generatePlayersListButtons = async (element: HTMLElement) => {
     // set player list
     const players = await modules.lobby.getPlayersList()
 
-    console.log('players', players)
-
     for (let player of players) {
-      console.log('player', players)
       element.appendChild(getPlayerButton(player))
     }
 }

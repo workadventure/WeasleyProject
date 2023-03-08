@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import {job, excavations, lobby, secretPassages, hiddenZone} from './modules';
+import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles} from './modules'
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {
@@ -13,8 +13,11 @@ WA.onInit().then(() => {
     secretPassages.initiateSecretPassages(['secretPassage'], [() => {console.log('test callback after finding secret passage')}])
     hiddenZone.initiateHiddenZones([{stepIn: 'hiddenZoneFloor', hide: 'hiddenZoneTop'}])
 
+    console.log('Initiate switching tiles')
+    switchingTiles.initiateSwitchingTiles()
+
     console.log('LOBBY INITIALISATION')
     lobby.initiateLobby()
-}).catch(e => console.error(e));
+}).catch(e => console.error(e))
 
 export {};
