@@ -1,11 +1,11 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-//import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles} from './modules'
+import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles} from './modules'
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {
     console.log('INITIALISATION')
-    /*job.initiateJob()
+    job.initiateJob()
     job.setPlayerJob('spy')
 
     console.log('HERE')
@@ -17,7 +17,7 @@ WA.onInit().then(() => {
     switchingTiles.initiateSwitchingTiles()
 
     console.log('LOBBY INITIALISATION')
-    lobby.initiateLobby()*/
+    lobby.initiateLobby()
 }).catch(e => console.error(e))
 
 export {};
