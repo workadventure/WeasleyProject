@@ -7,6 +7,12 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: "./index.html",
+                jobWallet: "./views/jobWallet/jobWallet.html",
+                jobWalletTS: "./views/jobWallet/jobWallet.ts",
+                invitationReceived: "./views/lobby/invitationReceived.html",
+                playerList: "./views/lobby/playerList.html",
+                waitingForAnswer: "./views/lobby/waitingForAnswer.html",
+                youAreGoingToBeRedirected: "./views/lobby/youAreGoingToBeRedirected.html",
                 ...getMapsScripts("./maps"),
             },
         },
