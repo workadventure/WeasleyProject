@@ -10,18 +10,18 @@
     <title>My job wallet</title>
     <link rel="stylesheet" href="../main.css">
     <script src="https://play.workadventu.re/iframe_api.js"></script>
-    <script lang="ts">
+    <script type="module">
+      import {
+        getDescription,
+        getPermissions,
+        getTitle,
+        getAttributes,
+        closeJobWalletWebsite,
+        getCloseJobWalletWebsiteButtonText
+      } from './jobWallet.ts'
+
       document.addEventListener("DOMContentLoaded", () => {
           WA.onInit().then(async () => {
-              const {
-                getDescription,
-                getPermissions,
-                getTitle,
-                getAttributes,
-                closeJobWalletWebsite,
-                getCloseJobWalletWebsiteButtonText
-              } = await import("./jobWallet.ts")
-
               // Get html parts
               const photo = document.getElementById('photo')
               const title = document.getElementById('title')
