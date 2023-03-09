@@ -30,7 +30,6 @@
     "skipLibCheck": true
   },
   "include": [
-    "src",
-    "views"
+    "src"
   ]
 }
