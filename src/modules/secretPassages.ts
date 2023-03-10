@@ -1,8 +1,8 @@
 import * as utils from '../utils'
 import { canUser } from "./job";
 import {ActionMessage} from "@workadventure/iframe-api-typings";
-import { findLayerBoundaries, getLayersMap } from '@workadventure/scripting-api-extra'
-import {ITiledMapTileLayer} from "@workadventure/tiled-map-type-guard/dist/ITiledMapTileLayer";
+// import { findLayerBoundaries, getLayersMap } from '@workadventure/scripting-api-extra'
+// import {ITiledMapTileLayer} from "@workadventure/tiled-map-type-guard/dist/ITiledMapTileLayer";
 
 let findSecretPassageAction: ActionMessage|null = null
 

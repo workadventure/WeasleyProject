@@ -11,38 +11,7 @@
         <link rel="stylesheet" href="../main.css">
 
         <script src="https://play.workadventu.re/iframe_api.js"></script>
-        <script lang="ts">
-          window.addEventListener("DOMContentLoaded", () => {
-            console.log('DOM content loaded')
-            WA.onInit().then(async () => {
-              const {
-                getInvitorName,
-                acceptInvitation,
-                refuseInvitation
-              } = await import('./invitationReceived.ts')
-              const utils = await import('../../src/utils/index.js')
-
-              const spanInvitation = document.getElementById('youHaveBeenInvited')
-              const spanName       = document.getElementById('name')
-              const acceptButton   = document.getElementById('accept')
-              const refuseButton   = document.getElementById('refuse')
-
-              spanInvitation.innerHTML = utils.translations.translate('modules.lobby.youHaveBeenInvitedBy')
-
-              spanName.innerHTML = getInvitorName()
-
-              acceptButton.innerText = utils.translations.translate('modules.lobby.accept')
-              acceptButton.addEventListener("click", () => {
-                acceptInvitation()
-              })
-
-              refuseButton.innerText = utils.translations.translate('modules.lobby.refuse')
-              refuseButton.addEventListener("click", () => {
-                refuseInvitation()
-              })
-            })
-          })
-        </script>
+        <script src="./invitationReceived.ts" type="module"></script>
     </head>
     <body>
         <div class="bg-white">

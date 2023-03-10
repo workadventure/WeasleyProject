@@ -7,6 +7,16 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 index: "./index.html",
+                jobWallet: "./views/jobWallet/jobWallet.html",
+                jobWalletTS: "./views/jobWallet/jobWallet.ts",
+                invitationReceived: "./views/lobby/invitationReceived.html",
+                invitationReceivedTS: "./views/lobby/invitationReceived.ts",
+                playerList: "./views/lobby/playerList.html",
+                playerListTS: "./views/lobby/playerList.ts",
+                waitingForAnswer: "./views/lobby/waitingForAnswer.html",
+                waitingForAnswerTS: "./views/lobby/waitingForAnswer.ts",
+                youAreGoingToBeRedirected: "./views/lobby/youAreGoingToBeRedirected.html",
+                youAreGoingToBeRedirectedTS: "./views/lobby/youAreGoingToBeRedirected.ts",
                 ...getMapsScripts("./maps"),
             },
         },

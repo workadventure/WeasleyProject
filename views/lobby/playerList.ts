@@ -83,6 +83,28 @@ const closePlayersListWebsite = () => {
   modules.lobby.askForPlayersListWebsiteClose()
 }
 
+window.addEventListener("DOMContentLoaded", () => {
+  WA.onInit().then(async () => {
+    // Get HTML elements
+    const playerList = document.getElementById('playerList')
+    const closeButton = document.getElementById('close')
+
+    // Générer la liste des joueurs à proximité
+    if (playerList) {
+      playerList.innerText = utils.translations.translate('modules.lobby.playersList')
+      await generatePlayersListButtons(playerList)
+    }
+
+    // Bouton de fermeture
+    if (closeButton) {
+      closeButton.addEventListener("click", () => {
+        closePlayersListWebsite()
+      })
+      closeButton.innerText = utils.translations.translate('modules.lobby.close')
+    }
+  })
+})
+
 export {
   generatePlayersListButtons,
   getPlayerButton,

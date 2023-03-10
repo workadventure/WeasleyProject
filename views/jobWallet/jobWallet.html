@@ -10,50 +10,7 @@
     <title>My job wallet</title>
     <link rel="stylesheet" href="../main.css">
     <script src="https://play.workadventu.re/iframe_api.js"></script>
-    <script lang="ts">
-      document.addEventListener("DOMContentLoaded", () => {
-          WA.onInit().then(async () => {
-              const {
-                getDescription,
-                getPermissions,
-                getTitle,
-                getAttributes,
-                closeJobWalletWebsite,
-                getCloseJobWalletWebsiteButtonText
-              } = await import("./jobWallet.ts")
-
-              // Get html parts
-              const photo = document.getElementById('photo')
-              const title = document.getElementById('title')
-              const attributes = document.getElementById('attributes')
-              const description = document.getElementById('description')
-              const permissions = document.getElementById('permissions')
-              const closeWebsiteWalletButton = document.getElementById('closeWalletWebsiteButton')
-
-              // User picture
-              const woka = await WA.player.getWokaPicture()
-              photo.setAttribute('src', woka)
-
-              // Card title
-              title.innerText = getTitle()
-
-              // User attributes
-              attributes.innerHTML = getAttributes()
-
-              // User job description
-              description.innerText = getDescription()
-
-              // User job permissions
-              permissions.appendChild(getPermissions())
-
-              // Close button event
-              closeWebsiteWalletButton.innerText = getCloseJobWalletWebsiteButtonText()
-              closeWebsiteWalletButton.addEventListener("click", () => {
-                closeJobWalletWebsite()
-              })
-          })
-      })
-    </script>
+    <script src="jobWallet.ts" type="module"></script>
 </head>
     <body>
         <div style="background: white; border-radius: 20px; overflow: hidden; border: 2px black solid;">
