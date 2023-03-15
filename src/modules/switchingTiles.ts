@@ -1,4 +1,4 @@
-const initiateSwitchingTiles = (switchingTiles: Array<string> = ['switchingTiles'], victoryCallBacks: Array<Function>|null = []) => {
+const initiateSwitchingTiles = (switchingTiles: Array<string> = ['switchingTiles'], victoryCallBacks: Array<Function> = []) => {
   for (let i = 0; i < switchingTiles.length; i++) {
     const victoryCondition = JSON.parse(WA.state[`${switchingTiles[i]}VictoryCondition`] as string)
     const tilesNumber = WA.state[`${switchingTiles[i]}TilesNumber`] as number
