@@ -12,7 +12,7 @@ This is a starter kit to help you build map for [WorkAdventure](https://workadve
 * *tilesets*: All the tilesets used in your maps
 * *views*: ALl the views called in maps 
 
-If you are going to create custom websites to embed in the map, please put it in "views" directory and reference the HTML files in the `input` option in *vite.config.js*.
+If you are going to create custom websites to embed in the map, please put it in **"views"** directory.
 
 ## Requirements
 
