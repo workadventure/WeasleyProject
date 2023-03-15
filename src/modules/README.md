@@ -12,7 +12,7 @@ In this group:
 - As many layer groups as you want tiles (in this file it's called **switchingTileGroup**)
   - Each one must be called "[no]_layer" (**ex :** "1_layer")
   - Each one must contain one layer called "zone". This is the area that, when the player steps on it, will change the drawing of the switchingTileGroup.
-  - Each one must contain as many layers (in this file it's called **drawingLayer**) as you have drawings (one layer = one drawing) and you must place the tiles on each layer at the place you want it to be
+  - Each one must contain as many layers (in this file it's called **drawingLayer**) as you have drawings (one layer = one drawing). Call it with a numero (the numero if the drawing you want to display). You must place the tiles on each layer at the place you want it to be
 - you must create an object layer named "variables" with :
   - A variable named **"[name_of_your_group]VictoryCondition"** (ex: if your group name is **"switchingTiles"**, then the variable name is **"switchingTilesVictoryCondition"**)
     - Type : string
