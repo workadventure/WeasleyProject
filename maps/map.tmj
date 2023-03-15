@@ -158,12 +158,54 @@
                          "id":19,
                          "name":"secretPassageDiscovered",
                          "point":true,
+                         "properties":[
+                                {
+                                 "name":"default",
+                                 "type":"bool",
+                                 "value":false
+                                }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
-                         "x":467.073170731707,
-                         "y":292.682926829268
+                         "x":399.180317997477,
+                         "y":295.151757837785
+                        }, 
+                        {
+                         "height":0,
+                         "id":28,
+                         "name":"mapHeight",
+                         "point":true,
+                         "properties":[
+                                {
+                                 "name":"default",
+                                 "type":"int",
+                                 "value":21
+                                }],
+                         "rotation":0,
+                         "type":"variable",
+                         "visible":true,
+                         "width":0,
+                         "x":432.893054963784,
+                         "y":293.140178951853
+                        }, 
+                        {
+                         "height":0,
+                         "id":30,
+                         "name":"mapWidth",
+                         "point":true,
+                         "properties":[
+                                {
+                                 "name":"default",
+                                 "type":"int",
+                                 "value":31
+                                }],
+                         "rotation":0,
+                         "type":"variable",
+                         "visible":true,
+                         "width":0,
+                         "x":450.788240306775,
+                         "y":295.696634000852
                         }],
                  "opacity":1,
                  "properties":[
@@ -173,7 +215,7 @@
                          "value":false
                         }],
                  "type":"objectgroup",
-                 "visible":false,
+                 "visible":true,
                  "x":0,
                  "y":0
                 }, 
@@ -729,7 +771,7 @@
          "y":0
         }],
  "nextlayerid":90,
- "nextobjectid":28,
+ "nextobjectid":31,
  "orientation":"orthogonal",
  "properties":[
         {
