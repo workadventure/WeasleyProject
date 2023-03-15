@@ -1,4 +1,4 @@
-const rootLink = 'https://morganehuebra.github.io/WeasleyProject'
+const rootLink = 'http://localhost:5173'
 
 export {
   rootLink

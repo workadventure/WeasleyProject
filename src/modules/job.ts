@@ -33,7 +33,7 @@ let jobWalletWebsite: UIWebsite|null = null
 
 // Choose player job
 const setPlayerJob = (newJob: Job) => {
-  WA.player.state.job = newJob
+  WA.player.state.saveVariable('job', newJob, {public: true})
 }
 
 const getPlayerJob = () => {
