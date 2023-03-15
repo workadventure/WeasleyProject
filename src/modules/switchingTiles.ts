@@ -8,18 +8,18 @@ const initiateSwitchingTiles = (switchingTiles: Array<string> = ['switchingTiles
       switchTile(switchingTiles[i], j)
 
       // When user enter a layer manage to change tile if not victory
-      if (!WA.state[`${switchingTiles[i]}IsVictory`]) {
         WA.room.onEnterLayer(`${switchingTiles[i]}/${j}_layer/zone`).subscribe(() => {
-          let newValue: number = WA.state[`${switchingTiles[i]}_${j}_value`] ? WA.state[`${switchingTiles[i]}_${j}_value`] as number : 0
-          WA.state[`${switchingTiles[i]}_${j}_value`] = (newValue + 1) %  tilesNumber
+          if (!WA.state[`${switchingTiles[i]}IsVictory`]) {
+            let newValue: number = WA.state[`${switchingTiles[i]}_${j}_value`] ? WA.state[`${switchingTiles[i]}_${j}_value`] as number : 0
+            WA.state[`${switchingTiles[i]}_${j}_value`] = (newValue + 1) %  tilesNumber
 
-          // Test if victory condition is fulfilled
-          if (testVictory(switchingTiles[i], victoryCondition)) {
-            // set victory variable so that every user knows
-            WA.state[`${switchingTiles[i]}IsVictory`] = true
+            // Test if victory condition is fulfilled
+            if (testVictory(switchingTiles[i], victoryCondition)) {
+              // set victory variable so that every user knows
+              WA.state[`${switchingTiles[i]}IsVictory`] = true
+            }
           }
         })
-      }
 
       // Detect victory
       WA.state.onVariableChange(`${switchingTiles[i]}IsVictory`).subscribe((value) => {
