@@ -215,7 +215,7 @@
                          "value":false
                         }],
                  "type":"objectgroup",
-                 "visible":true,
+                 "visible":false,
                  "x":0,
                  "y":0
                 }, 
@@ -226,7 +226,7 @@
                  "name":"block",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":31,
                  "x":0,
                  "y":0
