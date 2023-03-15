@@ -17,7 +17,8 @@ In this group:
   - A variable named **"[name_of_your_group]VictoryCondition"** (ex: if your group name is **"switchingTiles"**, then the variable name is **"switchingTilesVictoryCondition"**)
     - Type : string
     - Default value : A json string containing your victory condition
-    - TODO
+    - `{ [drawingLayer_no]: [drawing_no] }`
+    - ex : `{ "0" : "1", "1" : "2" }`
   - A variable named **"[name_of_your_group]TilesNumber"** (ex: if your group name is **"switchingTiles"**, then the variable name is **"switchingTilesTilesNumber"**)
     - Type : number
     - Default value : Number of differents drawing for the tiles
