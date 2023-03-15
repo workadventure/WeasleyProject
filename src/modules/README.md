@@ -48,3 +48,38 @@ WA.onInit().then(() => {
   ])
 })
 ```
+
+
+## Hidden Zones
+### Description
+This module is used to erase a layer when you walk in a specific area, and to display it again when you leave it.
+This can be useful, for example, if you want to make rooms inside buildings that you can't see from the outside.
+
+### Map setup
+You must create two layers (name it as you want): 
+- A layer that will be used to hide the other layer when walking on it
+- The other layer that will desapear when walking on the first one (NOTE : you can make a group with several layers if needed)
+
+### Code setup
+In order to initiate hidden zones, you must use hiddenZone module in your map's script.
+You must call the function **initiateHiddenZones** and give it as parameter an array of objects with type hiddenZoneType : 
+```typescript
+type hiddenZoneType = {
+  stepIn: string,
+  hide: string
+}
+```
+
+This type is composed by two strings : 
+- stepIn : the name of the first layer (hide the other layer when walking on it)
+- hide : the name of the second layer (or the name of the group of layer) that will be hidden
+
+In your map's script : 
+
+```typescript
+import { hiddenZone } from './modules'
+
+WA.onInit().then(() => {
+  hiddenZone.initiateHiddenZones([{stepIn: 'stepInZoneName', hide: 'hideZoneName'}])
+})
+```
