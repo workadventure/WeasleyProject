@@ -305,6 +305,47 @@
                          "width":0,
                          "x":155.380501553805,
                          "y":341.114403411144
+                        }, 
+                        {
+                         "height":0,
+                         "id":25,
+                         "name":"switchingTilesTilesNumber",
+                         "point":true,
+                         "properties":[
+                                {
+                                 "name":"default",
+                                 "type":"int",
+                                 "value":3
+                                }],
+                         "rotation":0,
+                         "type":"variable",
+                         "visible":true,
+                         "width":0,
+                         "x":161.7943198389,
+                         "y":373.585167696688
+                        }, 
+                        {
+                         "height":0,
+                         "id":26,
+                         "name":"switchingTilesIsVictory",
+                         "point":true,
+                         "properties":[
+                                {
+                                 "name":"default",
+                                 "type":"bool",
+                                 "value":false
+                                }, 
+                                {
+                                 "name":"persist",
+                                 "type":"bool",
+                                 "value":false
+                                }],
+                         "rotation":0,
+                         "type":"variable",
+                         "visible":true,
+                         "width":0,
+                         "x":160.405527393931,
+                         "y":404.832997708492
                         }],
                  "opacity":1,
                  "type":"objectgroup",
@@ -688,7 +729,7 @@
          "y":0
         }],
  "nextlayerid":90,
- "nextobjectid":25,
+ "nextobjectid":28,
  "orientation":"orthogonal",
  "properties":[
         {
