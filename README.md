@@ -5,12 +5,14 @@ This is a starter kit to help you build map for [WorkAdventure](https://workadve
 ## Structure
 * *maps*: All your map files
 * *public*: Static files like PDFs
+* *readme_images*: All images used in the readmes
 * *src*: Source files like scripts or PSDs. 
   * *translations*: Translations files
   * *utils*: All pre-created functions to help you build your scripts
 * *tilesets*: All the tilesets used in your maps
+* *views*: ALl the views called in maps 
 
-If you are going to create custom websites to embed in the map, please reference the HTML files in the `input` option in *vite.config.js*.
+If you are going to create custom websites to embed in the map, please put it in "views" directory and reference the HTML files in the `input` option in *vite.config.js*.
 
 ## Requirements
 

@@ -14,7 +14,7 @@ WA.onInit().then(() => {
     hiddenZone.initiateHiddenZones([{stepIn: 'hiddenZoneFloor', hide: 'hiddenZoneTop'}])
 
     console.log('Initiate switching tiles')
-    switchingTiles.initiateSwitchingTiles()
+    switchingTiles.initiateSwitchingTiles(['switchingTiles'], [() => console.log('OK !')])
 
     console.log('LOBBY INITIALISATION')
     lobby.initiateLobby()
