@@ -138,14 +138,52 @@ In your group(s) :
     ![](../../readme_images/secretPassagesDirectoryTree.png)
 
 ### Scripe setup
+In your map's script :
 ```typescript
 import { secretPassages } from './modules'
 
 WA.onInit().then(() => {
   // secret passages initialisation
   secretPassages.initiateSecretPassages(
-    ['secretPassage'], 
-    [() => {console.log('secret passage discovered !')}
+    ['secretPassage'], // List of your secretPassageGroups names
+    [() => {console.log('secret passage discovered !')} // List of callbacks for every secretPassageGroups
   ])
 })
 ```
+
+## Excavation
+**NOTE :** To use this module, you **MUST** use the **Job module** too because only some users are allowed to make excavations
+
+### Description
+This modules allows some users to make excavations depending on their permissions
+
+### Map setup
+In your map, on Tiled, you must create a group of layers with the name of your choice (in this file, we will call it **excavationGroup**).
+If you need several groups (one under the user and another up), then name both groups the same way.
+In your group(s) :
+- create a layer named **"trace"** : Can be a group if needed. Display the trace of the excavation so user can see there is something here
+- create a layer named **"search"** : Can be a group if needed. Animation of searching - Hidden by default, shown during some seconds while searching
+- create a layer named **"found"** : Can be a group if needed. Displayed if the excavation has been made. Hidden if the excavation has not been made yet
+- create an object layer named with :
+  - a variable named [excavationGroup]Discovered :
+    - Type: boolean
+    - Default : false
+    - example : if your excavationGroup name is excavation, then the variable will be called excavationDiscovered.
+
+![](../../readme_images/excavationsDirectoryTree.png)
+
+### Script setup
+In your map's script :
+```typescript
+import { excavations } from './modules'
+
+WA.onInit().then(() => {
+  // excavations initialisation
+  excavations.initiateExcavations(
+    ['excavation'], // List of your excavationGroups names
+    [() => {console.log('Excavation has been made !')} // List of callbacks for your excavationGroups
+  ])
+})
+```
+## Lobby
+Work in progress
