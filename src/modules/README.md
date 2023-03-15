@@ -83,3 +83,107 @@ WA.onInit().then(() => {
   hiddenZone.initiateHiddenZones([{stepIn: 'stepInZoneName', hide: 'hideZoneName'}])
 })
 ```
+
+## Job
+### Description
+This modules is used to assign roles to players. Thanks to this, we can retrieve their characteristics and assign them permissions.
+
+### Code setup
+In order to prepare jobs use, in your map's script :
+
+```typescript
+import { job } from './modules'
+
+WA.onInit().then(() => {
+  // Job initialisation
+  job.initiateJob()
+})
+```
+
+### What we can do
+With this module, you can use different functions :
+- **initiateJob :** Job initialisation. If you want to use jobs, you MUST call this function at the begining of your map's script
+- **setPlayerJob(newJob: Job) :** Assign the job passed in parameters to the current user
+- **getPlayerJob :** Get the job of the current user
+- **resetPlayerJob :** Reset the job of the current player (set to null)
+- **canUser(permissionName: Permissions) :** Know if a user has a certain permission (returns boolean)
+- **getUserPermissions() :** Retrieve a list of user's permissions
+- **askForJobWalletWebsiteClose() :** When calling initiateJob function, a button to open a website giving all his characteristics to te user is displayed.
+This function allows to close the website from inside the website. It's called in the view displayed when clicking on the button and, normally, you shouldn't call it elsewhere.
+
+## Secret passages
+
+**NOTE :** To use this module, you **MUST** use the **Job module** too because only some users are allowed to discover secret passages
+
+**NOTE :** To use this module, you **MUST** define **mapWidth** variable (int) and **mapHeight variable** (int). It's the number of tiles in height and width of the map.
+
+### Description
+This module allows some users to discover secret passages depending on their permissions.
+
+### Map setup
+In your map, on Tiled, you must create a group of layers with the name of your choice (in this file, we will call it **secretPassageGroup**).
+If you need several groups (one under the user and another up), then name both groups the same way.
+In your group(s) :
+- create a layer named **"trace"** : Can be a group if needed. Display the trace of the secret passage so user can see there is something here
+- create a layer named **"search"** : Can be a group if needed. Animation of searching - Hidden by default, shown during some seconds while searching
+- create a layer named **"disappear"** : Can be a group if needed. Displayed when secret passage is not discovered. Hidden if secret passage is discovered
+- create a layer named **"found"** : Can be a group if needed. Displayed if the secret passage has been discovered. Hidden if the secret passage has not been discovered yet
+- create a layer named **"block"** : This layer (CANNOT BE a group of layer) contains the tiles that block the way. When the passage is discovered, those tiles are removed.
+- create an object layer named with :
+  - a variable named [secretPassageGroup]Discovered :
+    - Type: boolean
+    - Default : false
+    - example : if your secretPassageGroup name is passages, then the variable will be called passagesDiscovered.
+
+    ![](../../readme_images/secretPassagesDirectoryTree.png)
+
+### Scripe setup
+In your map's script :
+```typescript
+import { secretPassages } from './modules'
+
+WA.onInit().then(() => {
+  // secret passages initialisation
+  secretPassages.initiateSecretPassages(
+    ['secretPassage'], // List of your secretPassageGroups names
+    [() => {console.log('secret passage discovered !')} // List of callbacks for every secretPassageGroups
+  ])
+})
+```
+
+## Excavation
+**NOTE :** To use this module, you **MUST** use the **Job module** too because only some users are allowed to make excavations
+
+### Description
+This modules allows some users to make excavations depending on their permissions
+
+### Map setup
+In your map, on Tiled, you must create a group of layers with the name of your choice (in this file, we will call it **excavationGroup**).
+If you need several groups (one under the user and another up), then name both groups the same way.
+In your group(s) :
+- create a layer named **"trace"** : Can be a group if needed. Display the trace of the excavation so user can see there is something here
+- create a layer named **"search"** : Can be a group if needed. Animation of searching - Hidden by default, shown during some seconds while searching
+- create a layer named **"found"** : Can be a group if needed. Displayed if the excavation has been made. Hidden if the excavation has not been made yet
+- create an object layer named with :
+  - a variable named [excavationGroup]Discovered :
+    - Type: boolean
+    - Default : false
+    - example : if your excavationGroup name is excavation, then the variable will be called excavationDiscovered.
+
+![](../../readme_images/excavationsDirectoryTree.png)
+
+### Script setup
+In your map's script :
+```typescript
+import { excavations } from './modules'
+
+WA.onInit().then(() => {
+  // excavations initialisation
+  excavations.initiateExcavations(
+    ['excavation'], // List of your excavationGroups names
+    [() => {console.log('Excavation has been made !')} // List of callbacks for your excavationGroups
+  ])
+})
+```
+## Lobby
+Work in progress
