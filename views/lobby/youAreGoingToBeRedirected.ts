@@ -16,7 +16,8 @@ window.addEventListener("DOMContentLoaded", () => {
         // Go to page instead of go to room
         // --> The lobby can be used for many rooms
         // --> Pass the right url to this view --> variable ? link in get url ?
-        WA.nav.goToPage('https://workadventu.re/map-building/entry-exit.md') // TODO : true url
+        WA.nav.goToRoom('./choice.tmj')
+        //WA.nav.goToPage('https://workadventu.re/map-building/entry-exit.md') // TODO : true url
       })
     }
   })

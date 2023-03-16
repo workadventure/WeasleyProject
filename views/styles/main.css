@@ -3,6 +3,11 @@
     src: url(font/RetroGaming.ttf); /*TODO : true url*/
 }
 
+@font-face {
+    font-family: RetroGaming;
+    src: url(font/RetroGaming.ttf);
+}
+
 body {
     /* COLORS */
     --bg-color-info: rgb(86 234 255);
@@ -11,6 +16,10 @@ body {
 
     --bg-color-alert-error: rgb(255, 186, 195);
     --bg-color-alert-success: rgb(144, 216, 126);
+    font-family: RetroGaming;
+}
+* {
+    font-family: RetroGaming;
 }
 
 .runes-font {
@@ -171,4 +180,8 @@ body {
 
 .justify-content-between {
     justify-content: space-between;
+}
+
+.cursor-pointer {
+    cursor: pointer;
 }

@@ -42,6 +42,8 @@ This project contains multiple licenses as follows:
 * [Code license](./LICENSE.code) *(all files except those for other licenses)*
 * [Map license](./LICENSE.map) *(`map.tmj` and the map visual as well)*
 * [Assets license](./LICENSE.assets) *(the files inside the `src/assets/` folder)*
+* Font licence : Retro Gaming credited by Daymarius
+
 
 ### About third party assets
 
