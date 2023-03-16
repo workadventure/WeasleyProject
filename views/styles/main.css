@@ -1,4 +1,9 @@
 @font-face {
+    font-family: RunesFont;
+    src: url(font/RetroGaming.ttf); /*TODO : true url*/
+}
+
+@font-face {
     font-family: RetroGaming;
     src: url(font/RetroGaming.ttf);
 }
@@ -15,6 +20,10 @@ body {
 }
 * {
     font-family: RetroGaming;
+}
+
+.runes-font {
+    font-family: RunesFont;
 }
 
 .text-align-center {
