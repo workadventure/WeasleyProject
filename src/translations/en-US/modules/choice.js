@@ -1,5 +1,5 @@
 export default {
-  talk: "[SPACE] Talk",
-  spyMessage: '[SPACE] Become a spy (ATTENTION DEFINITIVE CHOICE)',
-  archeoMessage: '[SPACE] Become an archaeologist (ATTENTION DEFINITIVE CHOICE)',
+  talk: "Talk",
+  spyMessage: 'Become a spy (ATTENTION DEFINITIVE CHOICE)',
+  archeoMessage: 'Become an archaeologist (ATTENTION DEFINITIVE CHOICE)',
 }
