@@ -190,7 +190,7 @@ WA.onInit().then(() => {
 **NOTE :** To use this module, you **MUST** use the **Job module** too because only some users are allowed to read runes
 
 ### Map setup
-In your map, on Tiled, you must create a layer with the name of your choice and place a tile à the place where you want the action message to display when user enters.
+In your map, on Tiled, you must create a layer with the name of your choice and place a tile at the place where you want the action message to display when user enters.
 
 ### Script setup
 You must at first initialize the runes with **initiateRunesReading** function.
