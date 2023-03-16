@@ -1,7 +1,5 @@
 import {UIWebsite} from "@workadventure/iframe-api-typings";
 import {rootLink} from "../config";
-import {closeJobWalletWebsite} from "./job";
-
 
 
 // Name of the menubarbutton
