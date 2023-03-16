@@ -1,3 +1,8 @@
+@font-face {
+    font-family: RunesFont;
+    src: url(font/RetroGaming.ttf); /*TODO : true url*/
+}
+
 body {
     /* COLORS */
     --bg-color-info: rgb(86 234 255);
@@ -6,6 +11,10 @@ body {
 
     --bg-color-alert-error: rgb(255, 186, 195);
     --bg-color-alert-success: rgb(144, 216, 126);
+}
+
+.runes-font {
+    font-family: RunesFont;
 }
 
 .text-align-center {
