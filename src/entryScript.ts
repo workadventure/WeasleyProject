@@ -18,7 +18,7 @@ WA.onInit().then(() => {
 
     console.log('Initiate runes reading !')
     readRunes.initiateRunesReading()
-    readRunes.setRunesReadingZone('runeZone', {content : '', title: ''})
+    readRunes.setRunesReadingZone('runeZone', {content : 'modules.runes.see', title: 'modules.runes.see'})
 
     console.log('LOBBY INITIALISATION')
     lobby.initiateLobby()

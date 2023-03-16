@@ -1,9 +1,10 @@
 import * as utils from '../utils'
 import { canUser } from "./job";
 import {rootLink} from "../config";
-import {UIWebsite} from "@workadventure/iframe-api-typings";
+import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 
 let runeWebsite: UIWebsite|null = null
+let readRunesAction: ActionMessage|null = null
 
 const initiateRunesReading = () => {
   WA.onInit().then(() => {
@@ -19,19 +20,22 @@ const initiateRunesReading = () => {
 // Initiate a rune reading zone
   // Layer : the layer on wich the player must enter to see read message
   // params : a record containing all the params you want to pass to your view
-  // customActionMessage : custom message displayed for read action
+  // customActionMessage : custom message displayed for read action (translation key)
   // view : the name of the view to call (by default base wich take "content" and "title" (optional) as parameter. You must put translation key in both)
-const setRunesReadingZone = (layer: string, params: Record<string, string> = {}, customActionMessage: string ='', view: string = 'base') => {
+const setRunesReadingZone = (layer: string, params: Record<string, string> = {}, customActionMessage: string ='modules.runes.see', view: string = 'base') => {
   WA.room.onEnterLayer(layer).subscribe(() => {
-    console.log('Entered reading zone !')
-     WA.ui.displayActionMessage({
+    readRunesAction = WA.ui.displayActionMessage({
       message: utils.translations.translate('utils.executeAction', {
-        action: customActionMessage
+        action: utils.translations.translate(customActionMessage)
       }),
       callback: () => {
         openRunesWebsite(params, view)
       }
     })
+  })
+
+  WA.room.onLeaveLayer(layer).subscribe(() => {
+    readRunesAction?.remove()
   })
 }
 
