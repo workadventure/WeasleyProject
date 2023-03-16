@@ -11,8 +11,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const content = document.getElementById('content')
     const closeButton = document.getElementById('closeButton')
 
+    const titleParam = urlParams.get('title')
     if (title) {
-      title.innerText = utils.translations.translate(urlParams.get('title'))
+      if (!titleParam) {
+        title.remove()
+      } else {
+        title.innerText = utils.translations.translate(titleParam)
+      }
     }
 
     if (content) {

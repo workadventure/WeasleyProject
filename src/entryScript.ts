@@ -18,7 +18,7 @@ WA.onInit().then(() => {
 
     console.log('Initiate runes reading !')
     readRunes.initiateRunesReading()
-    readRunes.setRunesReadingZone('runeZone', {content : 'modules.runes.see', title: 'modules.runes.see'})
+    readRunes.setRunesReadingZone('runeZone', {content : 'Il était une fois, dans une royaume lointain, une magnifique princesse. Il était une fois, dans une royaume lointain, une magnifique princesse. Il était une fois, dans une royaume lointain, une magnifique princesse. Il était une fois, dans une royaume lointain, une magnifique princesse. Il était une fois, dans une royaume lointain, une magnifique princesse. Il était une fois, dans une royaume lointain, une magnifique princesse. ', title: 'Cendrillon'})
 
     console.log('LOBBY INITIALISATION')
     lobby.initiateLobby()

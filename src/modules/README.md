@@ -185,5 +185,33 @@ WA.onInit().then(() => {
   ])
 })
 ```
+
+## Read Runes
+**NOTE :** To use this module, you **MUST** use the **Job module** too because only some users are allowed to read runes
+
+### Map setup
+In your map, on Tiled, you must create a layer with the name of your choice and place a tile à the place where you want the action message to display when user enters.
+
+### Script setup
+You must at first initialize the runes with **initiateRunesReading** function.
+Then, you can call the **setRunesReadingZone** as many time as you want for each runes zone. It takes 4 parameters :
+- **layer :** the name of the layer on wich the player must enter to see read message
+- **params :** a record containing all the query params you want to pass to your view
+- **customActionMessage :** The translation key of the custom message that must be displayed when user steps on layer
+- **view :** the name of the view to call (by default **base** wich take "content" (translation key of text to display) and "title" (translation key of text to display / optional) as parameter)
+
+In your map's script :
+```typescript
+import { readRunes } from './modules'
+
+WA.onInit().then(() => {
+  // Runes reading initialisation
+  readRunes.initiateRunesReading()
+  
+  // For each one of your reading zones
+  readRunes.setRunesReadingZone('runeZone', {content : 'modules.runes.myCustomContent', title: 'modules.runes.myCustomTitle'})
+})
+```
+
 ## Lobby
 Work in progress
