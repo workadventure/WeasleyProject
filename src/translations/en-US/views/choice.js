@@ -1,10 +1,10 @@
 export default {
-  title: "Madame la conseillère d'orientation",
+  title: "Miss Guy Dance",
   close: 'OK !',
-  text: "Bienvenue au bureau des métiers extraordinaires !\n" +
-      "                Vous êtes ici aujourd'hui parce que vous avez un profil complémentaire,\n" +
-      "                vous ne pouvez donc pas choisir le même métier !\n" +
-      "                Choisissez votre future métier MAINTENANT :\n" +
-      "                A GAUCHE vous trouverez la porte qui vous ménera vers le métier d'espion\n" +
-      "                A DROITE vous trouverez la porte qui vous ménera vers le métier d'archéologue."
+  text: "Welcome to the office of extraordinary jobs !\n" +
+      "You are here today because you have a complementary profile, " +
+      "so you can't choose the same job!\n" +
+      "Choose your future job NOW :\n" +
+      "On the LEFT you will find the door that will lead you to the profession of SPY.\n" +
+      "To the RIGHT you will find the door that will lead you to the profession of ARCHAEOLOGIST."
 }

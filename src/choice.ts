@@ -3,6 +3,7 @@
 import { ActionMessage } from '@workadventure/iframe-api-typings';
 import {discussion} from './modules'
 import {getPlayerJob, resetPlayerJob, setPlayerJob} from "./modules/job";
+import * as utils from "./utils";
 
 
 const getPlayers = async () => {
@@ -35,7 +36,7 @@ WA.onInit().then(() => {
     let talk: ActionMessage;
     WA.room.onEnterLayer('talk').subscribe(() => {
         talk = WA.ui.displayActionMessage({
-            message: "[ESPACE] Parler" ,
+            message: utils.translations.translate('modules.choice.talk'),
             callback: () => {
                 discussion.openDiscussionWebsite('views.choice.title', 'views.choice.text')
             }
@@ -57,7 +58,7 @@ WA.onInit().then(() => {
         }
         if(!spySelected && !getPlayerJob()) {
             becomeSpy = WA.ui.displayActionMessage({
-                message: "[ESPACE] Devenir un espion (ATTENTION CHOIX DEFINITIF)" ,
+                message: utils.translations.translate('modules.choice.spyMessage') ,
                 callback: () => {
                     setPlayerJob('spy')
                     allPlayersGotJob()
@@ -80,7 +81,7 @@ WA.onInit().then(() => {
         }
         if(!archeoSelected && !getPlayerJob()) {
             becomeArcheo = WA.ui.displayActionMessage({
-                message: "[ESPACE] Devenir un archéologue (ATTENTION CHOIX DEFINITIF)" ,
+                message: utils.translations.translate('modules.choice.archeoMessage') ,
                 callback: () => {
                     setPlayerJob('archaeologist')
                     allPlayersGotJob()
