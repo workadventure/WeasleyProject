@@ -16,11 +16,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
       for (let i = 0; i < maxSize; i++) {
         const item = document.createElement('div')
+        item.classList.add('inventory-item')
+        item.classList.add('bg-dark')
+
+        if (i !== maxSize - 1) {
+          item.classList.add('mr-2')
+        }
 
         if (inventory[i]) {
-          item.innerText = inventory[i].name
+          item.setAttribute('data-description', inventory[i].description)
+
+          const itemName = document.createElement('div')
+          itemName.classList.add('inventory-item-name')
+          itemName.classList.add('bg-white')
+          itemName.innerText = inventory[i].name
+
+          const itemImageContainer = document.createElement('div')
+          const itemImage = document.createElement('img')
+          itemImage.setAttribute('src', inventory[i].image)
+          itemImage.setAttribute('alt', 'test') // TODO : translations
+          itemImageContainer.classList.add('inventory-item-image')
+
+          itemImageContainer.appendChild(itemImage)
+          item.appendChild(itemImageContainer)
+          item.appendChild(itemName)
         } else {
-          item.innerText = 'rien'
+          const emptyDiv = document.createElement('div')
+          emptyDiv.classList.add('position-absolute')
+          emptyDiv.classList.add('w-100')
+          emptyDiv.classList.add('h-100')
+          emptyDiv.classList.add('d-flex')
+          emptyDiv.classList.add('align-items-center')
+          emptyDiv.classList.add('justify-content-center')
+          emptyDiv.innerText = 'Vide' // TODO : translations
+          item.appendChild(emptyDiv)
+          item.classList.add('empty')
         }
         inventoryContent.appendChild(item)
       }
