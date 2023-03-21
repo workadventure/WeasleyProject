@@ -1,7 +1,7 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { ActionMessage } from '@workadventure/iframe-api-typings';
-import {discussion} from './modules'
+import {discussion, inventory} from './modules'
 import {getPlayerJob, resetPlayerJob, setPlayerJob} from "./modules/job";
 import * as utils from "./utils";
 
@@ -26,6 +26,9 @@ const allPlayersGotJob = async () => {
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {
+    // Initiate inventory
+    inventory.initiateInventory()
+
     WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
         if(value) {
             WA.nav.goToRoom('./map.tmj') // TODO changer la map
@@ -36,7 +39,7 @@ WA.onInit().then(() => {
     let talk: ActionMessage;
     WA.room.onEnterLayer('talk').subscribe(() => {
         talk = WA.ui.displayActionMessage({
-            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('modules.choice.talk')}),
+            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.talk')}),
             callback: () => {
                 discussion.openDiscussionWebsite('views.choice.title', 'views.choice.text')
             }
@@ -58,7 +61,7 @@ WA.onInit().then(() => {
         }
         if(!spySelected && !getPlayerJob()) {
             becomeSpy = WA.ui.displayActionMessage({
-                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('modules.choice.spyMessage')}),
+                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.spyMessage')}),
                 callback: () => {
                     setPlayerJob('spy')
                     allPlayersGotJob()
@@ -81,7 +84,7 @@ WA.onInit().then(() => {
         }
         if(!archeoSelected && !getPlayerJob()) {
             becomeArcheo = WA.ui.displayActionMessage({
-                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('modules.choice.archeoMessage')}),
+                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.archeoMessage')}),
                 callback: () => {
                     setPlayerJob('archaeologist')
                     allPlayersGotJob()
@@ -91,6 +94,26 @@ WA.onInit().then(() => {
     })
     WA.room.onLeaveLayer('archeo').subscribe(() => {
         becomeArcheo.remove()
+    })
+
+    let takeCroissant: ActionMessage
+    WA.room.onEnterLayer('croissants').subscribe(() => {
+        takeCroissant = WA.ui.displayActionMessage({
+            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.takeCroissantMessage')}),
+            callback: () => {
+                const inventorySize = inventory.getInventory().length
+                inventory.addToInventory({
+                    id: `croissant${inventorySize}`,
+                    name: 'Croissant',
+                    description: 'choice.looksDelicious',
+                    image: 'croissant.png'
+                })
+            }
+        });
+    })
+
+    WA.room.onLeaveLayer('croissants').subscribe(() => {
+        takeCroissant.remove()
     })
 
 }).catch(e => console.error(e))

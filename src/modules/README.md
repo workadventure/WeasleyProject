@@ -213,5 +213,37 @@ WA.onInit().then(() => {
 })
 ```
 
+## Inventory
+
+### Script setup
+In your map's script, you have to init the player's inventory :
+```typescript
+import { inventory } from './modules'
+
+WA.onInit().then(() => {
+  inventory.initiateInventory()
+})
+```
+
+Then, you can add items to your inventory with the **initiateInventory** function wich take an item as parameter. This item must have the following:
+- **id :** STRING - A unique id for the item
+- **name :** STRING - The translation key for the name of your item
+- **description :** STRING - The translation key for the description of your item
+- **image :** STRING (optional) - The path of your item image (this image must be placed in the **"public/images/inventory"** directory, and you must set here the relative path from this folder)
+
+For example : 
+```typescript
+inventory.addToInventory({
+    id: 'myCustomItemId',
+    name: 'translation.key.for.my.item.name',
+    image: 'myItem.png', // here, the path from root is public/images/myItem.png
+    description: 'translation.key.for.my.item.description'
+})
+```
+You can then remove one item from the inventory by calling the **removeFromInventory** function ("id" parameter is the id of the item you want to remove).
+
+For now, clicking on an item will have no effect (maybe in v2), to make user use an item in the map, you can verify that he has the item in the inventory by calling the **hasItem** function, giving it 'id' parameter, wich is the id of the item needed.
+
+
 ## Lobby
 Work in progress
