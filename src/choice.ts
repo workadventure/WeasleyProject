@@ -39,7 +39,7 @@ WA.onInit().then(() => {
     let talk: ActionMessage;
     WA.room.onEnterLayer('talk').subscribe(() => {
         talk = WA.ui.displayActionMessage({
-            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('modules.choice.talk')}),
+            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.talk')}),
             callback: () => {
                 discussion.openDiscussionWebsite('views.choice.title', 'views.choice.text')
             }
@@ -61,7 +61,7 @@ WA.onInit().then(() => {
         }
         if(!spySelected && !getPlayerJob()) {
             becomeSpy = WA.ui.displayActionMessage({
-                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('modules.choice.spyMessage')}),
+                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.spyMessage')}),
                 callback: () => {
                     setPlayerJob('spy')
                     allPlayersGotJob()
@@ -84,7 +84,7 @@ WA.onInit().then(() => {
         }
         if(!archeoSelected && !getPlayerJob()) {
             becomeArcheo = WA.ui.displayActionMessage({
-                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('modules.choice.archeoMessage')}),
+                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.archeoMessage')}),
                 callback: () => {
                     setPlayerJob('archaeologist')
                     allPlayersGotJob()
@@ -99,13 +99,13 @@ WA.onInit().then(() => {
     let takeCroissant: ActionMessage
     WA.room.onEnterLayer('croissants').subscribe(() => {
         takeCroissant = WA.ui.displayActionMessage({
-            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('modules.choice.takeCroissantMessage')}),
+            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.takeCroissantMessage')}),
             callback: () => {
                 const inventorySize = inventory.getInventory().length
                 inventory.addToInventory({
                     id: `croissant${inventorySize}`,
                     name: 'Croissant',
-                    description: 'modules.choice.looksDelicious',
+                    description: 'choice.looksDelicious',
                     image: 'croissant.png'
                 })
             }
