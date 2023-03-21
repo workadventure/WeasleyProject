@@ -241,5 +241,9 @@ inventory.addToInventory({
 })
 ```
 You can then remove one item from the inventory by calling the **removeFromInventory** function ("id" parameter is the id of the item you want to remove).
+
+For now, clicking on an item will have no effect (maybe in v2), to make user use an item in the map, you can verify that he has the item in the inventory by calling the **hasItem** function, giving it 'id' parameter, wich is the id of the item needed.
+
+
 ## Lobby
 Work in progress
