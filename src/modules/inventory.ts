@@ -18,7 +18,7 @@ const initiateInventory = () => {
 
   WA.ui.actionBar.addButton({
     id: 'inventory',
-    label: utils.translations.translate('modules.inventory.inventory'), // TODO : translations
+    label: utils.translations.translate('modules.inventory.inventory'),
     callback: async () => {
       if (!inventoryWebsite) {
         await openInventory()
