@@ -1,13 +1,18 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
-
 import * as utils from '../../src/utils/index.js'
 import * as modules from '../../src/modules/index.js'
 
 document.addEventListener("DOMContentLoaded", () => {
   WA.onInit().then(async () => {
     // Get html parts
+    const inventoryTitle = document.getElementById('title')
     const inventoryContent = document.getElementById('inventoryContent')
     const closeWebsiteInventoryButton = document.getElementById('closeButton')
+
+    // Title
+    if (inventoryTitle) {
+      inventoryTitle.innerText = utils.translations.translate('modules.inventory.inventory')
+    }
 
     // Inventory content
     if (inventoryContent) {
@@ -24,12 +29,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (inventory[i]) {
-          item.setAttribute('data-description', inventory[i].description)
+          item.setAttribute(
+            'data-description',
+            utils.translations.translate(inventory[i].description)
+          )
 
           const itemName = document.createElement('div')
           itemName.classList.add('inventory-item-name')
           itemName.classList.add('bg-white')
-          itemName.innerText = inventory[i].name
+          itemName.innerText = utils.translations.translate(inventory[i].name)
 
           const itemImageContainer = document.createElement('div')
           const itemImage = document.createElement('img')
@@ -48,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
           emptyDiv.classList.add('d-flex')
           emptyDiv.classList.add('align-items-center')
           emptyDiv.classList.add('justify-content-center')
-          emptyDiv.innerText = 'Vide' // TODO : translations
+          emptyDiv.innerText = utils.translations.translate('modules.inventory.empty')
           item.appendChild(emptyDiv)
           item.classList.add('empty')
         }
@@ -57,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (closeWebsiteInventoryButton) {
-      closeWebsiteInventoryButton.innerText = 'coucou' // TODO : translation
+      closeWebsiteInventoryButton.innerText = utils.translations.translate('modules.inventory.close')
       closeWebsiteInventoryButton.addEventListener('click', () => {
         modules.inventory.askForCloseInventory()
       })
