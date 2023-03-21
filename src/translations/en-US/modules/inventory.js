@@ -1,5 +1,6 @@
 export default {
   inventory: 'My inventory',
   close: 'Close',
-  empty: 'Empty'
+  empty: 'Empty',
+  inventoryItem: 'Object n°{itemNo}'
 }

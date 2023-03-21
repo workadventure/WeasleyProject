@@ -41,8 +41,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const itemImageContainer = document.createElement('div')
           const itemImage = document.createElement('img')
-          itemImage.setAttribute('src', inventory[i].image)
-          itemImage.setAttribute('alt', 'test') // TODO : translations
+          itemImage.setAttribute('src', `../../images/${inventory[i].image}`)
+          itemImage.setAttribute(
+            'alt',
+            utils.translations.translate('modules.inventory.inventoryItem', {itemNo: i + 1})
+          )
           itemImageContainer.classList.add('inventory-item-image')
 
           itemImageContainer.appendChild(itemImage)
@@ -59,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
           emptyDiv.innerText = utils.translations.translate('modules.inventory.empty')
           item.appendChild(emptyDiv)
           item.classList.add('empty')
+          item.classList.add('text-white')
         }
         inventoryContent.appendChild(item)
       }

@@ -1,7 +1,7 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { ActionMessage } from '@workadventure/iframe-api-typings';
-import {discussion} from './modules'
+import {discussion, inventory} from './modules'
 import {getPlayerJob, resetPlayerJob, setPlayerJob} from "./modules/job";
 import * as utils from "./utils";
 
@@ -26,6 +26,9 @@ const allPlayersGotJob = async () => {
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {
+    // Initiate inventory
+    inventory.initiateInventory()
+
     WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
         if(value) {
             WA.nav.goToRoom('./map.tmj') // TODO changer la map
@@ -91,6 +94,26 @@ WA.onInit().then(() => {
     })
     WA.room.onLeaveLayer('archeo').subscribe(() => {
         becomeArcheo.remove()
+    })
+
+    let takeCroissant: ActionMessage
+    WA.room.onEnterLayer('croissants').subscribe(() => {
+        takeCroissant = WA.ui.displayActionMessage({
+            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('modules.choice.takeCroissantMessage')}),
+            callback: () => {
+                const inventorySize = inventory.getInventory().length
+                inventory.addToInventory({
+                    id: `croissant${inventorySize}`,
+                    name: 'Croissant',
+                    description: 'modules.choice.looksDelicious',
+                    image: 'croissant.png'
+                })
+            }
+        });
+    })
+
+    WA.room.onLeaveLayer('croissants').subscribe(() => {
+        takeCroissant.remove()
     })
 
 }).catch(e => console.error(e))

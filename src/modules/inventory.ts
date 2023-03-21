@@ -1,5 +1,6 @@
 import {rootLink} from "../config";
 import {UIWebsite} from "@workadventure/iframe-api-typings";
+import * as utils from '../utils/index.js'
 
 export type InventoryItem = {
   id: string,
@@ -17,7 +18,7 @@ const initiateInventory = () => {
 
   WA.ui.actionBar.addButton({
     id: 'inventory',
-    label: 'Inventaire', // TODO : translations
+    label: utils.translations.translate('modules.inventory.inventory'), // TODO : translations
     callback: async () => {
       if (!inventoryWebsite) {
         await openInventory()
