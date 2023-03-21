@@ -1,7 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles, readRunes, inventory} from './modules'
-import {addToInventory, initiateInventory} from "./modules/inventory";
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {

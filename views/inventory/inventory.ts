@@ -40,12 +40,18 @@ document.addEventListener("DOMContentLoaded", () => {
           itemName.innerText = utils.translations.translate(inventory[i].name)
 
           const itemImageContainer = document.createElement('div')
-          const itemImage = document.createElement('img')
-          itemImage.setAttribute('src', `../../images/${inventory[i].image}`)
-          itemImage.setAttribute(
+          const itemImage = document.createElement('object')
+          itemImage.setAttribute('type', 'image/png')
+          itemImage.setAttribute('data', `../../images/inventory/${inventory[i].image ? inventory[i].image  : 'undefined.png'}`)
+
+          const itemDefaultImage = document.createElement('img')
+          itemDefaultImage.setAttribute('src', `../../images/inventory/${modules.inventory.getDefaultImage()}`)
+          itemDefaultImage.setAttribute(
             'alt',
             utils.translations.translate('modules.inventory.inventoryItem', {itemNo: i + 1})
           )
+          itemImage.appendChild(itemDefaultImage)
+
           itemImageContainer.classList.add('inventory-item-image')
 
           itemImageContainer.appendChild(itemImage)

@@ -121,6 +121,11 @@ const getMaxSize = () => {
   return INVENTORY_MAX_SIZE
 }
 
+// Return the inventory default image
+const getDefaultImage = () => {
+  return 'default.png'
+}
+
 export {
   initiateInventory,
   addToInventory,
@@ -130,5 +135,6 @@ export {
   closeInventory,
   askForCloseInventory,
   getInventory,
-  getMaxSize
+  getMaxSize,
+  getDefaultImage
 }
