@@ -21,41 +21,49 @@ const initiateSecretPassages = (
   secretPassagesZones: Array<string> = ['secretPassageZone'],
   callbacks: Array<Function> |null = null
 ) => {
-  if (canUser('findSecretPassages')) {
+
     // Show all secret passages tiles
     for (let i = 0; i < secretPassagesZones.length; i++) {
       // If the secret passage has been discovered before player arrive,
       // we must not show him the secret passage trace but we must show him what we found
       if (!WA.state[`${secretPassagesZones[i]}Discovered`]) {
+        if (canUser('findSecretPassages')) {
+          WA.room.showLayer(`${secretPassagesZones[i]}/trace`)
 
-        WA.room.showLayer(`${secretPassagesZones[i]}/trace`)
+          WA.room.onEnterLayer(`${secretPassagesZones[i]}/trace`).subscribe(() => {
+            if (!WA.state[`${secretPassagesZones[i]}Discovered`]) {
+              findSecretPassageAction = WA.ui.displayActionMessage({
+                message: utils.translations.translate('utils.executeAction', {
+                  action: utils.translations.translate('modules.secretPassage.findSecretPassage')
+                }),
+                callback: () => {
+                  WA.state[`${secretPassagesZones[i]}Discovered`] = true
+                }
+              })
+            }
+          })
 
-        WA.room.onEnterLayer(`${secretPassagesZones[i]}/trace`).subscribe(() => {
-          if (!WA.state[`${secretPassagesZones[i]}Discovered`]) {
-            findSecretPassageAction = WA.ui.displayActionMessage({
-              message: utils.translations.translate('utils.executeAction', {
-                action: utils.translations.translate('modules.secretPassage.findSecretPassage')
-              }),
-              callback: () => {
-                WA.state[`${secretPassagesZones[i]}Discovered`] = true
-              }
-            })
-          }
-        })
-
-        WA.room.onLeaveLayer(`${secretPassagesZones[i]}/trace`).subscribe(() => {
-          findSecretPassageAction?.remove()
-        })
+          WA.room.onLeaveLayer(`${secretPassagesZones[i]}/trace`).subscribe(() => {
+            findSecretPassageAction?.remove()
+          })
+        } else {
+          // These layers should already have been hidden from the map, but we hide them anyway (in case map builder forgot)
+          WA.room.hideLayer(`${secretPassagesZones[i]}/trace`)
+          WA.room.hideLayer(`${secretPassagesZones[i]}/found`)
+          WA.room.hideLayer(`${secretPassagesZones[i]}/disappear`)
+        }
 
         WA.state.onVariableChange(`${secretPassagesZones[i]}Discovered`).subscribe(() => {
           findSecretPassage(secretPassagesZones[i], callbacks ? callbacks[i] : null)
         })
       } else {
+        // This layer should already have been hidden but we hide in case map builder forgot
+        WA.room.hideLayer(`${secretPassagesZones[i]}/trace`)
+
         WA.room.showLayer(`${secretPassagesZones[i]}/found`)
         WA.room.hideLayer(`${secretPassagesZones[i]}/disappear`)
       }
     }
-  }
 }
 
 const findSecretPassage = (secretPassageZone: string, callback: Function|null = null) => {

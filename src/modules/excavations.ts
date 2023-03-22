@@ -30,22 +30,26 @@ const initiateExcavations = (excavationZones: Array<string> = ['excavationZone']
           WA.room.onLeaveLayer(`${excavationZones[i]}/trace`).subscribe(() => {
             makeExcavationAction?.remove()
           })
-
-          WA.state.onVariableChange(`${excavationZones[i]}Discovered`).subscribe(() => {
-            makeExcavations(excavationZones[i], callbacks ? callbacks[i] : null)
-          })
         } else {
-          // These layers should already have been hided from the map, but we hide them anyway (in case map builder forgot)
+          // These layers should already have been hidden from the map, but we hide them anyway (in case map builder forgot)
           WA.room.hideLayer(`${excavationZones[i]}/trace`)
           WA.room.hideLayer(`${excavationZones[i]}/search`)
           WA.room.hideLayer(`${excavationZones[i]}/found`)
         }
+
+        WA.state.onVariableChange(`${excavationZones[i]}Discovered`).subscribe(() => {
+          makeExcavations(excavationZones[i], callbacks ? callbacks[i] : null)
+        })
       } else {
-        // These layers should already have been hided from the map, but we hide them anyway (in case map builder forgot)
+        // These layers should already have been hidden from the map, but we hide them anyway (in case map builder forgot)
         WA.room.hideLayer(`${excavationZones[i]}/trace`)
         WA.room.hideLayer(`${excavationZones[i]}/search`)
 
         WA.room.showLayer(`${excavationZones[i]}/found`)
+
+        if (callbacks && callbacks[i]) {
+          callbacks[i]()
+        }
       }
     }
   }
