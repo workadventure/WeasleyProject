@@ -173,7 +173,7 @@
                         }],
                  "opacity":1,
                  "type":"objectgroup",
-                 "visible":true,
+                 "visible":false,
                  "x":0,
                  "y":0
                 }, 
@@ -184,7 +184,7 @@
                  "name":"found",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":31,
                  "x":0,
                  "y":0
@@ -196,7 +196,7 @@
                  "name":"disappear",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":31,
                  "x":0,
                  "y":0
@@ -208,7 +208,7 @@
                  "name":"search",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":31,
                  "x":0,
                  "y":0
@@ -220,7 +220,7 @@
                  "name":"trace",
                  "opacity":1,
                  "type":"tilelayer",
-                 "visible":true,
+                 "visible":false,
                  "width":31,
                  "x":0,
                  "y":0
