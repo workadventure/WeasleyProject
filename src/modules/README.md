@@ -244,6 +244,37 @@ You can then remove one item from the inventory by calling the **removeFromInven
 
 For now, clicking on an item will have no effect (maybe in v2), to make user use an item in the map, you can verify that he has the item in the inventory by calling the **hasItem** function, giving it 'id' parameter, wich is the id of the item needed.
 
+## Hooking
+**NOTE :** To use this module, you **MUST** use the **Job module** too because only some users are allowed to read runes
+
+### Map setup
+In your map, on Tiled, you must create a group of layers with the name of your choice (in this file, we will call it **hookingGroup**).
+If you need several groups (one under the user and another up), then name both groups the same way.
+In your group(s) :
+- create a layer named **"trace"** : Can be a group if needed. Display the trace of the hooking so user can see there is something here
+- create a layer named **"search"** : Can be a group if needed. Animation of hooking - Hidden by default, shown during some seconds while hooking
+- create a layer named **"disappear"** : Can be a group if needed. Displayed when hooking has not been made yet. Hidden if hooking has already been made
+- create a layer named **"found"** : Can be a group if needed. Displayed if the hooking has been made. Hidden if the hooking has not been made yet.
+- create an object layer named with :
+  - a variable named [hookingGroup]Discovered :
+    - Type: boolean
+    - Default : false
+    - example : if your hookingGroup name is hooking, then the variable will be called hookingDiscovered.
+    
+![](../../readme_images/hookingDirectoryTree.png)
+
+### Script setup
+In your map's script, you have to init each hooking zone with the **setHooking** function wich take as parameter :
+- **hookingZone :** STRING - Name of your hookingGroup
+- **callback :** FUNCTION - The action to de made when unlocked
+
+```typescript
+import { hooking } from './modules'
+
+WA.onInit().then(() => {
+  hooking.setHooking('hooking', () => { console.log('Crochetage effectué !')})
+})
+```
 
 ## Lobby
 Work in progress

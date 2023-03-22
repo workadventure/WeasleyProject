@@ -19,7 +19,8 @@ export default {
       description: 'Special state agent. Specialized in :',
       permissions: {
         useComputers: 'computer hacking',
-        findSecretPassages: 'find and use the secret passages'
+        findSecretPassages: 'find and use the secret passages',
+        makeHooking: 'Hook'
       }
     }
   }
