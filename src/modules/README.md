@@ -161,9 +161,9 @@ This modules allows some users to make excavations depending on their permission
 In your map, on Tiled, you must create a group of layers with the name of your choice (in this file, we will call it **excavationGroup**).
 If you need several groups (one under the user and another up), then name both groups the same way.
 In your group(s) :
-- create a layer named **"trace"** : Can be a group if needed. Display the trace of the excavation so user can see there is something here
-- create a layer named **"search"** : Can be a group if needed. Animation of searching - Hidden by default, shown during some seconds while searching
-- create a layer named **"found"** : Can be a group if needed. Displayed if the excavation has been made. Hidden if the excavation has not been made yet
+- create a layer named **"trace"** (HIDDEN): Can be a group if needed. Display the trace of the excavation so user can see there is something here
+- create a layer named **"search"** (HIDDEN): Can be a group if needed. Animation of searching - Hidden by default, shown during some seconds while searching
+- create a layer named **"found"** (HIDDEN): Can be a group if needed. Displayed if the excavation has been made. Hidden if the excavation has not been made yet
 - create an object layer named with :
   - a variable named [excavationGroup]Discovered :
     - Type: boolean

@@ -6,40 +6,49 @@ let makeExcavationAction: ActionMessage|null = null
 
 // initiateExcavationZones
 const initiateExcavations = (excavationZones: Array<string> = ['excavationZone'], callbacks : Array<Function>|null = null) => {
-  if (canUser('makeExcavation')) {
     // Show all excavation tiles
     for (let i = 0; i < excavationZones.length; i++) {
       // If the excavation has been made before player arrive,
       // we must not show him the excavation trace but we must show him what we found
       if (!WA.state[`${excavationZones[i]}Discovered`]) {
-        WA.room.showLayer(`${excavationZones[i]}/trace`)
+        if (canUser('makeExcavation')) {
+          WA.room.showLayer(`${excavationZones[i]}/trace`)
 
-        WA.room.onEnterLayer(`${excavationZones[i]}/trace`).subscribe(() => {
-          if (!WA.state[`${excavationZones[i]}Discovered`]) {
-            makeExcavationAction = WA.ui.displayActionMessage({
-              message: utils.translations.translate('utils.executeAction', {
-                action: utils.translations.translate('modules.excavation.makeExcavations')
-              }),
-              callback: () => {
-                WA.state[`${excavationZones[i]}Discovered`] = true
-              }
-            })
-          }
-        })
+          WA.room.onEnterLayer(`${excavationZones[i]}/trace`).subscribe(() => {
+            if (!WA.state[`${excavationZones[i]}Discovered`]) {
+              makeExcavationAction = WA.ui.displayActionMessage({
+                message: utils.translations.translate('utils.executeAction', {
+                  action: utils.translations.translate('modules.excavation.makeExcavations')
+                }),
+                callback: () => {
+                  WA.state[`${excavationZones[i]}Discovered`] = true
+                }
+              })
+            }
+          })
 
-        WA.room.onLeaveLayer(`${excavationZones[i]}/trace`).subscribe(() => {
-          makeExcavationAction?.remove()
-        })
+          WA.room.onLeaveLayer(`${excavationZones[i]}/trace`).subscribe(() => {
+            makeExcavationAction?.remove()
+          })
 
-        WA.state.onVariableChange(`${excavationZones[i]}Discovered`).subscribe(() => {
-          makeExcavations(excavationZones[i], callbacks ? callbacks[i] : null)
-        })
+          WA.state.onVariableChange(`${excavationZones[i]}Discovered`).subscribe(() => {
+            makeExcavations(excavationZones[i], callbacks ? callbacks[i] : null)
+          })
+        } else {
+          // These layers should already have been hided from the map, but we hide them anyway (in case map builder forgot)
+          WA.room.hideLayer(`${excavationZones[i]}/trace`)
+          WA.room.hideLayer(`${excavationZones[i]}/search`)
+          WA.room.hideLayer(`${excavationZones[i]}/found`)
+        }
       } else {
+        // These layers should already have been hided from the map, but we hide them anyway (in case map builder forgot)
+        WA.room.hideLayer(`${excavationZones[i]}/trace`)
+        WA.room.hideLayer(`${excavationZones[i]}/search`)
+
         WA.room.showLayer(`${excavationZones[i]}/found`)
       }
     }
   }
-}
 
 // Make excavation
 const makeExcavations = (excavationZone: string, callback: Function|null = null) => {
