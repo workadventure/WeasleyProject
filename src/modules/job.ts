@@ -9,6 +9,7 @@ export type Permissions =
   | 'readRunes'
   | 'makeExcavation'
   | 'findSecretPassages'
+  | 'makeHooking'
 
 const permissionsByJob: Record<Job, Record<Permissions, boolean>> = {
   archaeologist: {
@@ -16,14 +17,16 @@ const permissionsByJob: Record<Job, Record<Permissions, boolean>> = {
     speakAncienLanguages: true,
     readRunes: true,
     makeExcavation: true,
-    findSecretPassages: false
+    findSecretPassages: false,
+    makeHooking: false
   },
   spy: {
     useComputers: true,
     speakAncienLanguages: false,
     readRunes: false,
     makeExcavation: false,
-    findSecretPassages: true
+    findSecretPassages: true,
+    makeHooking: true
   },
 }
 

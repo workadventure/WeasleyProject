@@ -19,7 +19,8 @@ export default {
       description: 'Agent spécial d\'état. Spacialisé dans :',
       permissions: {
         useComputers: 'le piratage informatique',
-        findSecretPassages: 'trouver et emprunter les passages secrets'
+        findSecretPassages: 'trouver et emprunter les passages secrets',
+        makeHooking: 'Crocheter des serrures'
       }
     }
   }
