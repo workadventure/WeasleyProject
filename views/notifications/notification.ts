@@ -33,6 +33,13 @@ document.addEventListener("DOMContentLoaded", () => {
         title.innerText = utils.translations.translate(titleParam)
       }
     }
+
+    if (container) {
+      container.classList.remove('hidden')
+      setTimeout(() => {
+        container.classList.add('hidden')
+      }, 2000)
+    }
   })
 })
 

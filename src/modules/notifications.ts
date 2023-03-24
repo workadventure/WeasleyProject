@@ -17,7 +17,7 @@ const notify = async (content: string, title: string|null = null, type: notifica
       const notification = notificationWebsite.shift() as UIWebsite
       notification.close()
     }
-  }, 2000) // Stay two seconds on screen
+  }, 4000) // Stay four seconds on screen
 }
 
 const openNotification = async (content: string, title: string|null, type: notificationType) => {
