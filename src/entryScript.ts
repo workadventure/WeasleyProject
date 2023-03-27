@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles, readRunes, inventory, hooking} from './modules'
+import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles, readRunes, inventory, hooking, notifications} from './modules'
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {
@@ -36,6 +36,12 @@ WA.onInit().then(() => {
 
     console.log('Initiate Hooking')
     hooking.setHooking('hooking', () => { console.log('Crochetage effectué !')})
+
+    console.log('NOTIFY')
+    notifications.notify('Ceci est le contenu de ma notification d\'info', 'Mon super titre', 'info')
+    setTimeout(() => {
+        notifications.notify('Ceci est le contenu de ma notification d\'erreur', 'Erreur', 'error')
+    }, 1000)
 
     console.log('LOBBY INITIALISATION')
     lobby.initiateLobby()
