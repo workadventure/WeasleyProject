@@ -276,5 +276,36 @@ WA.onInit().then(() => {
 })
 ```
 
+## Discussion
+
+### Script setup
+In your map's script, you have to add openDiscussionWebsite() with parameters :
+- **title :** STRING - The name of the person who is talking
+- **text :** STRING - The content of the discussion
+- **close :** STRING - The text of the close button, by default is 'views.choice.close'
+- **view :** STRING - The view of the discussionwindow, by default is the view 'discussion'
+- **verticalPosition :** STRING, possible values : "top" | "middle" | "bottom" - The vertical position of the discussion window, by default is 'middle'
+- **horizontalPosition :** STRING, possible values : "middle" | "left" | "right" - The vertical position of the discussion window, by default is 'middle'
+- **height :** STRING - The height of the discussion window, by default is '50vh'
+- **width :** STRING - The width of the discussion window, by default is '50vw'
+
+```typescript
+WA.onInit().then(() => {
+  let talk: ActionMessage;
+  WA.room.onEnterLayer("YOUR MAP LAYER").subscribe(() => {
+    talk = WA.ui.displayActionMessage({
+      message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.talk')}),
+      callback: () => {
+        discussion.openDiscussionWebsite('YOUR TITLE, EX : views.choice.title', 'YOUR TEXT, EX : views.choice.text')
+      }
+    });
+  })
+  WA.room.onLeaveLayer('YOUR MAP LAYER').subscribe(() => {
+    talk.remove()
+  })
+
+  })
+```
+
 ## Lobby
 Work in progress
