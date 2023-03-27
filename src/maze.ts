@@ -1,12 +1,13 @@
 /// <reference types="@workadventure/iframe-api-typings" />
-import {hiddenZone, excavations, inventory, switchingTiles, hooking, job} from './modules'
-import {setPlayerJob} from "./modules/job";
+
+import {hiddenZone, excavations, inventory, switchingTiles, hooking} from './modules'
+import {setPlayerJob, initiateJob} from "./modules/job";
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
+import {env} from "./config"
 
 WA.onInit().then(() => {
 
-    const env: string = 'prod'
     WA.player.state.hasFoundBlueSeed = false
     WA.player.state.hasFoundGreenSeed = false
     WA.player.state.hasFoundRedSeed = false
@@ -14,21 +15,46 @@ WA.onInit().then(() => {
     // Initiate inventory
     inventory.initiateInventory()
 
-    job.initiateJob()
+    // Initiate job
+    initiateJob()
 
     WA.state.dragonLight = false
 
     WA.state.blueFire = false
+    WA.state.onVariableChange("blueFire").subscribe((value)=> {
+        if(value) {
+            WA.room.hideLayer('torchesTop/offTop/torcheBlueOffTop')
+            WA.room.hideLayer('torchesBot/offBot/torcheBlueOffBot')
+            WA.room.showLayer('torchesTop/onTop/torcheBlueOnTop')
+            WA.room.showLayer('torchesBot/onBot/torcheBlueOnBot')
+        }
+    })
     WA.player.state.onVariableChange("hasFoundBlueSeed").subscribe(()=> {
         WA.room.hideLayer('blueSeed')
     })
 
     WA.state.greenFire = false
+    WA.state.onVariableChange("greenFire").subscribe((value)=> {
+        if(value) {
+            WA.room.hideLayer('torchesTop/offTop/torcheGreenOffTop')
+            WA.room.hideLayer('torchesBot/offBot/torcheGreenOffBot')
+            WA.room.showLayer('torchesTop/onTop/torcheGreenOnTop')
+            WA.room.showLayer('torchesBot/onBot/torcheGreenOnBot')
+        }
+    })
     WA.player.state.onVariableChange("hasFoundGreenSeed").subscribe(()=> {
         WA.room.hideLayer('excavations/exca6/found')
     })
 
     WA.state.redFire = false
+    WA.state.onVariableChange("redFire").subscribe((value)=> {
+        if(value) {
+            WA.room.hideLayer('torchesTop/offTop/torcheRedOffTop')
+            WA.room.hideLayer('torchesBot/offBot/torcheRedOffBot')
+            WA.room.showLayer('torchesTop/onTop/torcheRedOnTop')
+            WA.room.showLayer('torchesBot/onBot/torcheRedOnBot')
+        }
+    })
     WA.player.state.onVariableChange("hasFoundRedSeed").subscribe(()=> {
         console.log('todo')
     })
@@ -148,10 +174,6 @@ WA.onInit().then(() => {
                     message: utils.translations.translate('maze.triggerBlue'),
                     callback: () => {
                         inventory.removeFromInventory('powder')
-                        WA.room.hideLayer('torchesTop/offTop/torcheBlueOffTop')
-                        WA.room.hideLayer('torchesBot/offBot/torcheBlueOffBot')
-                        WA.room.showLayer('torchesTop/onTop/torcheBlueOnTop')
-                        WA.room.showLayer('torchesBot/onBot/torcheBlueOnBot')
                         WA.state.blueFire = true
                     }
                 })
@@ -184,10 +206,6 @@ WA.onInit().then(() => {
                     message: utils.translations.translate('maze.triggerRed'),
                     callback: () => {
                         inventory.removeFromInventory('gem')
-                        WA.room.hideLayer('torchesTop/offTop/torcheRedOffTop')
-                        WA.room.hideLayer('torchesBot/offBot/torcheRedOffBot')
-                        WA.room.showLayer('torchesTop/onTop/torcheRedOnTop')
-                        WA.room.showLayer('torchesBot/onBot/torcheRedOnBot')
                         WA.state.redFire = true
                     }
                 })
@@ -220,10 +238,6 @@ WA.onInit().then(() => {
                     message: utils.translations.translate('maze.triggerGreen'),
                     callback: () => {
                         inventory.removeFromInventory('seed')
-                        WA.room.hideLayer('torchesTop/offTop/torcheGreenOffTop')
-                        WA.room.hideLayer('torchesBot/offBot/torcheGreenOffBot')
-                        WA.room.showLayer('torchesTop/onTop/torcheGreenOnTop')
-                        WA.room.showLayer('torchesBot/onBot/torcheGreenOnBot')
                         WA.state.greenFire = true
                     }
                 })
