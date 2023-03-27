@@ -21,18 +21,18 @@ const initiateSwitchingTiles = (switchingTiles: Array<string> = ['switchingTiles
           }
         })
 
-      // Detect victory
-      WA.state.onVariableChange(`${switchingTiles[i]}IsVictory`).subscribe((value) => {
-        if (value && victoryCallBacks?.[i]) {
-          victoryCallBacks[i]()
-        }
-      })
-
       // Change tiles for every user
       WA.state.onVariableChange(`${switchingTiles[i]}_${j}_value`).subscribe(() => {
         switchTile(switchingTiles[i], j)
       })
     }
+
+    // Detect victory
+    WA.state.onVariableChange(`${switchingTiles[i]}IsVictory`).subscribe((value) => {
+      if (value && victoryCallBacks?.[i]) {
+        victoryCallBacks[i]()
+      }
+    })
   }
 }
 
