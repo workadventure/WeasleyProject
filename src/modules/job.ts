@@ -36,7 +36,7 @@ let jobWalletWebsite: UIWebsite|null = null
 
 // Choose player job
 const setPlayerJob = (newJob: Job) => {
-  WA.player.state.saveVariable('job', newJob, {public: true})
+  WA.player.state.saveVariable('job', newJob, {public: true, persist: true, scope: "world"})
 }
 
 const getPlayerJob = () => {
@@ -45,7 +45,7 @@ const getPlayerJob = () => {
 
 // Set player job to null
 const resetPlayerJob = () => {
-  WA.player.state.job = null
+  WA.player.state.saveVariable('job', null, {public: true, persist: true})
 }
 
 // Open job wallet website
@@ -106,6 +106,7 @@ const hideJobWallet = () => {
 
 
 const initiateJob = () => {
+  console.log("WA.player.state.job : ", WA.player.state.job)
   if (WA.player.state.job) {
     showJobWallet()
   } else {

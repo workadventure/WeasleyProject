@@ -2,7 +2,7 @@
 
 import { ActionMessage } from '@workadventure/iframe-api-typings';
 import {discussion, inventory} from './modules'
-import {getPlayerJob, resetPlayerJob, setPlayerJob} from "./modules/job";
+import {getPlayerJob, resetPlayerJob, setPlayerJob, initiateJob} from "./modules/job";
 import * as utils from "./utils";
 
 
@@ -26,8 +26,12 @@ const allPlayersGotJob = async () => {
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {
+
     // Initiate inventory
     inventory.initiateInventory()
+
+    // Initiate job
+    initiateJob()
 
     WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
         if(value) {
@@ -64,6 +68,7 @@ WA.onInit().then(() => {
                 message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.spyMessage')}),
                 callback: () => {
                     setPlayerJob('spy')
+                    console.log(getPlayerJob())
                     allPlayersGotJob()
                 }
             });
@@ -87,6 +92,7 @@ WA.onInit().then(() => {
                 message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.archeoMessage')}),
                 callback: () => {
                     setPlayerJob('archaeologist')
+                    console.log(getPlayerJob())
                     allPlayersGotJob()
                 }
             });
