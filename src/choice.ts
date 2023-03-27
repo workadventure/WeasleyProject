@@ -31,7 +31,7 @@ WA.onInit().then(() => {
 
     WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
         if(value) {
-            WA.nav.goToRoom('./map.tmj') // TODO changer la map
+            WA.nav.goToRoom('./maze.tmj') // TODO changer la map
         }
     })
     resetPlayerJob()

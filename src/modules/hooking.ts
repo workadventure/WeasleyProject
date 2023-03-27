@@ -14,15 +14,18 @@ const setHooking = (hookingZone: string, callback: Function|null = null) => {
 
       // When user enters the trace
       WA.room.onEnterLayer(`${hookingZone}/trace`).subscribe(() => {
-        // Shoow hooking message
-        makeHookingAction = WA.ui.displayActionMessage({
-          message: utils.translations.translate('utils.executeAction', {
-            action: utils.translations.translate('modules.hooking.hook') // TODO : translation in files
-          }),
-          callback: () => {
-            WA.state[`${hookingZone}Discovered`] = true
-          }
-        })
+        if (!WA.state[`${hookingZone}Discovered`]) {
+
+          // Shoow hooking message
+          makeHookingAction = WA.ui.displayActionMessage({
+            message: utils.translations.translate('utils.executeAction', {
+              action: utils.translations.translate('modules.hooking.hook') // TODO : translation in files
+            }),
+            callback: () => {
+              WA.state[`${hookingZone}Discovered`] = true
+            }
+          })
+        }
       })
 
       // When user leave the trace
