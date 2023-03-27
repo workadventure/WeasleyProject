@@ -13,13 +13,18 @@ const getPlayers = async () => {
 
 const allPlayersGotJob = async () => {
     const players = await getPlayers()
+    let count = 0
     for (let player of players) {
+        count ++
         if(!player.state.job) {
             return false
         }
     }
-    WA.state.allPlayersGotJob = true
-    return true
+    if(count > 1){
+        WA.state.allPlayersGotJob = true
+        return true
+    }
+    return false
 }
 
 
