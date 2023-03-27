@@ -1,6 +1,7 @@
 import {rootLink} from "../config";
 import {UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from '../utils/index.js'
+import { notifications } from '../modules/index.js'
 
 export type InventoryItem = {
   id: string,
@@ -46,7 +47,14 @@ const addToInventory = (item: InventoryItem) => {
     currentInventory.push(item)
 
     WA.player.state.inventory = JSON.stringify(currentInventory)
+    notifications.notify(utils.translations.translate(
+      'modules.inventory.objectTaken',
+      {
+        object: utils.translations.translate(item.name)
+      }), null, 'success')
     return true
+  } else {
+    notifications.notify('modules.inventory.cannotTakeThis', null, 'error')
   }
   return false
 }

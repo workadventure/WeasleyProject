@@ -276,5 +276,19 @@ WA.onInit().then(() => {
 })
 ```
 
+## Notifications
+### Script setup
+To show a notification to the current user, you can use the **notify** function :
+- **content :** STRING - The translation key of the content of the notification
+- **title :** STRING (optional / default : null) - The translation key of the title of the notification
+- **type :** NOTIFICATION TYPE (optional / default : "info") - valeurs possibles : "info", "succes", "error", "warning"
+```typescript
+import { notifications } from './modules'
+
+WA.onInit().then(() => {
+  notifications.notify('my.content.translation.key', 'my.title.translation.key', 'error')
+})
+```
+
 ## Lobby
 Work in progress
