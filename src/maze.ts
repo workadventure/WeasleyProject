@@ -1,5 +1,5 @@
 /// <reference types="@workadventure/iframe-api-typings" />
-import {hiddenZone, excavations, inventory, switchingTiles, hooking} from './modules'
+import {hiddenZone, excavations, inventory, switchingTiles, hooking, job} from './modules'
 import {setPlayerJob} from "./modules/job";
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
@@ -13,6 +13,8 @@ WA.onInit().then(() => {
 
     // Initiate inventory
     inventory.initiateInventory()
+
+    job.initiateJob()
 
     WA.state.dragonLight = false
 
