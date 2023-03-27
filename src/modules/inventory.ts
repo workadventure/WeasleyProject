@@ -73,14 +73,14 @@ const hasItem = (id: string) => {
 
 // remove item by id from user inventory
 const removeFromInventory = (id: string) => {
-  const currentInventory = JSON.parse(WA.player.state.inventory as string)
+  const currentInventory = getInventory()
 
   for (let i = 0; i < currentInventory.length; i++) {
     if (currentInventory[i].id === id) {
       currentInventory.splice(i,1)
     }
   }
-  WA.player.state.inventory = currentInventory
+  WA.player.state.inventory = JSON.stringify(currentInventory)
   return true
 }
 
