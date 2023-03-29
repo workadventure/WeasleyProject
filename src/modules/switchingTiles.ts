@@ -3,28 +3,34 @@ const initiateSwitchingTiles = (switchingTiles: Array<string> = ['switchingTiles
     const victoryCondition = JSON.parse(WA.state[`${switchingTiles[i]}VictoryCondition`] as string)
     const tilesNumber = WA.state[`${switchingTiles[i]}TilesNumber`] as number
 
-    for (let j = 0; j < Object.keys(victoryCondition).length; j++) {
-      // Set tile to current state
-      switchTile(switchingTiles[i], j)
+    if (WA.state[`${switchingTiles[i]}IsVictory`]) {
+      if (victoryCallBacks?.[i]) {
+        victoryCallBacks[i]()
+      }
+    } else {
+      for (let j = 0; j < Object.keys(victoryCondition).length; j++) {
+          // Set tile to current state
+          switchTile(switchingTiles[i], j)
 
-      // When user enter a layer manage to change tile if not victory
-        WA.room.onEnterLayer(`${switchingTiles[i]}/${j}_layer/zone`).subscribe(() => {
-          if (!WA.state[`${switchingTiles[i]}IsVictory`]) {
-            let newValue: number = WA.state[`${switchingTiles[i]}_${j}_value`] ? WA.state[`${switchingTiles[i]}_${j}_value`] as number : 0
-            WA.state[`${switchingTiles[i]}_${j}_value`] = (newValue + 1) %  tilesNumber
+          // When user enter a layer manage to change tile if not victory
+          WA.room.onEnterLayer(`${switchingTiles[i]}/${j}_layer/zone`).subscribe(() => {
+            if (!WA.state[`${switchingTiles[i]}IsVictory`]) {
+              let newValue: number = WA.state[`${switchingTiles[i]}_${j}_value`] ? WA.state[`${switchingTiles[i]}_${j}_value`] as number : 0
+              WA.state[`${switchingTiles[i]}_${j}_value`] = (newValue + 1) %  tilesNumber
 
-            // Test if victory condition is fulfilled
-            if (testVictory(switchingTiles[i], victoryCondition)) {
-              // set victory variable so that every user knows
-              WA.state[`${switchingTiles[i]}IsVictory`] = true
+              // Test if victory condition is fulfilled
+              if (testVictory(switchingTiles[i], victoryCondition)) {
+                // set victory variable so that every user knows
+                WA.state[`${switchingTiles[i]}IsVictory`] = true
+              }
             }
-          }
-        })
+          })
 
-      // Change tiles for every user
-      WA.state.onVariableChange(`${switchingTiles[i]}_${j}_value`).subscribe(() => {
-        switchTile(switchingTiles[i], j)
-      })
+          // Change tiles for every user
+          WA.state.onVariableChange(`${switchingTiles[i]}_${j}_value`).subscribe(() => {
+            switchTile(switchingTiles[i], j)
+          })
+      }
     }
 
     // Detect victory

@@ -15,12 +15,12 @@ const allPlayersGotJob = async () => {
     const players = await getPlayers()
     let count = 0
     for (let player of players) {
-        count ++
+        count++
         if(!player.state.job) {
             return false
         }
     }
-    if(count > 1){
+    if(count > 0){
         WA.state.allPlayersGotJob = true
         return true
     }
@@ -32,6 +32,7 @@ const allPlayersGotJob = async () => {
 // Waiting for the API to be ready
 WA.onInit().then(() => {
 
+    console.log('@@@@@@@ test de la variable de room : ', WA.state.test)
     // Initiate inventory
     inventory.initiateInventory()
 
@@ -43,6 +44,7 @@ WA.onInit().then(() => {
             WA.nav.goToRoom('./maze.tmj') // TODO changer la map
         }
     })
+
     resetPlayerJob()
 
     let talk: ActionMessage;

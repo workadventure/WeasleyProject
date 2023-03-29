@@ -7,6 +7,10 @@ import {ActionMessage} from "@workadventure/iframe-api-typings";
 import {env} from "./config"
 
 WA.onInit().then(() => {
+    for (let i = 1; i < 10; i++) {
+        hiddenZone.initiateHiddenZones([{stepIn: `fogFloor/fog${[i]}`, hide: `fog/fog${[i]}`}])
+    }
+
 
     WA.player.state.hasFoundBlueSeed = false
     WA.player.state.hasFoundGreenSeed = false
@@ -18,9 +22,7 @@ WA.onInit().then(() => {
     // Initiate job
     initiateJob()
 
-    WA.state.dragonLight = false
 
-    WA.state.blueFire = false
     WA.state.onVariableChange("blueFire").subscribe((value)=> {
         if(value) {
             WA.room.hideLayer('torchesTop/offTop/torcheBlueOffTop')
@@ -33,7 +35,6 @@ WA.onInit().then(() => {
         WA.room.hideLayer('blueSeed')
     })
 
-    WA.state.greenFire = false
     WA.state.onVariableChange("greenFire").subscribe((value)=> {
         if(value) {
             WA.room.hideLayer('torchesTop/offTop/torcheGreenOffTop')
@@ -46,7 +47,6 @@ WA.onInit().then(() => {
         WA.room.hideLayer('excavations/exca6/found')
     })
 
-    WA.state.redFire = false
     WA.state.onVariableChange("redFire").subscribe((value)=> {
         if(value) {
             WA.room.hideLayer('torchesTop/offTop/torcheRedOffTop')
@@ -142,8 +142,7 @@ WA.onInit().then(() => {
             WA.room.showLayer('blueSeed')
             WA.room.showLayer('switchTileVictory')
             WA.room.onEnterLayer(`blueSeed`).subscribe(() => {
-                let nbrMsg: number = 0
-                if(!WA.player.state.hasFoundBlueSeed && nbrMsg < 1) {
+                if(!WA.player.state.hasFoundBlueSeed) {
                     findSeed = WA.ui.displayActionMessage({
                         message: utils.translations.translate('maze.takePowderMsg'),
                         callback: () => {
@@ -156,7 +155,6 @@ WA.onInit().then(() => {
                             WA.player.state.hasFoundBlueSeed = true
                         }
                     })
-                    nbrMsg ++
                 }
             })
 
@@ -276,8 +274,11 @@ WA.onInit().then(() => {
             WA.room.showLayer('dragonTopLight')
             WA.room.showLayer('dragonLight')
             WA.room.showLayer('mountainDoorAnimate')
+            WA.room.setTiles([{ x: 16, y: 4, tile: null, layer: `collisions` }])
         }
     }
+    checkIfAllFireIsOn()
+
 })
 
 export {};
