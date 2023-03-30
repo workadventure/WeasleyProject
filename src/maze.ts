@@ -11,7 +11,6 @@ WA.onInit().then(() => {
         hiddenZone.initiateHiddenZones([{stepIn: `fogFloor/fog${[i]}`, hide: `fog/fog${[i]}`}])
     }
 
-
     WA.player.state.hasFoundBlueSeed = false
     WA.player.state.hasFoundGreenSeed = false
     WA.player.state.hasFoundRedSeed = false
@@ -22,37 +21,53 @@ WA.onInit().then(() => {
     // Initiate job
     initiateJob()
 
-
-    WA.state.onVariableChange("blueFire").subscribe((value)=> {
-        if(value) {
+    const blueFireOn = () => {
+        if(WA.state.blueFire) {
             WA.room.hideLayer('torchesTop/offTop/torcheBlueOffTop')
             WA.room.hideLayer('torchesBot/offBot/torcheBlueOffBot')
             WA.room.showLayer('torchesTop/onTop/torcheBlueOnTop')
             WA.room.showLayer('torchesBot/onBot/torcheBlueOnBot')
         }
+    }
+
+    WA.state.onVariableChange("blueFire").subscribe((value)=> {
+        if(value) {
+            blueFireOn()
+        }
     })
+
     WA.player.state.onVariableChange("hasFoundBlueSeed").subscribe(()=> {
         WA.room.hideLayer('blueSeed')
     })
 
-    WA.state.onVariableChange("greenFire").subscribe((value)=> {
-        if(value) {
+    const greenFireOn = () => {
+        if(WA.state.greenFire) {
             WA.room.hideLayer('torchesTop/offTop/torcheGreenOffTop')
             WA.room.hideLayer('torchesBot/offBot/torcheGreenOffBot')
             WA.room.showLayer('torchesTop/onTop/torcheGreenOnTop')
             WA.room.showLayer('torchesBot/onBot/torcheGreenOnBot')
+        }
+    }
+    WA.state.onVariableChange("greenFire").subscribe((value)=> {
+        if(value) {
+            greenFireOn()
         }
     })
     WA.player.state.onVariableChange("hasFoundGreenSeed").subscribe(()=> {
         WA.room.hideLayer('excavations/exca6/found')
     })
 
-    WA.state.onVariableChange("redFire").subscribe((value)=> {
-        if(value) {
+    const redFireOn = () => {
+        if(WA.state.redFire) {
             WA.room.hideLayer('torchesTop/offTop/torcheRedOffTop')
             WA.room.hideLayer('torchesBot/offBot/torcheRedOffBot')
             WA.room.showLayer('torchesTop/onTop/torcheRedOnTop')
             WA.room.showLayer('torchesBot/onBot/torcheRedOnBot')
+        }
+    }
+    WA.state.onVariableChange("redFire").subscribe((value)=> {
+        if(value) {
+            redFireOn()
         }
     })
     WA.player.state.onVariableChange("hasFoundRedSeed").subscribe(()=> {
@@ -67,13 +82,13 @@ WA.onInit().then(() => {
         inventory.addToInventory({
             id: 'powder',
             name: utils.translations.translate('maze.powder'),
-            image: 'poudre.png', // here, the path from root is public/images/inventory/myItem.png
+            image: 'shard.png', // here, the path from root is public/images/inventory/myItem.png
             description: utils.translations.translate('maze.powderDescription')
         })
         inventory.addToInventory({
             id: 'seed',
             name: utils.translations.translate('maze.seed'),
-            image: 'graine.png', // here, the path from root is public/images/inventory/myItem.png
+            image: 'seed.png', // here, the path from root is public/images/inventory/myItem.png
             description: utils.translations.translate('maze.seedDescription')
         })
         inventory.addToInventory({
@@ -118,7 +133,7 @@ WA.onInit().then(() => {
                             inventory.addToInventory({
                                 id: 'graine',
                                 name: utils.translations.translate('maze.seed'),
-                                image: 'graine.png', // here, the path from root is public/images/inventory/myItem.png
+                                image: 'seed.png', // here, the path from root is public/images/inventory/myItem.png
                                 description: utils.translations.translate('maze.seedDescription')
                             })
                             WA.player.state.hasFoundGreenSeed = true
@@ -149,7 +164,7 @@ WA.onInit().then(() => {
                             inventory.addToInventory({
                                 id: 'powder',
                                 name: utils.translations.translate('maze.powder'),
-                                image: 'poudre.png', // here, the path from root is public/images/inventory/myItem.png
+                                image: 'shard.png', // here, the path from root is public/images/inventory/myItem.png
                                 description: utils.translations.translate('maze.powderDescription')
                             })
                             WA.player.state.hasFoundBlueSeed = true
@@ -275,6 +290,9 @@ WA.onInit().then(() => {
             WA.room.showLayer('dragonLight')
             WA.room.showLayer('mountainDoorAnimate')
             WA.room.setTiles([{ x: 16, y: 4, tile: null, layer: `collisions` }])
+            blueFireOn()
+            greenFireOn()
+            redFireOn()
         }
     }
     checkIfAllFireIsOn()

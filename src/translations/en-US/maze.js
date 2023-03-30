@@ -6,7 +6,7 @@ export default {
 
   takePowder: "Take the powder",
   powder: "Powder",
-  takePowderMsg : '[SPACE] Take the magical powder',
+  takePowderMsg : '[SPACE] Take the moon shard',
   powderDescription : "It looks like stardust... Atchoum, oops...",
 
   takeGem: "Take the gem",
@@ -14,11 +14,10 @@ export default {
   takeGemMsg : '[SPACE] Take the gem of fire',
   gemDescription : "It looks like burning... ouch, it's hot !",
 
-  triggerBlue : '[SPACE] Drop the star powder',
+  triggerBlue : '[SPACE] Drop the moon shard',
   triggerGreen : '[SPACE] Drop the magical seed',
   triggerRed : '[SPACE] Drop the fire gem',
 
   empty : "I think we need to drop something here...",
   fireOn : "That's beautiful !"
-
 }
