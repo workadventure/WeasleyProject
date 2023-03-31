@@ -14,7 +14,7 @@ WA.onInit().then(() => {
     hiddenZone.initiateHiddenZones([{stepIn: 'hiddenZoneFloor', hide: 'hiddenZoneTop'}])
 
     console.log('Initiate switching tiles')
-    switchingTiles.initiateSwitchingTiles(['switchingTiles'], [() => console.log('OK !')])
+    switchingTiles.setSwitchingTile('switchingTiles', () => console.log('OK !'), true, 'test')
 
     console.log('Initiate runes reading !')
     readRunes.initiateRunesReading()

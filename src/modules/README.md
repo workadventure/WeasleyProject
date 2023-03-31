@@ -31,9 +31,20 @@ In this group:
 
 
   ![](../../readme_images/switchingTilesDirectoryTree.png)
-### Code setup
-In map's script :
 
+_NOTE : If you need several layers for one switchingTileGroup (for example for a tile switching under the WOKA and another up), you can create several groups named the same way (in our case **"switchingTiles"**)
+and put inside the top layers you want with a number at the end like this: [nb]_layer_[layer_nb] (for example **'1_layer_1'**) and put inside as many drawingLayer as you want._
+  
+![](../../readme_images/switchingTilesDirectoryTree2.png)
+
+_You can have 3 more layer for one switchingTileGroup (1_layer_1, 1_layer_2, 1_layer_3)_
+
+### Code setup
+In map's script, you can use two functions : 
+- **initiateSwitchingTiles :** will create several switchingTilesGroup wich will change when walking on zone
+- **setSwitchingTile :** will create only one switchingTilesGroup, but you can set an action message to change the tile
+
+initiateSwitchingTiles :
 ```typescript
 import { switchingTiles } from './modules'
 
@@ -49,6 +60,23 @@ WA.onInit().then(() => {
 })
 ```
 
+setSwitchingtiles:
+```typescript
+import { switchingTiles } from './modules'
+
+// Waiting for the API to be ready
+WA.onInit().then(() => {
+  // Parameters:
+    // switchingTiles: Array<string> --> List of switching tiles groups names
+    // victoryCallBacks: Array<Function> --> List of callbacks to call when victory for each group
+  switchingTiles.setSwitchingTile(
+    'switchingTiles', 
+    () => console.log('OK !'), 
+    true, // must display action messgae ? (default : false)
+    'my.action.translation.key' // translation key of the action message displayed
+  )
+})
+```
 
 ## Hidden Zones
 ### Description
