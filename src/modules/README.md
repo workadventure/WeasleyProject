@@ -360,5 +360,7 @@ WA.onInit().then(() => {
 })
 ````
 
+**WARNING : This module won't work as expected if you create the instance (with the setArrayFilling function) in a view, and the call testArrayFilling in another view (between map and opened websites for example). All interactions must be done in the same view.**
+
 ## Lobby
 Work in progress
