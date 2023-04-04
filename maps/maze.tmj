@@ -11735,16 +11735,6 @@
          "y":0
         }, 
         {
-         "id":246,
-         "layers":[],
-         "name":"fogFloor",
-         "opacity":1,
-         "type":"group",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
          "id":256,
          "layers":[
                 {
