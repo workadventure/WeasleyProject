@@ -15044,7 +15044,7 @@
                 {
                  "name":"exitUrl",
                  "type":"string",
-                 "value":".\/choice.tmj"
+                 "value":".\/music.tmj"
                 }],
          "type":"tilelayer",
          "visible":false,
