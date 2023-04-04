@@ -1,7 +1,6 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 import * as utils from '../../src/utils/index.js'
 import * as modules from '../../src/modules/index.js'
-import {closeJobWalletWebsite} from "../../src/modules/job";
 
 const getTitle = (params:string|null) => {
   console.log(params)
