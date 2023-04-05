@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles, readRunes, inventory, hooking, notifications} from './modules'
+import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles, readRunes, inventory, hooking, notifications, arrayFilling} from './modules'
 
 // Waiting for the API to be ready
 WA.onInit().then(() => {
@@ -42,6 +42,23 @@ WA.onInit().then(() => {
     setTimeout(() => {
         notifications.notify('Ceci est le contenu de ma notification d\'erreur', 'Erreur', 'error')
     }, 1000)
+
+    console.log('ARRAY FILLING')
+    arrayFilling.setArrayFilling('test', [['test', 'test', 'test']], () => console.log('WRONG'), () => console.log('RIGHT'))
+    arrayFilling.testArrayFilling('test', 'test')
+    arrayFilling.testArrayFilling('test', 'test2')
+
+    arrayFilling.testArrayFilling('test', 'test')
+    arrayFilling.testArrayFilling('test', 'test')
+    arrayFilling.testArrayFilling('test', 'test2')
+
+    console.log('HERE')
+    arrayFilling.testArrayFilling('test', 'test')
+    arrayFilling.testArrayFilling('test', 'test')
+    arrayFilling.testArrayFilling('test', 'test')
+
+    console.log('JAMBON')
+    arrayFilling.testArrayFilling('test', 'jambon')
 
     console.log('LOBBY INITIALISATION')
     lobby.initiateLobby()

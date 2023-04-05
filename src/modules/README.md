@@ -349,5 +349,46 @@ WA.onInit().then(() => {
 })
 ```
 
+## Array filling
+
+### Description
+This module is used to add item to an array, one by one, and test if the generated array is almost one of the accepted ones
+
+### script setup
+In your maps script, you must call the **setArrayFilling** function :
+- **id:** STRING - the id of your arrayFilling (you can make several with different ids)
+- **validArrays:** ARRAY<ARRAY<STRING>> - The possible arrays user is allowed to generate
+- **whenWrong:** FUNCTION - function to call when the array is not allowed
+- **whenResolved:** FUNCTION - function to call when the array is one of the wanted arrays
+NOTE : When the array is resolved, you cannot add item anymore
+
+Then, you can call the **testArrayFilling** function to add items to the array :
+- **id:** STRING - the id you've set in the **setArrayFilling** function
+- **value:** STRING - the item to add
+
+```typescript
+import {arrayFilling} from './modules'
+          
+          
+WA.onInit().then(() => {
+  arrayFilling.setArrayFilling(
+    'myID', 
+    [
+      ['apple', 'banana', 'cake']
+    ], 
+    () => console.log('WRONG'), 
+    () => console.log('Congratulations!')
+  )
+  arrayFilling.testArrayFilling('myID', 'apple') // Nothing happens
+  arrayFilling.testArrayFilling('myID', 'cake') // 'WRONG' logged in console
+
+  arrayFilling.testArrayFilling('myID', 'apple') // Nothing happens
+  arrayFilling.testArrayFilling('myID', 'banana') // Nothing happens
+  arrayFilling.testArrayFilling('myID', 'cake') // 'Congratulations!' logged in the console
+})
+````
+
+**WARNING : This module won't work as expected if you create the instance (with the setArrayFilling function) in a view, and the call testArrayFilling in another view (between map and opened websites for example). All interactions must be done in the same view.**
+
 ## Lobby
 Work in progress
