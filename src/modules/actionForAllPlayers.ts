@@ -5,15 +5,19 @@ let oldValue: Record<string, mapVariableType>
 
 const initializeActionForAllPlayers = (id: string, callback: Function, defaultValue: mapVariableType = null) => {
   // Get current value of map action variable
-  let currentValue = JSON.parse(WA.state.mapActionVariables as string)
+  setTimeout(() => {
+    let currentValue = JSON.parse(WA.state.mapActionVariables as string)
 
-  if (!currentValue[id]) {
-    oldValue[id] = defaultValue
-    currentValue[id] = defaultValue
-    WA.state.mapActionVariables = JSON.stringify(currentValue)
-  }
+    if (!currentValue[id]) {
+      oldValue[id] = defaultValue
+      currentValue[id] = defaultValue
+      WA.state.mapActionVariables = JSON.stringify(currentValue)
+    } else if (currentValue[id] !== defaultValue) { // If action has already happened, then we do it at init
+      callback(currentValue[id])
+    }
 
-  callbacks[id] = callback
+    callbacks[id] = callback
+  }, 11) // Timeout here because workadventure will put a time limit in the future
 }
 
 const activateActionForAllPlayer = (id: string, value: mapVariableType = null) => {
