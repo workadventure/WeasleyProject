@@ -15,6 +15,7 @@ WA.onInit().then(() => {
   switchingTiles.setSwitchingTile(
     'rotatingStatues',
     () => {
+      // Hammer visible
       utils.layers.toggleLayersVisibility('hammerZoneTop', false)
       WA.room.onEnterLayer('hammerZone').subscribe(() => {
         if (!inventory.hasItem('hammer')) {
@@ -48,9 +49,20 @@ WA.onInit().then(() => {
   let breakHourglassAction: ActionMessage|null = null
 
   actionForAllPlayers.initializeRelativeActionForAllPlayers('openTreasureDoor', ['breakHourglass1', 'breakHourglass2'], () => {
+
+    // Show fire on torcher
     utils.layers.toggleLayersVisibility('torchesOnBottom', true)
     utils.layers.toggleLayersVisibility('torchesOnTop', true)
+
+    // Show door open
     utils.layers.toggleLayersVisibility('treasureDoor', false)
+
+    // Remove door collisions
+    WA.room.setTiles([
+      {x: 14, y: 13, tile: null, layer: 'treasureDoorCollisions'},
+      {x: 15, y: 13, tile: null, layer: 'treasureDoorCollisions'},
+      {x: 16, y: 13, tile: null, layer: 'treasureDoorCollisions'},
+    ]);
   })
 
   // HOURGLASS 1
@@ -163,6 +175,4 @@ WA.onInit().then(() => {
     treasureActionMessage?.remove()
     treasureActionMessage = null
   })
-
-  // TODO : add blocks for door
 })
