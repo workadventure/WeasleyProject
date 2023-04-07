@@ -44,7 +44,9 @@ const setSwitchingTile = (switchingTile: string, victoryCallback: Function|null 
 
       if (isAction) {
         WA.room.onLeaveLayer(`${switchingTile}/${j}_layer/zone`).subscribe(() => {
-          switchTileAction?.remove()
+          setTimeout(() => {
+            switchTileAction?.remove()
+          }, 100) // HERE time out too because if walk on another between both are displayed
         })
       }
 

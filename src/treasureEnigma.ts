@@ -1,4 +1,4 @@
-import { readRunes, inventory, switchingTiles, actionForAllPlayers } from './modules'
+import { readRunes, inventory, switchingTiles, actionForAllPlayers, discussion } from './modules'
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 
@@ -20,14 +20,14 @@ WA.onInit().then(() => {
         if (!inventory.hasItem('hammer')) {
           canTakeHammerActionMessage = WA.ui.displayActionMessage({
             message: utils.translations.translate('utils.executeAction', {
-              action: 'Prndre le marteau' // TODO : translations
+              action: utils.translations.translate('treasureEnigma.hammer.action')
             }),
             callback: () => {
               inventory.addToInventory({
                 id: 'hammer',
-                name: 'Marteau',
+                name: 'treasureEnigma.hammer.name',
                 image: 'hammer.png',
-                description: 'Je dois bien pouvoir en faire quelque chose...',
+                description: 'treasureEnigma.hammer.description',
               })
               utils.layers.toggleLayersVisibility('hammerZone', false)
             }
@@ -41,7 +41,7 @@ WA.onInit().then(() => {
       })
     },
     true,
-    'my.action.translation.key' // translation key of the action message displayed // TODO
+    'treasureEnigma.makeTurn'
   )
 
   // // HOURGLASSES
@@ -65,7 +65,7 @@ WA.onInit().then(() => {
     if (inventory.hasItem('hammer') && !actionForAllPlayers.hasBeenTriggered('breakHourglass1')) {
       breakHourglassAction = WA.ui.displayActionMessage({
         message: utils.translations.translate('utils.executeAction', {
-          action: 'Briser le sablier' // TODO: translation
+          action: utils.translations.translate('treasureEnigma.breakHourglass')
         }),
         callback: () => {
           actionForAllPlayers.activateActionForAllPlayer('breakHourglass1')
@@ -91,7 +91,7 @@ WA.onInit().then(() => {
     if (inventory.hasItem('hammer') && !actionForAllPlayers.hasBeenTriggered('breakHourglass2')) {
       breakHourglassAction = WA.ui.displayActionMessage({
         message: utils.translations.translate('utils.executeAction', {
-          action: 'Briser le sablier' // TODO: translation
+          action: utils.translations.translate('treasureEnigma.breakHourglass')
         }),
         callback: () => {
           actionForAllPlayers.activateActionForAllPlayer('breakHourglass2')
@@ -104,4 +104,65 @@ WA.onInit().then(() => {
     breakHourglassAction?.remove()
     breakHourglassAction = null
   })
+
+  // TREASURE ROOM
+  actionForAllPlayers.initializeActionForAllPlayers('evilGuyAppears', async () => {
+    // Disable player control
+    WA.controls.disablePlayerControls()
+
+    WA.camera.set(
+      15*32,
+      4*32,
+      50,
+      50,
+      true,
+      true,
+  )
+
+  // Wait during camera transition
+  await utils.main.wait(1000)
+
+  // Bad guy appears
+  setTimeout(() => {
+    utils.layers.toggleLayersVisibility('badGuy', true)
+  }, 300)
+  await utils.layers.triggerAnimationWithLayers(['pouf1', 'pouf2', 'pouf3'], 100)
+
+  setTimeout(() => {
+    // Bad guy monologue
+    discussion.openDiscussionWebsite(
+      'treasureEnigma.badGuy.name',
+      'treasureEnigma.badGuy.monologue',
+      'views.choice.close',
+      "discussion",
+      "bottom",
+      "middle",
+      "30vh",
+      "100vw",
+      () => {
+        // Redirect to next map
+        WA.nav.goToRoom('./maze.tmj') // TODO changer la map
+      }
+    )
+  }, 300) // Let time to understand what happen
+  })
+
+  let treasureActionMessage: ActionMessage|null = null
+  WA.room.onEnterLayer('treasure').subscribe(() => {
+    treasureActionMessage =WA.ui.displayActionMessage({
+      message: utils.translations.translate('utils.executeAction', {
+        action: utils.translations.translate('treasureEnigma.takeTheTreasure')
+      }),
+      callback: () => {
+        actionForAllPlayers.activateActionForAllPlayer('evilGuyAppears')
+      }
+    })
+  })
+
+  WA.room.onLeaveLayer('treasure').subscribe(() => {
+    treasureActionMessage?.remove()
+    treasureActionMessage = null
+  })
+
+  // TODO : add blocks for door
 })

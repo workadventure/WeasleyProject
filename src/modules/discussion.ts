@@ -15,7 +15,8 @@ const openDiscussionWebsite = async (
     verticalPosition:"top" | "middle" | "bottom" = "middle",
     horizontalPosition: "middle" | "left" | "right" = "middle",
     height = "50vh",
-    width = "50vw") => {
+    width = "50vw",
+    callbackWhenClosed: Function|null = null) => {
   // Disable controls while card is open
   WA.controls.disablePlayerControls()
 
@@ -37,7 +38,7 @@ const openDiscussionWebsite = async (
 
   WA.player.state.onVariableChange('askForDiscussionWebsiteClose').subscribe((value) => {
     if (value) {
-      closeDiscussionWebsite()
+      closeDiscussionWebsite(callbackWhenClosed)
     }
   })
 }
@@ -47,12 +48,16 @@ const askForDiscussionWebsiteClose = () => {
 }
 
 // Close discussion website
-const closeDiscussionWebsite = () => {
+const closeDiscussionWebsite = (callback: Function|null = null) => {
   discussionWebsite?.close()
   discussionWebsite = null
 
   // Restore player controle after closing card
   WA.controls.restorePlayerControls()
+
+  if (callback !== null) {
+    callback()
+  }
 }
 
 export {
