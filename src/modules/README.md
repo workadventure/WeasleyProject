@@ -390,5 +390,47 @@ WA.onInit().then(() => {
 
 **WARNING : This module won't work as expected if you create the instance (with the setArrayFilling function) in a view, and the call testArrayFilling in another view (between map and opened websites for example). All interactions must be done in the same view.**
 
+## Action for all players
+
+### Description
+This modules allows you to trigger an action for multiple players at the same time
+
+### Map setup
+To use this module, your MUST imperatively create a map variable called **"mapActionVariables"** with a string default value set to `{}`
+
+### Script setup
+In your map script, you must first initialize the actions you'll want to trigger  with the function **initializeActionForAllPlayers**:
+- id: STRING - the id of your action. It must be unique for each one of your actions
+- callback: FUNCTION - The action that will be triggered
+- defaultValue: STRING | NUMBER | BOOL | OBJECT : the default value of the variable created. If nothing, then false.
+```typescript
+import { actionForAllPlayers } from './modules'
+WA.onInit().then(() => {
+  // Initialise an action
+  actionForAllPlayers.initializeActionForAllPlayers('myId', () => {
+    consoe.log('Action triggered !')
+  })
+})
+```
+
+Then, you can activate the initiated action by calling the **activateActionForAllPlayer** function:
+- id : STRING - the id defined in initializeActionForAllPlayers
+- value : STRING | NUMBER | BOOL | OBJECT - If you need to pass something to your callback, you must set it in this parameter
+```typescript
+// Activate an action
+WA.onInit().then(() => {
+  actionForAllPlayers.activateActionForAllPlayer('myId')
+})
+```
+
+You can initialize an action wich will be played when defined actions have been called at least once with the **initializeRelativeActionForAllPlayers** function:
+```typescript
+// Initialise an action depending on others
+WA.onInit().then(() => {
+  actionForAllPlayers.initializeRelativeActionForAllPlayers('dependingOnActionId', ['myId1', 'myId2'], () => {
+    console.log('The actions with ids myId1 and myId2 have been triggered !')
+  })
+})
+```
 ## Lobby
 Work in progress
