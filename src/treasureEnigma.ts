@@ -111,8 +111,8 @@ WA.onInit().then(() => {
     WA.controls.disablePlayerControls()
 
     WA.camera.set(
-      15*32,
-      4*32,
+      15*32+16,
+      4*32+16,
       50,
       50,
       true,
