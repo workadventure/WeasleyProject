@@ -28,6 +28,7 @@ const triggerAnimationWithLayers = async (layers, time=300) => {
         toggleLayersVisibility(layers[i])
     }
     toggleLayersVisibility(layers[layers.length-1], false)
+    return true
 }
 
 const getTileCoordinate = (x, y)=> {
