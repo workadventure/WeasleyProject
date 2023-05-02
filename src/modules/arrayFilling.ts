@@ -38,6 +38,8 @@ const arrayFillingCoroutine = function * (possibleArrays: Array<Array<string>>, 
 const setArrayFilling = (id: string, validArrays: Array<Array<string>>, whenWrong: Function, whenResolved: Function) => {
   // @ts-ignore
   window[`arrayFilling${id}`] = arrayFillingCoroutine(validArrays, whenWrong, whenResolved)
+  // @ts-ignore
+  window[`arrayFilling${id}`].next()
 }
 
 const testArrayFilling = (id: string, value: string) => {
