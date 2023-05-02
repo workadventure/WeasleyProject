@@ -87,5 +87,6 @@ const findSecretPassage = (secretPassageZone: string, callback: Function|null = 
 
 export {
   initiateSecretPassages,
-  findSecretPassage
+  findSecretPassage,
+  removeBlocksTiles
 }
