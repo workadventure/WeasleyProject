@@ -1,8 +1,12 @@
 import { readRunes, inventory, switchingTiles, actionForAllPlayers, discussion } from './modules'
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
+import {getPlayerJob, initiateJob} from "./modules/job";
 
 WA.onInit().then(() => {
+  // Initiate players jobs
+  initiateJob()
+
   // Inventory initialisation
   inventory.initiateInventory()
 
@@ -153,7 +157,7 @@ WA.onInit().then(() => {
       "100vw",
       () => {
         // Redirect to next map
-        WA.nav.goToRoom('./maze.tmj') // TODO changer la map
+        WA.nav.goToRoom(`./bomb.tmj#${getPlayerJob()}-entry`)
       }
     )
   }, 300) // Let time to understand what happen

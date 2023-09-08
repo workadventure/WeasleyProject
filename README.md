@@ -45,6 +45,9 @@ This project contains multiple licenses as follows:
 * Font licences : 
   * Retro Gaming credited by Daymarius
   * KHScala created by Televo
+  * Freehand created by Coco Barth
+  * 7 Segmental Digital Display by Ash Pikachu Font
+
 
 
 ### About third party assets

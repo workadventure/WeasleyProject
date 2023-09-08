@@ -3,6 +3,7 @@ import {UIWebsite} from "@workadventure/iframe-api-typings";
 import {rootLink} from "../config";
 
 export type Job = 'archaeologist' | 'spy'
+
 export type Permissions =
   'useComputers'
   | 'speakAncienLanguages'

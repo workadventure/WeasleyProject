@@ -53,10 +53,22 @@
         .pointer-event-none {
             pointer-events: none;
         }
+
+        .counter {
+            border: 1px black solid;
+        }
     </style>
 </head>
 <body>
-<div class="bg-white p-2 h-100 text-align-center">
+<div class="bg-dark p-2 h-100 d-flex text-align-center">
+    <div class="p-1 error counter flex-grow-1" style="background: black;">
+        <span class="digital-font info" style="font-size: 50px;">REMAINING TIME</span>
+        <br><br>
+        <span id="counter" class="digital-font error" style="font-size: 50px;">5:00</span>
+        <div id="losesInfos">
+
+        </div>
+    </div>
     <svg width="601" height="881" viewBox="0 0 601 881" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="10" y="22" width="191" height="832" fill="#A52A2A" stroke="black" stroke-width="4"/>
         <rect x="401" y="22" width="191" height="832" fill="#A52A2A" stroke="black" stroke-width="4"/>

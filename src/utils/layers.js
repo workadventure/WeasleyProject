@@ -45,7 +45,6 @@ const getPlayerPositionTileCoordinate = async () => {
 }
 
 const replaceTileAnimation = async (x, y, tiles, layer, time= 300) => {
-    console.log('REPLACE TILE ANIMATION', x, y)
     WA.room.setTiles([
         {
             x: x,
