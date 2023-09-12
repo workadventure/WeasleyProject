@@ -4,7 +4,7 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
 import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling} from './modules'
-import {initiateJob} from "./modules/job";
+import {initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {
@@ -17,6 +17,7 @@ import {
 WA.onInit().then(() => {
     initiateJob()
     //setPlayerJob('spy')
+    setPlayerJob('archaeologist')
     secretPassages.initiateSecretPassages(
         ['secretPassage'], // List of your secretPassageGroups names
         [() => {console.log('secret passage discovered !')} // List of callbacks for every secretPassageGroups
@@ -160,7 +161,7 @@ WA.onInit().then(() => {
     WA.room.onLeaveLayer(`dalles/dD`).subscribe(() => {
         WA.room.hideLayer('dalles/dDPush')
     })
-    console.log(WA.state.artifactBrok)
+
     actionForAllPlayers.initializeActionForAllPlayers('artifactBrok', () => {
         activateActionForAllPlayer('artifactBrok', true)
         WA.room.hideLayer('artifact')
