@@ -16,8 +16,7 @@ import {
 
 WA.onInit().then(() => {
     initiateJob()
-    //setPlayerJob('spy')
-    setPlayerJob('archaeologist')
+
     secretPassages.initiateSecretPassages(
         ['secretPassage'], // List of your secretPassageGroups names
         [() => {console.log('secret passage discovered !')} // List of callbacks for every secretPassageGroups

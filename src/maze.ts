@@ -74,7 +74,7 @@ WA.onInit().then(() => {
         console.log('todo')
     })
 
-    if(env === 'dev'){
+    /*if(env === 'dev'){
         WA.player.state.hasFoundBlueSeed = true
         WA.player.state.hasFoundGreenSeed = true
         WA.player.state.hasFoundRedSeed = true
@@ -97,7 +97,7 @@ WA.onInit().then(() => {
             image: 'gem.png', // here, the path from root is public/images/inventory/myItem.png
             description: utils.translations.translate('maze.gemDescription')
         })
-    }
+    }*/
 
     // Initiate Hidden Zone
     hiddenZone.initiateHiddenZones([{stepIn: 'hiddenZoneFloor/hiddenZoneFloor', hide: 'hiddenZoneTop'}])

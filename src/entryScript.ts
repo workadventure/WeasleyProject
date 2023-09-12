@@ -6,7 +6,6 @@ import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles, rea
 WA.onInit().then(() => {
     console.log('INITIALISATION')
     job.initiateJob()
-    job.setPlayerJob('spy')
 
     console.log('HERE')
     excavations.initiateExcavations(['excavation'], [() => {console.log('test callback after excavation')}])

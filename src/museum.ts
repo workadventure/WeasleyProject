@@ -15,7 +15,6 @@ WA.onInit().then(() => {
     console.log('door variable', WA.state.chest)
     initiateJob()
     //setPlayerJob('spy')
-    setPlayerJob('spy')
     inventory.initiateInventory()
     let haveSeenBeginText = false
     let haveBeginDiscussion = false

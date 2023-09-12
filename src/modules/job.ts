@@ -46,7 +46,7 @@ const setPlayerJob = (newJob: Job) => {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ "playerId": playerId, "job": "spy" })
+    body: JSON.stringify({ "playerId": playerId, "job": newJob })
   })
       .then(response => response.json())
       .then(response => console.log('response', JSON.stringify(response)))
