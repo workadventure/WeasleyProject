@@ -4,7 +4,7 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
 import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling} from './modules'
-import {initiateJob, setPlayerJob} from "./modules/job";
+import {initiateJob} from "./modules/job";
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {
