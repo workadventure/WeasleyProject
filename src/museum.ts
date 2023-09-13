@@ -262,6 +262,52 @@ WA.onInit().then(() => {
       'cameraZones/cZone6'
     ]
 
+    // Rooms list
+    const rooms = {
+        room1: {
+            x: 5*32,
+            y: 60*32,
+            width: 500,
+            height: 500,
+        },
+        room2: {
+            x: 5*32,
+            y: 44*32,
+            width: 500,
+            height: 500,
+        },
+        room3: {
+            x: 3*32,
+            y: 3*32,
+            width: 500,
+            height: 500,
+        },
+        room4: {
+            x: 60*32,
+            y: 4*32,
+            width: 900,
+            height: 900,
+        },
+        room5: {
+            x: 50*32,
+            y: 32*32,
+            width: 400,
+            height: 400,
+        },
+        room6: {
+            x: 31*32,
+            y: 51*32,
+            width: 520,
+            height: 520,
+        },
+        room7: {
+            x: 37*32,
+            y: 33*32,
+            width: 1000,
+            height: 1000,
+        },
+    }
+
     let userIsBlockedByCamera = null;
     actionForAllPlayers.initializeActionForAllPlayers(`deactivateCamera`, (value: string) => {
         // Show all cameras zone
@@ -297,8 +343,22 @@ WA.onInit().then(() => {
         }
     })
 
-    WA.player.state.onVariableChange('askForSeeRoom').subscribe((value) => {
-        console.log('SEE ROOM', value) // TODO
+    WA.player.state.onVariableChange('askForSeeRoom').subscribe((value:string) => {
+        const roomData = rooms['room' + value]
+
+        console.log('VARIABLE CHANGED', roomData)
+        console.log('HIDE', `fogs/fog${value}`)
+        // Move camera to room
+        WA.camera.set(
+          roomData.x,
+          roomData.y,
+          roomData.width,
+          roomData.height,
+          false,
+          false,
+        )
+
+        utils.layers.toggleLayersVisibility(`fogs/fog${value}`, false)
     })
 
     for (let i = 0; i < cameras.length; i++) {

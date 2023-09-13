@@ -36,8 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (rooms) {
       for (let i = 0; i < rooms.length; i++) {
         rooms[i].addEventListener('click', () => {
-          console.log(rooms[i].getAttribute('id'))
-          askForSeeRoom(rooms[i].getAttribute('id'))
+          const roomId = rooms[i].getAttribute('id');
+          console.log('room', roomId.replace('room', ''))
+          if (roomId) {
+            askForSeeRoom(roomId.replace('room', ''))
+          }
         })
       }
     }
