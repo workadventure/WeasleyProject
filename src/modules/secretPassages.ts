@@ -7,6 +7,9 @@ let findSecretPassageAction: ActionMessage|null = null
 const removeBlocksTiles = (zone: string) => {
   const mapWidth = WA.state.mapWidth as number
   const mapHeight = WA.state.mapHeight as number
+
+  console.log('height', mapHeight)
+  console.log('width', mapWidth)
   const tiles = []
   for (let i = 1; i < mapWidth; i++) {
     for (let j = 1; j < mapHeight; j++) {

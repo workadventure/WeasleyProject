@@ -3,5 +3,8 @@ export default {
     shoot: 'Tirer',
     see: 'Consulter',
     examine: 'Examiner',
-    seeTheRules: 'Voir les règles'
+    seeTheRules: 'Voir les règles',
+    mySelf: 'Moi',
+    success: 'Succès',
+    failure: 'Échec'
 }

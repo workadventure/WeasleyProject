@@ -7,7 +7,7 @@ export default {
   takeTheTreasure: 'Take the treasure',
   badGuy: {
     name: 'The bad guy',
-    monologue: 'Mouahahahaha ! I finally found this place ! Thanks for your help! All this gold is for me. As for this remedy, it will disappear with you!',
+    monologue: 'Mouahahahaha ! I finally found this place ! Thanks for your help! All this gold is for me. As for this remedy, it will disappear with you! Oh ! What a beautiful statue ! It will look great in the hall! ... Anyway! Farewell !',
   },
   hammer: {
     name: 'Hammer',

@@ -4,6 +4,16 @@
 }
 
 @font-face {
+    font-family: DigitalFont;
+    src: url(font/7SEGMENTALDIGITALDISPLAY.ttf);
+}
+
+@font-face {
+    font-family: Freehand;
+    src: url(font/Freehand.ttf);
+}
+
+@font-face {
     font-family: RetroGaming;
     src: url(font/RetroGaming.ttf);
 }
@@ -25,6 +35,14 @@ body {
 
 .runes-font {
     font-family: RunesFont;
+}
+
+.handwriting-font {
+    font-family: Freehand;
+}
+
+.digital-font {
+    font-family: DigitalFont, Arial;
 }
 
 .text-align-center {
@@ -179,8 +197,16 @@ body {
     color: var(--bg-color-success);
 }
 
+.info {
+    color: var(--bg-color-info);
+}
+
 .d-flex {
     display: flex;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
 }
 
 .align-items-center {
