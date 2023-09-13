@@ -408,7 +408,7 @@ import { actionForAllPlayers } from './modules'
 WA.onInit().then(() => {
   // Initialise an action
   actionForAllPlayers.initializeActionForAllPlayers('myId', () => {
-    consoe.log('Action triggered !')
+    console.log('Action triggered !')
   })
 })
 ```

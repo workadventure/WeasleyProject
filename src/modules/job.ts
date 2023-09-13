@@ -38,6 +38,19 @@ let jobWalletWebsite: UIWebsite|null = null
 // Choose player job
 const setPlayerJob = (newJob: Job) => {
   WA.player.state.saveVariable('job', newJob, {public: true, persist: true, scope: "world"})
+  let playerId = WA.player.uuid
+  let slug = playerId?.replaceAll('.', '').replaceAll('@', '')
+
+  fetch(`https://weasley-project-default-rtdb.europe-west1.firebasedatabase.app/userRole/${slug}.json`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ "playerId": playerId, "job": newJob })
+  })
+      .then(response => response.json())
+      .then(response => console.log('response', JSON.stringify(response)))
 }
 
 const getPlayerJob = () => {
@@ -47,6 +60,19 @@ const getPlayerJob = () => {
 // Set player job to null
 const resetPlayerJob = () => {
   WA.player.state.saveVariable('job', null, {public: true, persist: true})
+  let playerId = WA.player.uuid
+  let slug = playerId?.replaceAll('.', '').replaceAll('@', '')
+
+  fetch(`https://weasley-project-default-rtdb.europe-west1.firebasedatabase.app/userRole/${slug}.json`, {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ "playerId": playerId, "job": null })
+  })
+      .then(response => response.json())
+      .then(response => console.log('response', JSON.stringify(response)))
 }
 
 // Open job wallet website
@@ -105,31 +131,45 @@ const hideJobWallet = () => {
   WA.ui.actionBar.removeButton(buttonName);
 }
 
-
-const initiateJob = () => {
+const initiateJob = async () => {
   console.log("WA.player.state.job : ", WA.player.state.job)
-  if (WA.player.state.job) {
-    showJobWallet()
-  } else {
-    hideJobWallet()
-  }
+  let playerId = WA.player.uuid
+  let slug = playerId?.replaceAll('.', '').replaceAll('@', '')
 
-  WA.player.state.onVariableChange('job').subscribe((value) => {
-    if (value) {
-      console.log(utils.translations.translate('modules.job.jobChanged', {
-        job: utils.translations.translate(`modules.job.jobs.${value}`)
-      }))
-      showJobWallet()
-    } else {
-      hideJobWallet()
-    }
-  });
-
-  WA.player.state.onVariableChange('askForJobWalletWebsiteClose').subscribe((value) => {
-    if (value) {
-      closeJobWalletWebsite()
+  await fetch(`https://weasley-project-default-rtdb.europe-west1.firebasedatabase.app/userRole/${slug}.json`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
     }
   })
+      .then(response => response.json())
+      .then(response => {
+            WA.player.state.job = response?.job
+            if (WA.player.state.job) {
+              showJobWallet()
+            } else {
+              hideJobWallet()
+            }
+
+            WA.player.state.onVariableChange('job').subscribe((value) => {
+              if (value) {
+                console.log(utils.translations.translate('modules.job.jobChanged', {
+                  job: utils.translations.translate(`modules.job.jobs.${value}`)
+                }))
+                showJobWallet()
+              } else {
+                hideJobWallet()
+              }
+            });
+
+            WA.player.state.onVariableChange('askForJobWalletWebsiteClose').subscribe((value) => {
+              if (value) {
+                closeJobWalletWebsite()
+              }
+            })
+          }
+      )
 }
 
 // See if user has the permission passed as parameter

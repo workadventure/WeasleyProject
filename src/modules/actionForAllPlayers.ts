@@ -30,7 +30,7 @@ const allItemsHaveChanged = (idList: Array<string>) => {
   return true
 }
 
-// This action will be triggered if all action with idList as ids have been trigered
+// This action will be triggered if all action with idList as ids have been triggered
 const initializeRelativeActionForAllPlayers = (id: string, idList: Array<string>, callback: Function) => {
   let currentValue = JSON.parse(WA.state.mapActionVariables as string)
   setTimeout(() => {

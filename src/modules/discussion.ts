@@ -12,10 +12,10 @@ const openDiscussionWebsite = async (
     text:string,
     close:string = 'views.choice.close',
     view = "discussion",
-    verticalPosition:"top" | "middle" | "bottom" = "middle",
+    verticalPosition:"top" | "middle" | "bottom" = "bottom",
     horizontalPosition: "middle" | "left" | "right" = "middle",
     height = "50vh",
-    width = "50vw",
+    width = "90vw",
     callbackWhenClosed: Function|null = null) => {
   // Disable controls while card is open
   WA.controls.disablePlayerControls()
