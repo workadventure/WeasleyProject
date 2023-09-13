@@ -9,13 +9,16 @@ let bombWebsite:UIWebsite|null = null
 let cheatSheetWebsite:UIWebsite|null = null
 
 WA.onInit().then(() => {
+  // Reset camera Zoom
+  WA.camera.followPlayer(true)
+  WA.camera.set(665, 838)
 
   // Initiate jobs
   initiateJob()
 
   // FOR DEVELOPMENT PURPOSE ONLY
   if(env === 'dev'){
-    setPlayerJob('spy')
+    setPlayerJob('archaeologist')
   }
 
   // Speech at arriving
@@ -23,7 +26,26 @@ WA.onInit().then(() => {
     utils.translations.translate('utils.mySelf'),
     utils.translations.translate(`bomb.story.${getPlayerJob()}`),
     'views.choice.close',
-    "discussion"
+    "discussion",
+    'middle',
+    'middle',
+    '50vh',
+    '50vh',
+    () => {
+      if (!actionForAllPlayers.hasBeenTriggered('freeSpy')) {
+        if (getPlayerJob() === 'spy') {
+          // Is blocked under a rock
+          WA.controls.disablePlayerControls()
+          WA.player.setOutlineColor(255, 0, 0)
+        }
+      } else {
+        utils.layers.toggleLayersVisibility('rock', false)
+        WA.room.setTiles([
+          {x: 15, y: 7, tile: null, layer: 'rockCollisions'},
+          {x: 15, y: 8, tile: null, layer: 'rockCollisions'},
+        ]);
+      }
+    }
   )
 
 
@@ -46,7 +68,12 @@ WA.onInit().then(() => {
 
   // FREE SPY ACTION
   actionForAllPlayers.initializeActionForAllPlayers('freeSpy', () => {
+    // Remove rock layers and collisions
     utils.layers.toggleLayersVisibility('rock', false)
+    WA.room.setTiles([
+      {x: 15, y: 7, tile: null, layer: 'rockCollisions'},
+      {x: 15, y: 8, tile: null, layer: 'rockCollisions'},
+    ]);
 
     if (getPlayerJob() === 'spy') {
       WA.player.removeOutlineColor()
@@ -90,16 +117,6 @@ WA.onInit().then(() => {
     });
   }
 
-  if (!actionForAllPlayers.hasBeenTriggered('freeSpy')) {
-    if (getPlayerJob() === 'spy') {
-      // Is blocked under a rock
-      WA.player.setOutlineColor(255, 0, 0)
-      WA.controls.disablePlayerControls()
-    }
-  } else {
-    utils.layers.toggleLayersVisibility('rock', false)
-  }
-
   // On enter free spy layer
   let displayFreeSpyActionMessage: ActionMessage | null = null
   WA.room.onEnterLayer('saveSpyZone').subscribe(() => {
@@ -109,9 +126,9 @@ WA.onInit().then(() => {
         utils.translations.translate('utils.mySelf'),
         utils.translations.translate('bomb.freeSpy.noTime'),
         'views.choice.close',
-        "discussion"
+        "discussion",
       )
-    } else if(!actionForAllPlayers.hasBeenTrigered('freeSpy')) { // TODO : TEST --> Seems not to work as expected
+    } else if(!actionForAllPlayers.hasBeenTriggered('freeSpy')) {
       displayFreeSpyActionMessage = WA.ui.displayActionMessage({
         message: utils.translations.translate('utils.executeAction', {
           action: utils.translations.translate('bomb.freeSpy.free')
