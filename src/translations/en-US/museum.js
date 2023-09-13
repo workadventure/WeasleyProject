@@ -10,4 +10,5 @@ export default {
     accessCardDescription: "Golden key who seems looks really important",
     desktopOpenMsg: "*Clic clac* that's opened !",
     desktopOpen: "[TRY THE GOLDEN KEY]",
+    cannotUseComputers: 'I don\'t understand anything to computers'
 }

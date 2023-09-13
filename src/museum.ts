@@ -4,17 +4,22 @@ import { } from "https://unpkg.com/@workadventure/scripting-api-extra@^1";
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {discussion, hiddenZone, hooking, inventory} from './modules'
-import {initiateJob} from "./modules/job";
-import {ActionMessage} from "@workadventure/iframe-api-typings";
+import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers } from './modules'
+import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
+import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
+import {env, rootLink} from "./config";
+import {initializeActionForAllPlayers} from "./modules/actionForAllPlayers";
 
 
 
 WA.onInit().then(() => {
     console.log('door variable', WA.state.chest)
     initiateJob()
-    //setPlayerJob('spy')
+
+    if (env === 'dev') {
+        setPlayerJob('spy')
+    }
     inventory.initiateInventory()
     let haveSeenBeginText = false
     let haveBeginDiscussion = false
@@ -242,6 +247,129 @@ WA.onInit().then(() => {
             desktopSearchZone?.remove()
         })
     }
+
+    //////////////
+    // COMPUTER //
+    //////////////
+
+    // Cameras list
+    const cameras = [
+      'cameraZones/cZone1',
+      'cameraZones/cZone2',
+      'cameraZones/cZone3',
+      'cameraZones/cZone4',
+      'cameraZones/cZone5',
+      'cameraZones/cZone6'
+    ]
+
+    let userIsBlockedByCamera = null;
+    actionForAllPlayers.initializeActionForAllPlayers(`deactivateCamera`, (value: string) => {
+        // Show all cameras zone
+        for (let i = 0; i < cameras.length; i++) {
+            utils.layers.toggleLayersVisibility(cameras[i], true)
+        }
+
+        // Hide camera
+        utils.layers.toggleLayersVisibility(value, false)
+
+        // Unlock user
+        if (userIsBlockedByCamera === value) {
+            WA.controls.restorePlayerControls()
+        }
+    })
+
+    if (WA.player.state.askForDeactivateCamera === undefined) {
+        WA.player.state.askForDeactivateCamera = false
+    }
+
+    if (WA.player.state.askForCloseComputerWebsite === undefined) {
+        WA.player.state.askForCloseComputerWebsite = false
+    }
+
+    if (WA.player.state.askForSeeRoom === undefined) {
+        WA.player.state.askForSeeRoom = false
+    }
+
+    WA.player.state.onVariableChange('askForDeactivateCamera').subscribe((value) => {
+        console.log('ASKED FOR CAMERA', value)
+        if (value) {
+            actionForAllPlayers.activateActionForAllPlayer('deactivateCamera', value)
+        }
+    })
+
+    WA.player.state.onVariableChange('askForSeeRoom').subscribe((value) => {
+        console.log('SEE ROOM', value) // TODO
+    })
+
+    for (let i = 0; i < cameras.length; i++) {
+        WA.room.onEnterLayer(cameras[i]).subscribe(() => {
+            if (actionForAllPlayers.currentValue('deactivateCamera') !== cameras[i]) {
+                // Save wich camera is blocking user
+                userIsBlockedByCamera = cameras[i]
+                // Show message
+                discussion.openDiscussionWebsite(
+                  'utils.mySelf',
+                  'museum.cannotWalkInCameras',
+                  'utils.close',
+                  "discussion"
+                )
+                // Disable player controls
+                WA.controls.disablePlayerControls()
+            }
+        })
+    }
+
+    let computerWebsite: UIWebsite|null = null
+    const openComputerWebsite = async () => {
+        computerWebsite = await WA.ui.website.open({
+            url: `${rootLink}/views/museum/buildingMap.html`,
+            allowApi: true,
+            allowPolicy: "",
+            position: {
+                vertical: "middle",
+                horizontal: "right",
+            },
+            size: {
+                height: "100vh",
+                width: "50vw",
+            },
+        })
+        WA.controls.disablePlayerControls()
+        WA.player.state.askForCloseComputerWebsite = false
+    }
+
+    const closeComputerWebsite = () => {
+        computerWebsite?.close()
+        computerWebsite = null
+        WA.controls.restorePlayerControls()
+    }
+
+    // Hack computer
+    let computerMessage: ActionMessage|null = null
+    WA.room.onEnterLayer('computerZone').subscribe(() => {
+        computerMessage = WA.ui.displayActionMessage({
+            message: utils.translations.translate('utils.executeAction', {
+                action: utils.translations.translate('utils.hack')
+            }),
+            callback: () => {
+                if (!canUser('useComputers')) {
+                    discussion.openDiscussionWebsite(
+                      'utils.mySelf',
+                      'museum.cannotUseComputers',
+                      'utils.close',
+                      "discussion"
+                    )
+                } else {
+                    openComputerWebsite()
+                }
+            }
+        })
+    })
+
+    WA.room.onLeaveLayer('computerZone').subscribe(() => {
+        computerMessage?.remove()
+        computerMessage = null
+    })
 })
 
 export {};

@@ -21,4 +21,6 @@ export default {
     desktopItems7 : "Franchement... mon petit neveu aurait pu faire ce tableau... avec ses pieds... et les yeux bandés !",
     desktopItems8 :  "Une carte ! Ah, par contre ça semble être celle de super mario. Je dois chercher encore",
     beginBtn: "Commencer l'aventure",
+    cannotUseComputers: 'Je n\'ai jamais rien compris aux ordinateurs...',
+    cannotWalkInCameras: 'Mince ! Je n\'avais pas vu cette caméra ! Si je bouge d\'un centimètre, elle va me repérer... Il faut vite que quelqu\'un la désactive !'
 }
