@@ -14,7 +14,6 @@ import {toggleLayersVisibility} from "./utils/layers";
 
 
 WA.onInit().then(() => {
-    console.log('door variable', WA.state.chest)
     initiateJob()
 
     if (env === 'dev') {
@@ -210,8 +209,7 @@ WA.onInit().then(() => {
                               'middle',
                               '50vh',
                               '50vh',
-                              () => { // TODO : il y a une loop ici...
-                                  console.log('coucou')
+                              () => {
                                   discussion.openDiscussionWebsite(
                                     utils.translations.translate('utils.mySelf'),
                                     utils.translations.translate('museum.needDistraction'),
@@ -403,8 +401,6 @@ WA.onInit().then(() => {
     WA.player.state.onVariableChange('askForSeeRoom').subscribe((value:string) => {
         const roomData = rooms['room' + value]
 
-        console.log('VARIABLE CHANGED', roomData)
-        console.log('HIDE', `fogs/fog${value}`)
         // Move camera to room
         WA.camera.set(
           roomData.x,
