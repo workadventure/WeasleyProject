@@ -4,32 +4,57 @@ import { } from "https://unpkg.com/@workadventure/scripting-api-extra@^1";
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {discussion, hiddenZone, hooking, inventory} from './modules'
-import {initiateJob} from "./modules/job";
-import {ActionMessage} from "@workadventure/iframe-api-typings";
+import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers } from './modules'
+import {canUser, initiateJob, setPlayerJob} from "./modules/job";
+import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
+import {env, rootLink} from "./config";
+import {toggleLayersVisibility} from "./utils/layers";
 
 
 
 WA.onInit().then(() => {
-    console.log('door variable', WA.state.chest)
     initiateJob()
-    //setPlayerJob('spy')
+
+    if (env === 'dev') {
+        setPlayerJob('spy')
+    }
     inventory.initiateInventory()
     let haveSeenBeginText = false
     let haveBeginDiscussion = false
-    const lightLoop = () => {
-        setTimeout(() => {
-            WA.room.hideLayer('lights/lights1')
-            WA.room.showLayer('lights/lights2')
-            setTimeout(() => {
-                WA.room.hideLayer('lights/lights2')
-                WA.room.showLayer('lights/lights1')
-                lightLoop()
-            }, 300)
-        }, 300)
+
+    let isLight1Visible = false
+    let lightLoop: NodeJS.Timer|null = null
+    const launchLightLoop = () => {
+        lightLoop = setInterval(() => {
+            toggleLayersVisibility('lights/lights1', isLight1Visible)
+            toggleLayersVisibility('lights/lights2', !isLight1Visible)
+            isLight1Visible = !isLight1Visible
+        }, 300);
     }
-    lightLoop()
+
+    const stopLightLoop = () => {
+        if (lightLoop) {
+            clearInterval(lightLoop)
+        }
+        lightLoop = null
+    }
+
+    const turnOnLights = () => {
+        launchLightLoop()
+        toggleLayersVisibility('noLights/noLights', false)
+        toggleLayersVisibility('noLights/conversations', false)
+        toggleLayersVisibility('lights/conversations', true)
+    }
+
+    const turnOffLights = () => {
+        stopLightLoop()
+        toggleLayersVisibility('lights/lights1', false)
+        toggleLayersVisibility('lights/lights2', false)
+        toggleLayersVisibility('noLights/noLights', true)
+        toggleLayersVisibility('noLights/conversations', true)
+        toggleLayersVisibility('lights/conversations', false)
+    }
 
     hooking.setHooking('hookingD7', () => {
         const tiles = []
@@ -156,31 +181,45 @@ WA.onInit().then(() => {
     const pickPocket = (i: number) => {
         let searchZone: ActionMessage|null = null
         WA.room.onEnterLayer(`pickPocketInvited/i${i}`).subscribe(() => {
-            if(i === 8 && !inventory.hasItem('access-card')) {
                 searchZone = WA.ui.displayActionMessage({
                     message: utils.translations.translate('museum.pickpocket'),
                     callback: () => {
-                        inventory.addToInventory({
-                            id: 'access-card',
-                            name: 'museum.accessCard',
-                            image: 'myItem.png', // here, the path from root is public/images/myItem.png
-                            description: 'museum.accessCardDescription'
-                        })
-                    }
-                })
-            } else {
-                searchZone = WA.ui.displayActionMessage({
-                    message: utils.translations.translate('museum.pickpocket'),
-                    callback: () => {
-                        searchZone = WA.ui.displayActionMessage({
-                            message: utils.translations.translate('museum.pickpocketEmpty'),
-                            callback: () => {
+                        if (!actionForAllPlayers.currentValue('switchLights')) {
+                            if(i === 8 && !inventory.hasItem('access-card')) {
+                                inventory.addToInventory({
+                                    id: 'access-card',
+                                    name: 'museum.accessCard',
+                                    image: 'myItem.png', // here, the path from root is public/images/myItem.png
+                                    description: 'museum.accessCardDescription'
+                                })
+                            } else {
+                                searchZone = WA.ui.displayActionMessage({
+                                    message: utils.translations.translate('museum.pickpocketEmpty'),
+                                    callback: () => {
+                                    }
+                                })
                             }
-                        })
+                        } else {
+                            discussion.openDiscussionWebsite(
+                              utils.translations.translate('museum.guest'),
+                              utils.translations.translate('museum.cannotPickPocket'),
+                              'views.choice.close',
+                              "discussion",
+                              'middle',
+                              'middle',
+                              '50vh',
+                              '50vh',
+                              () => {
+                                  discussion.openDiscussionWebsite(
+                                    utils.translations.translate('utils.mySelf'),
+                                    utils.translations.translate('museum.needDistraction'),
+                                    'views.choice.close',
+                                    "discussion")
+                              }
+                            )
+                        }
                     }
                 })
-            }
-
         })
         WA.room.onLeaveLayer(`pickPocketInvited/i${i}`).subscribe(() => {
             searchZone?.remove()
@@ -242,6 +281,214 @@ WA.onInit().then(() => {
             desktopSearchZone?.remove()
         })
     }
+
+    //////////////
+    // COMPUTER //
+    //////////////
+
+    // Cameras list
+    const cameras = [
+      'cameraZones/cZone1',
+      'cameraZones/cZone2',
+      'cameraZones/cZone3',
+      'cameraZones/cZone4',
+      'cameraZones/cZone5',
+      'cameraZones/cZone6'
+    ]
+
+    // Rooms list
+    const rooms: Record<string, Record<string, number>> = {
+        room1: {
+            x: 5*32,
+            y: 60*32,
+            width: 500,
+            height: 500,
+        },
+        room2: {
+            x: 5*32,
+            y: 44*32,
+            width: 500,
+            height: 500,
+        },
+        room3: {
+            x: 3*32,
+            y: 3*32,
+            width: 500,
+            height: 500,
+        },
+        room4: {
+            x: 60*32,
+            y: 4*32,
+            width: 900,
+            height: 900,
+        },
+        room5: {
+            x: 50*32,
+            y: 32*32,
+            width: 400,
+            height: 400,
+        },
+        room6: {
+            x: 31*32,
+            y: 51*32,
+            width: 520,
+            height: 520,
+        },
+        room7: {
+            x: 37*32,
+            y: 33*32,
+            width: 1000,
+            height: 1000,
+        },
+    }
+
+    let userIsBlockedByCamera: null|string = null;
+    actionForAllPlayers.initializeActionForAllPlayers(`deactivateCamera`, (value: string) => {
+        // Show all cameras zone
+        for (let i = 0; i < cameras.length; i++) {
+            utils.layers.toggleLayersVisibility(cameras[i], true)
+        }
+
+        // Hide camera
+        utils.layers.toggleLayersVisibility(value, false)
+
+        // Unlock user
+        if (userIsBlockedByCamera === value) {
+            WA.controls.restorePlayerControls()
+        }
+    })
+
+    actionForAllPlayers.initializeActionForAllPlayers('switchLights', (value: boolean) => {
+        if (value) {
+            turnOnLights()
+        } else {
+            turnOffLights()
+        }
+    }, true)
+
+    if (WA.player.state.askForSwitchLights === undefined) {
+        WA.player.state.askForSwitchLights = true
+    }
+
+    if (WA.player.state.askForDeactivateCamera === undefined) {
+        WA.player.state.askForDeactivateCamera = false
+    }
+
+    if (WA.player.state.askForCloseComputerWebsite === undefined) {
+        WA.player.state.askForCloseComputerWebsite = false
+    }
+
+    if (WA.player.state.askForSeeRoom === undefined) {
+        WA.player.state.askForSeeRoom = false
+    }
+
+    WA.player.state.onVariableChange('askForDeactivateCamera').subscribe((value) => {
+        if (value) {
+            actionForAllPlayers.activateActionForAllPlayer('deactivateCamera', value)
+        }
+    })
+
+    WA.player.state.onVariableChange('askForCloseComputerWebsite').subscribe((value) => {
+        if (value) {
+            closeComputerWebsite()
+        }
+    })
+
+    WA.player.state.onVariableChange('askForSwitchLights').subscribe((value) => {
+        actionForAllPlayers.activateActionForAllPlayer('switchLights', value)
+    })
+
+    WA.player.state.onVariableChange('askForSeeRoom').subscribe((value) => {
+        const roomData = rooms['room' + value]
+
+        // Move camera to room
+        WA.camera.set(
+          roomData.x,
+          roomData.y,
+          roomData.width,
+          roomData.height,
+          false,
+          false,
+        )
+
+        utils.layers.toggleLayersVisibility(`fogs/fog${value}`, false)
+    })
+
+    for (let i = 0; i < cameras.length; i++) {
+        WA.room.onEnterLayer(cameras[i]).subscribe(() => {
+            if (actionForAllPlayers.currentValue('deactivateCamera') !== cameras[i]) {
+                // Save wich camera is blocking user
+                userIsBlockedByCamera = cameras[i]
+                // Show message
+                discussion.openDiscussionWebsite(
+                  'utils.mySelf',
+                  'museum.cannotWalkInCameras',
+                  'utils.close',
+                  "discussion",
+                  'bottom',
+                  'middle',
+                  '50vh',
+                  '50vh',
+                  () => {
+                      // Disable player controls
+                      WA.controls.disablePlayerControls()
+                  }
+                )
+            }
+        })
+    }
+
+    let computerWebsite: UIWebsite|null = null
+    const openComputerWebsite = async () => {
+        computerWebsite = await WA.ui.website.open({
+            url: `${rootLink}/views/museum/buildingMap.html`,
+            allowApi: true,
+            allowPolicy: "",
+            position: {
+                vertical: "middle",
+                horizontal: "right",
+            },
+            size: {
+                height: "100vh",
+                width: "50vw",
+            },
+        })
+        WA.controls.disablePlayerControls()
+        WA.player.state.askForCloseComputerWebsite = false
+    }
+
+    const closeComputerWebsite = () => {
+        computerWebsite?.close()
+        computerWebsite = null
+        WA.controls.restorePlayerControls()
+    }
+
+    // Hack computer
+    let computerMessage: ActionMessage|null = null
+    WA.room.onEnterLayer('computerZone').subscribe(() => {
+        computerMessage = WA.ui.displayActionMessage({
+            message: utils.translations.translate('utils.executeAction', {
+                action: utils.translations.translate('utils.hack')
+            }),
+            callback: () => {
+                if (!canUser('useComputers')) {
+                    discussion.openDiscussionWebsite(
+                      'utils.mySelf',
+                      'museum.cannotUseComputers',
+                      'utils.close',
+                      "discussion"
+                    )
+                } else {
+                    openComputerWebsite()
+                }
+            }
+        })
+    })
+
+    WA.room.onLeaveLayer('computerZone').subscribe(() => {
+        computerMessage?.remove()
+        computerMessage = null
+    })
 })
 
 export {};

@@ -90,9 +90,16 @@ const hasBeenTriggered = (id: string) => {
   return false
 }
 
+// Current value of action
+const currentValue = (id: string) => {
+  let currentValue = JSON.parse(WA.state.mapActionVariables as string)
+  return currentValue[id]
+}
+
 export {
   initializeActionForAllPlayers,
   activateActionForAllPlayer,
   hasBeenTriggered,
-  initializeRelativeActionForAllPlayers
+  initializeRelativeActionForAllPlayers,
+  currentValue
 }

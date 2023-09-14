@@ -39,6 +39,7 @@ const openDiscussionWebsite = async (
   WA.player.state.onVariableChange('askForDiscussionWebsiteClose').subscribe((value) => {
     if (value) {
       closeDiscussionWebsite(callbackWhenClosed)
+      callbackWhenClosed = null
     }
   })
 }
