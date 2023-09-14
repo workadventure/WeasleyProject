@@ -9,7 +9,7 @@ import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {env, rootLink} from "./config";
-import {initializeActionForAllPlayers} from "./modules/actionForAllPlayers";
+import {toggleLayersVisibility} from "./utils/layers";
 
 
 
@@ -23,18 +23,39 @@ WA.onInit().then(() => {
     inventory.initiateInventory()
     let haveSeenBeginText = false
     let haveBeginDiscussion = false
-    const lightLoop = () => {
-        setTimeout(() => {
-            WA.room.hideLayer('lights/lights1')
-            WA.room.showLayer('lights/lights2')
-            setTimeout(() => {
-                WA.room.hideLayer('lights/lights2')
-                WA.room.showLayer('lights/lights1')
-                lightLoop()
-            }, 300)
-        }, 300)
+
+    let isLight1Visible = false
+    let lightLoop: NodeJS.Timer|null = null
+    const launchLightLoop = () => {
+        lightLoop = setInterval(() => {
+            toggleLayersVisibility('lights/lights1', isLight1Visible)
+            toggleLayersVisibility('lights/lights2', !isLight1Visible)
+            isLight1Visible = !isLight1Visible
+        }, 300);
     }
-    lightLoop()
+
+    const stopLightLoop = () => {
+        if (lightLoop) {
+            clearInterval(lightLoop)
+        }
+        lightLoop = null
+    }
+
+    const turnOnLights = () => {
+        launchLightLoop()
+        toggleLayersVisibility('noLights/noLights', false)
+        toggleLayersVisibility('noLights/conversations', false)
+        toggleLayersVisibility('lights/conversations', true)
+    }
+
+    const turnOffLights = () => {
+        stopLightLoop()
+        toggleLayersVisibility('lights/lights1', false)
+        toggleLayersVisibility('lights/lights2', false)
+        toggleLayersVisibility('noLights/noLights', true)
+        toggleLayersVisibility('noLights/conversations', true)
+        toggleLayersVisibility('lights/conversations', false)
+    }
 
     hooking.setHooking('hookingD7', () => {
         const tiles = []
@@ -161,31 +182,46 @@ WA.onInit().then(() => {
     const pickPocket = (i: number) => {
         let searchZone: ActionMessage|null = null
         WA.room.onEnterLayer(`pickPocketInvited/i${i}`).subscribe(() => {
-            if(i === 8 && !inventory.hasItem('access-card')) {
                 searchZone = WA.ui.displayActionMessage({
                     message: utils.translations.translate('museum.pickpocket'),
                     callback: () => {
-                        inventory.addToInventory({
-                            id: 'access-card',
-                            name: 'museum.accessCard',
-                            image: 'myItem.png', // here, the path from root is public/images/myItem.png
-                            description: 'museum.accessCardDescription'
-                        })
-                    }
-                })
-            } else {
-                searchZone = WA.ui.displayActionMessage({
-                    message: utils.translations.translate('museum.pickpocket'),
-                    callback: () => {
-                        searchZone = WA.ui.displayActionMessage({
-                            message: utils.translations.translate('museum.pickpocketEmpty'),
-                            callback: () => {
+                        if (!actionForAllPlayers.currentValue('switchLights')) {
+                            if(i === 8 && !inventory.hasItem('access-card')) {
+                                inventory.addToInventory({
+                                    id: 'access-card',
+                                    name: 'museum.accessCard',
+                                    image: 'myItem.png', // here, the path from root is public/images/myItem.png
+                                    description: 'museum.accessCardDescription'
+                                })
+                            } else {
+                                searchZone = WA.ui.displayActionMessage({
+                                    message: utils.translations.translate('museum.pickpocketEmpty'),
+                                    callback: () => {
+                                    }
+                                })
                             }
-                        })
+                        } else {
+                            discussion.openDiscussionWebsite(
+                              utils.translations.translate('museum.guest'),
+                              utils.translations.translate('museum.cannotPickPocket'),
+                              'views.choice.close',
+                              "discussion",
+                              'middle',
+                              'middle',
+                              '50vh',
+                              '50vh',
+                              () => { // TODO : il y a une loop ici...
+                                  console.log('coucou')
+                                  discussion.openDiscussionWebsite(
+                                    utils.translations.translate('utils.mySelf'),
+                                    utils.translations.translate('museum.needDistraction'),
+                                    'views.choice.close',
+                                    "discussion")
+                              }
+                            )
+                        }
                     }
                 })
-            }
-
         })
         WA.room.onLeaveLayer(`pickPocketInvited/i${i}`).subscribe(() => {
             searchZone?.remove()
@@ -324,6 +360,18 @@ WA.onInit().then(() => {
         }
     })
 
+    actionForAllPlayers.initializeActionForAllPlayers('switchLights', (value: boolean) => {
+        if (value) {
+            turnOnLights()
+        } else {
+            turnOffLights()
+        }
+    }, true)
+
+    if (WA.player.state.askForSwitchLights === undefined) {
+        WA.player.state.askForSwitchLights = true
+    }
+
     if (WA.player.state.askForDeactivateCamera === undefined) {
         WA.player.state.askForDeactivateCamera = false
     }
@@ -341,6 +389,10 @@ WA.onInit().then(() => {
         if (value) {
             actionForAllPlayers.activateActionForAllPlayer('deactivateCamera', value)
         }
+    })
+
+    WA.player.state.onVariableChange('askForSwitchLights').subscribe((value) => {
+        actionForAllPlayers.activateActionForAllPlayer('switchLights', value)
     })
 
     WA.player.state.onVariableChange('askForSeeRoom').subscribe((value:string) => {
@@ -371,10 +423,16 @@ WA.onInit().then(() => {
                   'utils.mySelf',
                   'museum.cannotWalkInCameras',
                   'utils.close',
-                  "discussion"
+                  "discussion",
+                  'bottom',
+                  'middle',
+                  '50vh',
+                  '50vh',
+                  () => {
+                      // Disable player controls
+                      WA.controls.disablePlayerControls()
+                  }
                 )
-                // Disable player controls
-                WA.controls.disablePlayerControls()
             }
         })
     }

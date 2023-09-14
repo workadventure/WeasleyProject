@@ -10,5 +10,8 @@ export default {
     accessCardDescription: "Golden key who seems looks really important",
     desktopOpenMsg: "*Clic clac* that's opened !",
     desktopOpen: "[TRY THE GOLDEN KEY]",
-    cannotUseComputers: 'I don\'t understand anything to computers'
+    cannotUseComputers: 'I don\'t understand anything to computers',
+    guest: 'Guest',
+    cannotPickPocket: 'Hey! What are you doing ? You\'re lucky I don\'t call security right away!',
+    needDistraction: 'Damn! I need a distraction so I can go through the guests pockets...'
 }

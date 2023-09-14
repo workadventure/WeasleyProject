@@ -15,31 +15,66 @@ document.addEventListener("DOMContentLoaded", () => {
     const askForCloseComputerWebsite = () => {
       WA.player.state.askForCloseComputerWebsite = true
     }
+    const askForSwitchLights = () => {
+      WA.player.state.askForSwitchLights = !WA.player.state.askForSwitchLights
+    }
 
     const cameras = document.getElementsByClassName('camera')
     const rooms = document.getElementsByClassName('room')
     const closeButton = document.getElementById('closeButton')
+    const hackingWindow = document.getElementById('hackingWindow')
+    const lightSwitch = document.getElementById('lightnings')
 
-    if (cameras) {
+    let isHacking = false;
+    if (lightSwitch && hackingWindow) {
+      lightSwitch.addEventListener('click', () => {
+        if (!isHacking) {
+          isHacking = true;
+          hackingWindow.classList.add('show')
+          setTimeout(() => {
+            askForSwitchLights()
+            hackingWindow.classList.remove('show')
+            isHacking = false
+          }, 2000)
+        }
+      })
+    }
+
+    if (cameras && hackingWindow) {
       for (let i = 0; i < cameras.length; i++) {
         cameras[i].addEventListener('click', () => {
-          for (let i = 0; i < cameras.length; i++) {
-            cameras[i].classList.remove('deactivated')
+          if (!isHacking) {
+            isHacking = true;
+            hackingWindow.classList.add('show')
+            setTimeout(() => {
+              for (let i = 0; i < cameras.length; i++) {
+                cameras[i].classList.remove('deactivated')
+              }
+              cameras[i].classList.add('deactivated')
+              askForDeactivateCamera(cameras[i].getAttribute('id'))
+              hackingWindow.classList.remove('show')
+              isHacking = false
+            }, 2000)
           }
-          console.log(cameras[i].getAttribute('id'))
-          cameras[i].classList.add('deactivated')
-          askForDeactivateCamera(cameras[i].getAttribute('id'))
         })
       }
     }
 
-    if (rooms) {
+    if (rooms && hackingWindow) {
       for (let i = 0; i < rooms.length; i++) {
         rooms[i].addEventListener('click', () => {
-          const roomId = rooms[i].getAttribute('id');
-          console.log('room', roomId.replace('room', ''))
-          if (roomId) {
-            askForSeeRoom(roomId.replace('room', ''))
+          if (!isHacking) {
+            isHacking = true;
+            hackingWindow.classList.add('show')
+            setTimeout(() => {
+              const roomId = rooms[i].getAttribute('id');
+              console.log('room', roomId.replace('room', ''))
+              if (roomId) {
+                askForSeeRoom(roomId.replace('room', ''))
+              }
+              hackingWindow.classList.remove('show')
+              isHacking = false
+            }, 2000)
           }
         })
       }

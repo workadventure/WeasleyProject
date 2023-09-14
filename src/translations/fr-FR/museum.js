@@ -22,5 +22,8 @@ export default {
     desktopItems8 :  "Une carte ! Ah, par contre ça semble être celle de super mario. Je dois chercher encore",
     beginBtn: "Commencer l'aventure",
     cannotUseComputers: 'Je n\'ai jamais rien compris aux ordinateurs...',
-    cannotWalkInCameras: 'Mince ! Je n\'avais pas vu cette caméra ! Si je bouge d\'un centimètre, elle va me repérer... Il faut vite que quelqu\'un la désactive !'
+    cannotWalkInCameras: 'Mince ! Je n\'avais pas vu cette caméra ! Si je bouge d\'un centimètre, elle va me repérer... Il faut vite que quelqu\'un la désactive !',
+    guest: 'Invité',
+    cannotPickPocket: 'Non mais dites ! Faut pas vous gêner ! Vous avez de la chance que je n\'appelle pas immédiatement la sécurité !',
+    needDistraction: 'Mince ! Il me faudrait une distraction pour pouvoir fouiller les poches des invités...'
 }
