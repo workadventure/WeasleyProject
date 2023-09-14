@@ -5,7 +5,7 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
 import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers } from './modules'
-import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
+import {canUser, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {env, rootLink} from "./config";
@@ -297,7 +297,7 @@ WA.onInit().then(() => {
     ]
 
     // Rooms list
-    const rooms = {
+    const rooms: Record<string, Record<string, number>> = {
         room1: {
             x: 5*32,
             y: 60*32,
@@ -342,7 +342,7 @@ WA.onInit().then(() => {
         },
     }
 
-    let userIsBlockedByCamera = null;
+    let userIsBlockedByCamera: null|string = null;
     actionForAllPlayers.initializeActionForAllPlayers(`deactivateCamera`, (value: string) => {
         // Show all cameras zone
         for (let i = 0; i < cameras.length; i++) {
