@@ -398,7 +398,7 @@ WA.onInit().then(() => {
         actionForAllPlayers.activateActionForAllPlayer('switchLights', value)
     })
 
-    WA.player.state.onVariableChange('askForSeeRoom').subscribe((value:string) => {
+    WA.player.state.onVariableChange('askForSeeRoom').subscribe((value) => {
         const roomData = rooms['room' + value]
 
         // Move camera to room
