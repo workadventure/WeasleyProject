@@ -385,9 +385,14 @@ WA.onInit().then(() => {
     }
 
     WA.player.state.onVariableChange('askForDeactivateCamera').subscribe((value) => {
-        console.log('ASKED FOR CAMERA', value)
         if (value) {
             actionForAllPlayers.activateActionForAllPlayer('deactivateCamera', value)
+        }
+    })
+
+    WA.player.state.onVariableChange('askForCloseComputerWebsite').subscribe((value) => {
+        if (value) {
+            closeComputerWebsite()
         }
     })
 
