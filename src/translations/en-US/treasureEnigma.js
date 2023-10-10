@@ -12,6 +12,7 @@ export default {
   hammer: {
     name: 'Hammer',
     description: 'There must be something I can do with it...',
-    action: 'Take the hammer'
+    action: 'Take the hammer',
+    opened: 'A hatch has opened !'
   }
 }

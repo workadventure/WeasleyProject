@@ -1,4 +1,4 @@
-import { readRunes, inventory, switchingTiles, actionForAllPlayers, discussion } from './modules'
+import { readRunes, inventory, switchingTiles, actionForAllPlayers, discussion, notifications } from './modules'
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import {getPlayerJob, initiateJob} from "./modules/job";
@@ -20,6 +20,7 @@ WA.onInit().then(() => {
     'rotatingStatues',
     () => {
       // Hammer visible
+      notifications.notify('treasureEnigma.hammer.opened', 'utils.success', 'success') // TODO : translation
       utils.layers.toggleLayersVisibility('hammerZoneTop', false)
       WA.room.onEnterLayer('hammerZone').subscribe(() => {
         if (!inventory.hasItem('hammer')) {
