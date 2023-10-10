@@ -18,7 +18,6 @@ WA.onInit().then(() => {
 
     if (env === 'dev') {
         setPlayerJob('spy')
-        console.log('coucou')
     }
     inventory.initiateInventory()
 
@@ -434,6 +433,7 @@ WA.onInit().then(() => {
         computerWebsite?.close()
         computerWebsite = null
         WA.controls.restorePlayerControls()
+        WA.camera.followPlayer(true)
     }
 
     // Hack computer
