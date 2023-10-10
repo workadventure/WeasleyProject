@@ -20,7 +20,8 @@ WA.onInit().then(() => {
     'rotatingStatues',
     () => {
       // Hammer visible
-      notifications.notify('treasureEnigma.hammer.opened', 'utils.success', 'success') // TODO : translation
+      notifications.notify('treasureEnigma.hammer.opened', 'utils.success', 'success')
+      // TODO : success sound
       utils.layers.toggleLayersVisibility('hammerZoneTop', false)
       WA.room.onEnterLayer('hammerZone').subscribe(() => {
         if (!inventory.hasItem('hammer')) {

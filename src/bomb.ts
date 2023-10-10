@@ -31,7 +31,7 @@ WA.onInit().then(() => {
 
   // FOR DEVELOPMENT PURPOSE ONLY
   if(env === 'dev'){
-    setPlayerJob('archaeologist')
+    setPlayerJob('spy')
   }
 
   // Speech at arriving
@@ -70,14 +70,11 @@ WA.onInit().then(() => {
     WA.player.state.askForBoom = false
   }
 
-  // Secret passage
-  WA.onInit().then(() => {
     // secret passages initialisation
     secretPassages.initiateSecretPassages(
       ['secretPassage'],
       [() => {console.log('secret passage discovered !')}
       ])
-  })
 
   // FREE SPY ACTION
   actionForAllPlayers.initializeActionForAllPlayers('freeSpy', () => {
