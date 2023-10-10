@@ -8,6 +8,16 @@ import {env} from "./config"
 let bombWebsite:UIWebsite|null = null
 let cheatSheetWebsite:UIWebsite|null = null
 
+const resetCamera = async () => {
+  const playerPosition = await WA.player.getPosition()
+  WA.camera.set(
+    playerPosition.x,
+    playerPosition.y,
+    100,
+    100,
+  )
+}
+
 WA.onInit().then(() => {
   // Reset camera Zoom
   WA.camera.followPlayer(true)
@@ -15,6 +25,9 @@ WA.onInit().then(() => {
 
   // Initiate jobs
   initiateJob()
+
+  // Reset zoom
+  resetCamera()
 
   // FOR DEVELOPMENT PURPOSE ONLY
   if(env === 'dev'){
