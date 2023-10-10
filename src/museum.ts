@@ -18,10 +18,24 @@ WA.onInit().then(() => {
 
     if (env === 'dev') {
         setPlayerJob('spy')
+        console.log('coucou')
     }
     inventory.initiateInventory()
-    let haveSeenBeginText = false
-    let haveBeginDiscussion = false
+
+    const launchTutorial = () => {
+        // Disable player controls
+        WA.controls.disablePlayerControls()
+
+        // Open discussion 1
+        // TODO : translate 'Voix off et go'
+        discussion.openDiscussionWebsite( 'Voix off', 'views.museum.beginText', "Go !", "Discussion", 'middle' , 'middle', '50vh', '90vw', () => {
+            discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
+                // Restore player controls
+                WA.controls.restorePlayerControls()
+            })
+        })
+    }
+    launchTutorial()
 
     let isLight1Visible = false
     let lightLoop: NodeJS.Timer|null = null
@@ -95,47 +109,6 @@ WA.onInit().then(() => {
     WA.room.onLeaveLayer(`bigRoomAccess/keeperZone`).subscribe(() => {
         keeperZone?.remove()
     })
-
-    let beginZone: ActionMessage|null = null
-    WA.room.onEnterLayer(`beginZone`).subscribe(() => {
-        if(!haveSeenBeginText) {
-            WA.controls.disablePlayerControls()
-            beginZone = WA.ui.displayActionMessage({
-                message: utils.translations.translate('museum.beginBtn'),
-                callback: () => {
-                    discussion.openDiscussionWebsite( 'Voix off', 'views.museum.beginText', "Go !", "Discussion", 'middle' , 'middle', '50vh', '90vw', () => {
-                        WA.controls.restorePlayerControls()
-                        haveSeenBeginText = true
-                    })
-                }
-            })
-        }
-    })
-    WA.room.onLeaveLayer(`beginZone`).subscribe(() => {
-        if(!haveSeenBeginText) {
-            beginZone?.remove()
-        }
-    })
-    let beginDiscussZone: ActionMessage|null = null
-    WA.room.onEnterLayer(`beginDiscussZone`).subscribe(() => {
-        if(!haveBeginDiscussion) {
-            WA.controls.disablePlayerControls()
-            beginDiscussZone = WA.ui.displayActionMessage({
-                message: utils.translations.translate('museum.speakToKeeper'),
-                callback: () => {
-                    discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
-                        WA.controls.restorePlayerControls()
-                    })
-                }
-            })
-        }
-    })
-    WA.room.onLeaveLayer(`beginDiscussZone`).subscribe(() => {
-        if(!haveBeginDiscussion) {
-            beginDiscussZone?.remove()
-        }
-    })
-
 
     for (let i = 1; i < 8; i++) {
         hiddenZone.initiateHiddenZones([{stepIn: `fogsZone/fog${[i]}`, hide: `fogs/fog${[i]}`}])
