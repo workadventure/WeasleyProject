@@ -5,13 +5,11 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
 import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers } from './modules'
-import {canUser, initiateJob, setPlayerJob} from "./modules/job";
+import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {env, rootLink} from "./config";
 import {toggleLayersVisibility} from "./utils/layers";
-
-
 
 WA.onInit().then(() => {
     initiateJob()
@@ -25,9 +23,8 @@ WA.onInit().then(() => {
         // Disable player controls
         WA.controls.disablePlayerControls()
 
-        // Open discussion 1
-        // TODO : translate 'Voix off et go'
-        discussion.openDiscussionWebsite( 'Voix off', 'views.museum.beginText', "Go !", "Discussion", 'middle' , 'middle', '50vh', '90vw', () => {
+        // Open tutorial discussion
+        discussion.openDiscussionWebsite( 'utils.voiceOver', 'views.museum.beginText', "museum.go", "Discussion", 'middle' , 'middle', '50vh', '90vw', () => {
             discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
                 // Restore player controls
                 WA.controls.restorePlayerControls()
@@ -268,6 +265,33 @@ WA.onInit().then(() => {
       'cameraZones/cZone6'
     ]
 
+    const cameraReturnPosition = [
+        {
+            x: 8*32,
+            y: 68*32
+        },
+        {
+            x: 26*32,
+            y: 68*32
+        },
+        {
+            x: 15*32,
+            y: 63*32
+        },
+        {
+            x: 10*32,
+            y: 27*32
+        },
+        {
+            x: 47*32,
+            y: 23*32
+        },
+        {
+            x: 47*32,
+            y: 42*32
+        }
+    ]
+
     // Rooms list
     const rooms: Record<string, Record<string, number>> = {
         room1: {
@@ -389,23 +413,42 @@ WA.onInit().then(() => {
     for (let i = 0; i < cameras.length; i++) {
         WA.room.onEnterLayer(cameras[i]).subscribe(() => {
             if (actionForAllPlayers.currentValue('deactivateCamera') !== cameras[i]) {
-                // Save wich camera is blocking user
-                userIsBlockedByCamera = cameras[i]
-                // Show message
-                discussion.openDiscussionWebsite(
-                  'utils.mySelf',
-                  'museum.cannotWalkInCameras',
-                  'utils.close',
-                  "discussion",
-                  'bottom',
-                  'middle',
-                  '50vh',
-                  '50vh',
-                  () => {
-                      // Disable player controls
-                      WA.controls.disablePlayerControls()
-                  }
-                )
+                if (getPlayerJob() === 'spy') {
+                    discussion.openDiscussionWebsite(
+                      'utils.mySelf',
+                      'museum.cantStayInCamera',
+                      'utils.close',
+                      "discussion",
+                      'bottom',
+                      'middle',
+                      '50vh',
+                      '50vh',
+                      async () => {
+                          // Disable player controls
+                          WA.controls.disablePlayerControls()
+                          await WA.player.moveTo(cameraReturnPosition[i].x, cameraReturnPosition[i].y)
+                          WA.controls.restorePlayerControls()
+                      }
+                    )
+                } else {
+                    // Save wich camera is blocking user
+                    userIsBlockedByCamera = cameras[i]
+                    // Show message
+                    discussion.openDiscussionWebsite(
+                      'utils.mySelf',
+                      'museum.cannotWalkInCameras',
+                      'utils.close',
+                      "discussion",
+                      'bottom',
+                      'middle',
+                      '50vh',
+                      '50vh',
+                      () => {
+                          // Disable player controls
+                          WA.controls.disablePlayerControls()
+                      }
+                    )
+                }
             }
         })
     }
