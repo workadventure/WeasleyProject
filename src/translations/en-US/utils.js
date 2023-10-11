@@ -7,5 +7,6 @@ export default {
     seeTheRules: 'See the rules',
     mySelf: 'Me',
     success: 'Success',
-    failure: 'Failure'
+    failure: 'Failure',
+    voiceOver: 'Voice-over'
 }

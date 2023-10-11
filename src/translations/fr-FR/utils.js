@@ -8,5 +8,6 @@ export default {
     mySelf: 'Moi',
     success: 'Succès',
     failure: 'Échec',
-    close: 'Fermer'
+    close: 'Fermer',
+    voiceOver: 'Voix-off'
 }

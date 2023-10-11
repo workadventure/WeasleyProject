@@ -12,6 +12,7 @@ export default {
   hammer: {
     name: 'Marteau',
     description: 'Je dois bien pouvoir en faire quelque chose...',
-    action: 'Prendre le marteau'
+    action: 'Prendre le marteau',
+    opened: 'Une trappe s\'est ouverte !'
   }
 }

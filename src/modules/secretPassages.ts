@@ -8,8 +8,6 @@ const removeBlocksTiles = (zone: string) => {
   const mapWidth = WA.state.mapWidth as number
   const mapHeight = WA.state.mapHeight as number
 
-  console.log('height', mapHeight)
-  console.log('width', mapWidth)
   const tiles = []
   for (let i = 1; i < mapWidth; i++) {
     for (let j = 1; j < mapHeight; j++) {
@@ -24,7 +22,6 @@ const initiateSecretPassages = (
   secretPassagesZones: Array<string> = ['secretPassageZone'],
   callbacks: Array<Function> |null = null
 ) => {
-
     // Show all secret passages tiles
     for (let i = 0; i < secretPassagesZones.length; i++) {
       // If the secret passage has been discovered before player arrive,
@@ -50,17 +47,14 @@ const initiateSecretPassages = (
             findSecretPassageAction?.remove()
           })
         } else {
-          // These layers should already have been hidden from the map, but we hide them anyway (in case map builder forgot)
           WA.room.hideLayer(`${secretPassagesZones[i]}/trace`)
-          WA.room.hideLayer(`${secretPassagesZones[i]}/found`)
-          WA.room.hideLayer(`${secretPassagesZones[i]}/disappear`)
         }
 
         WA.state.onVariableChange(`${secretPassagesZones[i]}Discovered`).subscribe(() => {
           findSecretPassage(secretPassagesZones[i], callbacks ? callbacks[i] : null)
         })
       } else {
-        // This layer should already have been hidden but we hide in case map builder forgot
+        //This layer should already have been hidden but we hide in case map builder forgot
         WA.room.hideLayer(`${secretPassagesZones[i]}/trace`)
 
         WA.room.showLayer(`${secretPassagesZones[i]}/found`)

@@ -4,14 +4,12 @@ import { } from "https://unpkg.com/@workadventure/scripting-api-extra@^1";
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers } from './modules'
-import {canUser, initiateJob, setPlayerJob} from "./modules/job";
+import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications } from './modules'
+import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {env, rootLink} from "./config";
 import {toggleLayersVisibility} from "./utils/layers";
-
-
 
 WA.onInit().then(() => {
     initiateJob()
@@ -19,9 +17,71 @@ WA.onInit().then(() => {
     if (env === 'dev') {
         setPlayerJob('spy')
     }
+    // Inventory initialisation
     inventory.initiateInventory()
-    let haveSeenBeginText = false
-    let haveBeginDiscussion = false
+
+    // Add copy of the map to inventory if has already been retrieved (in case of reload)
+    if (WA.state.mapRetrieved) {
+        inventory.addToInventory({
+            id: 'secret-map',
+            name: 'museum.secretMap.title',
+            image: 'secret-map.png',
+            description: 'museum.secretMap.description'
+        })
+    }
+
+
+    WA.state.onVariableChange('chest').subscribe((value) => {
+        if (value && !WA.state.mapRetrieved) {
+            WA.state.mapRetrieved = true
+        }
+    })
+
+    WA.state.onVariableChange('mapRetrieved').subscribe((value) => {
+        if (value) {
+            notifications.notify('La carte a été récupérée !', 'utils.success', 'success')
+            inventory.addToInventory({
+                id: 'secret-map',
+                name: 'museum.secretMap.name',
+                image: 'secret-map.png',
+                description: 'museum.secretMap.description'
+            })
+        }
+    })
+
+    // Go out after retrieving the map
+    let outMessage: ActionMessage | null = null
+    WA.room.onEnterLayer('start').subscribe(() => {
+        if (WA.state.mapRetrieved) {
+            outMessage = WA.ui.displayActionMessage({
+                message: utils.translations.translate('utils.executeAction', {
+                    action: utils.translations.translate('museum.escape')
+                }),
+                callback: () => {
+                    WA.nav.goToRoom('maze.tmj');
+                }
+            })
+        }
+    })
+
+    WA.room.onLeaveLayer('start').subscribe(() => {
+        outMessage?.remove()
+        outMessage = null
+    })
+
+    const launchTutorial = () => {
+        // Disable player controls
+        WA.controls.disablePlayerControls()
+
+        // Open tutorial discussion
+        discussion.openDiscussionWebsite( 'utils.voiceOver', 'views.museum.beginText', "museum.go", "Discussion", 'middle' , 'middle', '50vh', '90vw', () => {
+            discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
+                // Restore player controls
+                WA.controls.restorePlayerControls()
+            })
+        })
+    }
+    launchTutorial()
 
     let isLight1Visible = false
     let lightLoop: NodeJS.Timer|null = null
@@ -96,47 +156,6 @@ WA.onInit().then(() => {
         keeperZone?.remove()
     })
 
-    let beginZone: ActionMessage|null = null
-    WA.room.onEnterLayer(`beginZone`).subscribe(() => {
-        if(!haveSeenBeginText) {
-            WA.controls.disablePlayerControls()
-            beginZone = WA.ui.displayActionMessage({
-                message: utils.translations.translate('museum.beginBtn'),
-                callback: () => {
-                    discussion.openDiscussionWebsite( 'Voix off', 'views.museum.beginText', "Go !", "Discussion", 'middle' , 'middle', '50vh', '90vw', () => {
-                        WA.controls.restorePlayerControls()
-                        haveSeenBeginText = true
-                    })
-                }
-            })
-        }
-    })
-    WA.room.onLeaveLayer(`beginZone`).subscribe(() => {
-        if(!haveSeenBeginText) {
-            beginZone?.remove()
-        }
-    })
-    let beginDiscussZone: ActionMessage|null = null
-    WA.room.onEnterLayer(`beginDiscussZone`).subscribe(() => {
-        if(!haveBeginDiscussion) {
-            WA.controls.disablePlayerControls()
-            beginDiscussZone = WA.ui.displayActionMessage({
-                message: utils.translations.translate('museum.speakToKeeper'),
-                callback: () => {
-                    discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
-                        WA.controls.restorePlayerControls()
-                    })
-                }
-            })
-        }
-    })
-    WA.room.onLeaveLayer(`beginDiscussZone`).subscribe(() => {
-        if(!haveBeginDiscussion) {
-            beginDiscussZone?.remove()
-        }
-    })
-
-
     for (let i = 1; i < 8; i++) {
         hiddenZone.initiateHiddenZones([{stepIn: `fogsZone/fog${[i]}`, hide: `fogs/fog${[i]}`}])
     }
@@ -151,7 +170,7 @@ WA.onInit().then(() => {
                             inventory.addToInventory({
                                 id: 'id-card',
                                 name: 'museum.idCardTitle',
-                                image: 'myItem.png', // here, the path from root is public/images/myItem.png
+                                image: 'indentity-card.png',
                                 description: 'museum.idCardDescription'
                             })
                         }
@@ -189,7 +208,7 @@ WA.onInit().then(() => {
                                 inventory.addToInventory({
                                     id: 'access-card',
                                     name: 'museum.accessCard',
-                                    image: 'myItem.png', // here, the path from root is public/images/myItem.png
+                                    image: 'gold-key.png',
                                     description: 'museum.accessCardDescription'
                                 })
                             } else {
@@ -294,6 +313,33 @@ WA.onInit().then(() => {
       'cameraZones/cZone4',
       'cameraZones/cZone5',
       'cameraZones/cZone6'
+    ]
+
+    const cameraReturnPosition = [
+        {
+            x: 8*32,
+            y: 68*32
+        },
+        {
+            x: 26*32,
+            y: 68*32
+        },
+        {
+            x: 15*32,
+            y: 63*32
+        },
+        {
+            x: 10*32,
+            y: 27*32
+        },
+        {
+            x: 47*32,
+            y: 23*32
+        },
+        {
+            x: 47*32,
+            y: 42*32
+        }
     ]
 
     // Rooms list
@@ -417,23 +463,42 @@ WA.onInit().then(() => {
     for (let i = 0; i < cameras.length; i++) {
         WA.room.onEnterLayer(cameras[i]).subscribe(() => {
             if (actionForAllPlayers.currentValue('deactivateCamera') !== cameras[i]) {
-                // Save wich camera is blocking user
-                userIsBlockedByCamera = cameras[i]
-                // Show message
-                discussion.openDiscussionWebsite(
-                  'utils.mySelf',
-                  'museum.cannotWalkInCameras',
-                  'utils.close',
-                  "discussion",
-                  'bottom',
-                  'middle',
-                  '50vh',
-                  '50vh',
-                  () => {
-                      // Disable player controls
-                      WA.controls.disablePlayerControls()
-                  }
-                )
+                if (getPlayerJob() === 'spy') {
+                    discussion.openDiscussionWebsite(
+                      'utils.mySelf',
+                      'museum.cantStayInCamera',
+                      'utils.close',
+                      "discussion",
+                      'bottom',
+                      'middle',
+                      '50vh',
+                      '50vh',
+                      async () => {
+                          // Disable player controls
+                          WA.controls.disablePlayerControls()
+                          await WA.player.moveTo(cameraReturnPosition[i].x, cameraReturnPosition[i].y)
+                          WA.controls.restorePlayerControls()
+                      }
+                    )
+                } else {
+                    // Save wich camera is blocking user
+                    userIsBlockedByCamera = cameras[i]
+                    // Show message
+                    discussion.openDiscussionWebsite(
+                      'utils.mySelf',
+                      'museum.cannotWalkInCameras',
+                      'utils.close',
+                      "discussion",
+                      'bottom',
+                      'middle',
+                      '50vh',
+                      '50vh',
+                      () => {
+                          // Disable player controls
+                          WA.controls.disablePlayerControls()
+                      }
+                    )
+                }
             }
         })
     }
@@ -461,6 +526,7 @@ WA.onInit().then(() => {
         computerWebsite?.close()
         computerWebsite = null
         WA.controls.restorePlayerControls()
+        WA.camera.followPlayer(true)
     }
 
     // Hack computer
