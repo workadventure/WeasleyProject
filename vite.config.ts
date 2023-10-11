@@ -22,7 +22,7 @@ const getAllFromDirectory = async (directoryName: string, wantedExtension: strin
           fileList[keys[j]] = Object.values(filesFromDir)[j]
         }
       } else {
-        const key = files[i].split('.')[0]
+        const key = 'view_' + files[i].split('.')[0]
         const extension = files[i].split('.')[1]
         if (!wantedExtension || extension === wantedExtension) {
           fileList[key] = './' + path
@@ -34,6 +34,8 @@ const getAllFromDirectory = async (directoryName: string, wantedExtension: strin
 }
 
 export default defineConfig(async () => {
+  console.log('ALL FROM DIR', await getAllFromDirectory('views', 'html'))
+  console.log('ALL FROM DIR', getMapsScripts("./maps"))
   return {
     base: "./",
     build: {
