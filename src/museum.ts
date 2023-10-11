@@ -4,7 +4,7 @@ import { } from "https://unpkg.com/@workadventure/scripting-api-extra@^1";
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers } from './modules'
+import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications } from './modules'
 import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
@@ -15,9 +15,60 @@ WA.onInit().then(() => {
     initiateJob()
 
     if (env === 'dev') {
+        console.log('chest value', WA.state.chest)
         setPlayerJob('spy')
     }
+    // Inventory initialisation
     inventory.initiateInventory()
+
+    // Add copy of the map to inventory if has already been retrieved (in case of reload)
+    if (WA.state.mapRetrieved) {
+        inventory.addToInventory({
+            id: 'secret-map',
+            name: 'museum.secretMap.title',
+            image: 'secret-map.png',
+            description: 'museum.secretMap.description'
+        })
+    }
+
+
+    WA.state.onVariableChange('chest').subscribe((value) => {
+        if (value && !WA.state.mapRetrieved) {
+            WA.state.mapRetrieved = true
+        }
+    })
+
+    WA.state.onVariableChange('mapRetrieved').subscribe((value) => {
+        if (value) {
+            notifications.notify('La carte a été récupérée !', 'utils.success', 'success')
+            inventory.addToInventory({
+                id: 'secret-map',
+                name: 'museum.secretMap.name',
+                image: 'secret-map.png',
+                description: 'museum.secretMap.description'
+            })
+        }
+    })
+
+    // Go out after retrieving the map
+    let outMessage: ActionMessage | null = null
+    WA.room.onEnterLayer('start').subscribe(() => {
+        if (WA.state.mapRetrieved) {
+            outMessage = WA.ui.displayActionMessage({
+                message: utils.translations.translate('utils.executeAction', {
+                    action: utils.translations.translate('museum.escape')
+                }),
+                callback: () => {
+                    WA.nav.goToRoom('maze.tmj');
+                }
+            })
+        }
+    })
+
+    WA.room.onLeaveLayer('start').subscribe(() => {
+        outMessage?.remove()
+        outMessage = null
+    })
 
     const launchTutorial = () => {
         // Disable player controls
@@ -120,7 +171,7 @@ WA.onInit().then(() => {
                             inventory.addToInventory({
                                 id: 'id-card',
                                 name: 'museum.idCardTitle',
-                                image: 'myItem.png', // here, the path from root is public/images/myItem.png
+                                image: 'indentity-card.png',
                                 description: 'museum.idCardDescription'
                             })
                         }
@@ -158,7 +209,7 @@ WA.onInit().then(() => {
                                 inventory.addToInventory({
                                     id: 'access-card',
                                     name: 'museum.accessCard',
-                                    image: 'myItem.png', // here, the path from root is public/images/myItem.png
+                                    image: 'gold-key.png',
                                     description: 'museum.accessCardDescription'
                                 })
                             } else {

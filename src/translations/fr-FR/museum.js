@@ -27,5 +27,10 @@ export default {
     guest: 'Invité',
     cannotPickPocket: 'Non mais dites ! Faut pas vous gêner ! Vous avez de la chance que je n\'appelle pas immédiatement la sécurité !',
     needDistraction: 'Mince ! Il me faudrait une distraction pour pouvoir fouiller les poches des invités...',
-    cantStayInCamera: 'Mince ! je suis dans le champs de vision d\'une caméra... Je ne dois pas rester ici ! Je dois vite m\'en aller avant qu\'elle me repère !'
+    cantStayInCamera: 'Mince ! je suis dans le champs de vision d\'une caméra... Je ne dois pas rester ici ! Je dois vite m\'en aller avant qu\'elle me repère !',
+    secretMap: {
+        title: 'Carte top secrète',
+        description: 'Une carte qui permet de trouver le remède à tous les maux de l\'humanité'
+    },
+    escape: 'S\'enfuir'
 }
