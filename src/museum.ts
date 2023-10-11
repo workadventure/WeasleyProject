@@ -15,7 +15,6 @@ WA.onInit().then(() => {
     initiateJob()
 
     if (env === 'dev') {
-        console.log('chest value', WA.state.chest)
         setPlayerJob('spy')
     }
     // Inventory initialisation
