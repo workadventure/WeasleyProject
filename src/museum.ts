@@ -74,7 +74,7 @@ WA.onInit().then(() => {
         WA.controls.disablePlayerControls()
 
         // Open tutorial discussion
-        discussion.openDiscussionWebsite( 'utils.voiceOver', 'views.museum.beginText', "museum.go", "Discussion", 'middle' , 'middle', '50vh', '90vw', () => {
+        discussion.openDiscussionWebsite( 'utils.voiceOver', 'views.museum.beginText', "museum.go", "discussion", 'middle' , 'middle', '50vh', '90vw', () => {
             discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
                 // Restore player controls
                 WA.controls.restorePlayerControls()
