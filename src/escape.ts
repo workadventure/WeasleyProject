@@ -5,23 +5,43 @@ bootstrapExtra();
 
 import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling} from './modules'
 import {getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
-import {ActionMessage} from "@workadventure/iframe-api-typings";
+import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {
     activateActionForAllPlayer,
     hasBeenTriggered,
     initializeRelativeActionForAllPlayers
 } from "./modules/actionForAllPlayers";
-import {env} from "./config";
+import {env, rootLink} from "./config";
 
 
 WA.onInit().then(() => {
     initiateJob()
 
+    const openFinalWebsite = async () => {
+        await WA.ui.website.open({
+            url: `${rootLink}/views/newspaper/newspaper.html`,
+            allowApi: true,
+            allowPolicy: "",
+            position: {
+                vertical: "middle",
+                horizontal: "middle",
+            },
+            size: {
+                height: "100vh",
+                width: "100vw",
+            },
+        })
+    }
+
     if(env === 'dev'){
         setPlayerJob('spy')
-        console.log('JOB', getPlayerJob())
     }
+
+    // Final exit
+    WA.room.onEnterLayer('exitZone').subscribe(() => {
+        openFinalWebsite()
+    })
 
     secretPassages.initiateSecretPassages(
         ['secretPassage'],
@@ -198,7 +218,64 @@ WA.onInit().then(() => {
         activateActionForAllPlayer('artifactBrok', true)
         WA.room.hideLayer('artifact')
         WA.room.showLayer('brokenArtifact')
-        secretPassages.removeBlocksTiles('finishedDoor')
+        secretPassages.removeBlocksTiles('finishedDoor', [
+            {
+                x: 8,
+                y: 2
+            },
+            {
+                x: 8,
+                y: 3
+            },
+            {
+                x: 11,
+                y: 6
+            },
+            {
+                x: 12,
+                y: 6
+            },
+            {
+                x: 13,
+                y: 6
+            },
+            {
+                x: 11,
+                y: 9
+            },
+            {
+                x: 12,
+                y: 9
+            },
+            {
+                x: 13,
+                y: 9
+            },
+            {
+                x: 7,
+                y: 12
+            },
+            {
+                x: 8,
+                y: 12
+            },
+            {
+                x: 9,
+                y: 12
+            },
+            {
+                x: 7,
+                y: 15
+            },
+            {
+                x: 8,
+                y: 15
+            },
+            {
+                x: 9,
+                y: 15
+            }
+        ])
         WA.room.hideLayer('finishedWall1')
         WA.room.showLayer('finishedDoor/openedDoor1')
         WA.room.hideLayer('finishedWall2')
@@ -222,8 +299,6 @@ WA.onInit().then(() => {
             artifact?.remove()
         }
     })
-
-
 })
 
 export {};
