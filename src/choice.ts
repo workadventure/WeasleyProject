@@ -32,7 +32,6 @@ const allPlayersGotJob = async () => {
 // Waiting for the API to be ready
 WA.onInit().then(() => {
 
-    console.log('@@@@@@@ test de la variable de room : ', WA.state.test)
     // Initiate inventory
     inventory.initiateInventory()
 
