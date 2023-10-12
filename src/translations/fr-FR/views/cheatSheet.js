@@ -5,5 +5,5 @@ export default {
     "1 - Vert - 9 - 7 - Orange - 2 - BOUM\n" +
     "Jaune - Rouge - 8 - 6 - Blanc - PRESS\n" +
     "Orange - Bleu - 4 - 3 - Rouge - 0 - PRESS",
-  note: 'Pour désamorcer les bombes',
+  note: 'Pour desamorcer les bombes',
 }
