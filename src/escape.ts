@@ -4,7 +4,7 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
 import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling} from './modules'
-import {initiateJob} from "./modules/job";
+import {getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {
@@ -12,14 +12,34 @@ import {
     hasBeenTriggered,
     initializeRelativeActionForAllPlayers
 } from "./modules/actionForAllPlayers";
+import {env} from "./config";
 
 
 WA.onInit().then(() => {
     initiateJob()
 
+    if(env === 'dev'){
+        setPlayerJob('spy')
+        console.log('JOB', getPlayerJob())
+    }
+
     secretPassages.initiateSecretPassages(
-        ['secretPassage'], // List of your secretPassageGroups names
-        [() => {console.log('secret passage discovered !')} // List of callbacks for every secretPassageGroups
+        ['secretPassage'],
+        [() => {console.log('secret passage discovered !')}],
+        [
+          [
+            {x: 38, y: 6},
+            {x: 39, y: 6},
+            {x: 40, y: 6},
+            {x: 39, y: 7},
+            {x: 40, y: 7},
+            {x: 39, y: 8},
+            {x: 40, y: 8},
+            {x: 39, y: 9},
+            {x: 40, y: 9},
+            {x: 39, y: 10},
+            {x: 40, y: 10}
+          ]
         ])
 
     for (let i = 1; i < 11; i++) {
@@ -37,7 +57,20 @@ WA.onInit().then(() => {
     initializeRelativeActionForAllPlayers('victory', ['blue', 'yellow', 'red'], () => {
         WA.room.hideLayer('runes/lightOff')
         WA.room.showLayer('runes/lightOn')
-        secretPassages.removeBlocksTiles('victoryRunes')
+        secretPassages.removeBlocksTiles('victoryRunes', [
+            {
+                x: 30,
+                y: 31
+            },
+            {
+                x: 31,
+                y: 31
+            },
+            {
+                x: 32,
+                y: 31
+            }
+        ])
         WA.room.hideLayer('victoryRunesWall')
         WA.room.showLayer('victoryRunes/openedWall')
     })

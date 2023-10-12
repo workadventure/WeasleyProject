@@ -4,23 +4,46 @@ import {ActionMessage} from "@workadventure/iframe-api-typings";
 
 let findSecretPassageAction: ActionMessage|null = null
 
-const removeBlocksTiles = (zone: string) => {
+type TilePosition = {
+  x: number,
+  y: number
+}
+
+type Tile = {
+  x: number,
+  y: number,
+  layer: string,
+  tile: string|null
+}
+
+const removeBlocksTiles = (zone: string, blockTilesToRemove: Array<TilePosition>|null = null) => {
   const mapWidth = WA.state.mapWidth as number
   const mapHeight = WA.state.mapHeight as number
 
-  const tiles = []
-  for (let i = 1; i < mapWidth; i++) {
-    for (let j = 1; j < mapHeight; j++) {
-      tiles.push({ x: i, y: j, tile: null, layer: `${zone}/block` });
+  const tiles: Array<Tile> = []
+  if (blockTilesToRemove) {
+    for (let i = 1; i < blockTilesToRemove.length; i++) {
+      tiles.push({
+        x: blockTilesToRemove[i].x,
+        y: blockTilesToRemove[i].y,
+        tile: null,
+        layer: `${zone}/block`
+      })
+    }
+  } else {
+    for (let i = 1; i < mapWidth; i++) {
+      for (let j = 1; j < mapHeight; j++) {
+        tiles.push({ x: i, y: j, tile: null, layer: `${zone}/block` });
+      }
     }
   }
-
   WA.room.setTiles(tiles)
 }
 
 const initiateSecretPassages = (
   secretPassagesZones: Array<string> = ['secretPassageZone'],
-  callbacks: Array<Function> |null = null
+  callbacks: Array<Function> |null = null,
+  blockTilesToRemove: Array<Array<TilePosition>>|null = null
 ) => {
     // Show all secret passages tiles
     for (let i = 0; i < secretPassagesZones.length; i++) {
@@ -51,7 +74,7 @@ const initiateSecretPassages = (
         }
 
         WA.state.onVariableChange(`${secretPassagesZones[i]}Discovered`).subscribe(() => {
-          findSecretPassage(secretPassagesZones[i], callbacks ? callbacks[i] : null)
+          findSecretPassage(secretPassagesZones[i], callbacks ? callbacks[i] : null, blockTilesToRemove? blockTilesToRemove[i] : null)
         })
       } else {
         //This layer should already have been hidden but we hide in case map builder forgot
@@ -63,14 +86,14 @@ const initiateSecretPassages = (
     }
 }
 
-const findSecretPassage = (secretPassageZone: string, callback: Function|null = null) => {
+const findSecretPassage = (secretPassageZone: string, callback: Function|null = null, blockTilesToRemove: Array<TilePosition>|null = null) => {
   WA.room.hideLayer(`${secretPassageZone}/trace`)
   WA.room.showLayer(`${secretPassageZone}/search`)
 
   setTimeout(() => {
     WA.room.showLayer(`${secretPassageZone}/found`)
     WA.room.hideLayer(`${secretPassageZone}/disappear`)
-    removeBlocksTiles(secretPassageZone)
+    removeBlocksTiles(secretPassageZone, blockTilesToRemove)
 
     setTimeout(() => {
       WA.room.hideLayer(`${secretPassageZone}/search`)
