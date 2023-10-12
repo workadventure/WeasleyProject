@@ -10,6 +10,7 @@ import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {env, rootLink} from "./config";
 import {toggleLayersVisibility} from "./utils/layers";
+import {activateActionForAllPlayer, initializeActionForAllPlayers} from "./modules/actionForAllPlayers";
 
 WA.onInit().then(() => {
     initiateJob()
@@ -42,7 +43,7 @@ WA.onInit().then(() => {
             notifications.notify('La carte a été récupérée !', 'utils.success', 'success')
             inventory.addToInventory({
                 id: 'secret-map',
-                name: 'museum.secretMap.name',
+                name: 'museum.secretMap.title',
                 image: 'secret-map.png',
                 description: 'museum.secretMap.description'
             })
@@ -134,6 +135,15 @@ WA.onInit().then(() => {
         closeDoor?.remove()
     })
 
+    // When the door opens it must open for every player
+    actionForAllPlayers.initializeActionForAllPlayers('keeperDoorOpen', () => {
+        const tiles = []
+        tiles.push({ x: 25, y: 44, tile: null, layer: `bigRoomAccess/bigRoomCollides` });
+        tiles.push({ x: 26, y: 44, tile: null, layer: `bigRoomAccess/bigRoomCollides` });
+        WA.room.setTiles(tiles)
+        WA.room.hideLayer('doorsClosed/dc6')
+    })
+
     let keeperZone: ActionMessage|null = null
     WA.room.onEnterLayer(`bigRoomAccess/keeperZone`).subscribe(() => {
             keeperZone = WA.ui.displayActionMessage({
@@ -141,11 +151,7 @@ WA.onInit().then(() => {
                 callback: () => {
                     if(inventory.hasItem('id-card')) {
                         discussion.openDiscussionWebsite('views.museum.keeperName', 'views.museum.bigRoomAccess')
-                        const tiles = []
-                        tiles.push({ x: 25, y: 44, tile: null, layer: `bigRoomAccess/bigRoomCollides` });
-                        tiles.push({ x: 26, y: 44, tile: null, layer: `bigRoomAccess/bigRoomCollides` });
-                        WA.room.setTiles(tiles)
-                        WA.room.hideLayer('doorsClosed/dc6')
+                        actionForAllPlayers.activateActionForAllPlayer('keeperDoorOpen')
                     } else {
                         discussion.openDiscussionWebsite('views.museum.keeperName', 'views.museum.bigRoomNoAccess')
                     }
@@ -248,6 +254,15 @@ WA.onInit().then(() => {
         pickPocket(i)
     }
 
+    // When the door opens it must open for every player
+    actionForAllPlayers.initializeActionForAllPlayers('desktopDoorOpen', () => {
+        const tiles = []
+        tiles.push({ x: 38, y: 11, tile: null, layer: `desktopCollides` });
+        tiles.push({ x: 39, y: 11, tile: null, layer: `desktopCollides` });
+        WA.room.setTiles(tiles)
+        WA.room.hideLayer('doorsClosed/dc4')
+    })
+
     let desktopZone: ActionMessage|null = null
     WA.room.onEnterLayer(`desktopAccessZone`).subscribe(() => {
         if(!inventory.hasItem('access-card')) {
@@ -264,11 +279,7 @@ WA.onInit().then(() => {
                     desktopZone = WA.ui.displayActionMessage({
                         message: utils.translations.translate('museum.desktopOpenMsg'),
                         callback: () => {
-                            const tiles = []
-                            tiles.push({ x: 38, y: 11, tile: null, layer: `desktopCollides` });
-                            tiles.push({ x: 39, y: 11, tile: null, layer: `desktopCollides` });
-                            WA.room.setTiles(tiles)
-                            WA.room.hideLayer('doorsClosed/dc4')
+                            actionForAllPlayers.activateActionForAllPlayer('desktopDoorOpen')
                         }
                     })
                 }
@@ -494,8 +505,11 @@ WA.onInit().then(() => {
                       '50vh',
                       '50vh',
                       () => {
-                          // Disable player controls
-                          WA.controls.disablePlayerControls()
+                          // IMPORTANT : REPEAT THE IF HERE IN CASE USER CLICK ON OK WHEN CAMERA HAS BEEN DEACTIVATED
+                          if (actionForAllPlayers.currentValue('deactivateCamera') !== userIsBlockedByCamera) {
+                              // Disable player controls
+                              WA.controls.disablePlayerControls()
+                          }
                       }
                     )
                 }
