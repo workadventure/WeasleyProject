@@ -31,7 +31,7 @@ WA.onInit().then(async () => {
 
   // FOR DEVELOPMENT PURPOSE ONLY
   if(env === 'dev'){
-    setPlayerJob('spy')
+    setPlayerJob('archaeologist')
   }
 
   // Speech at arriving

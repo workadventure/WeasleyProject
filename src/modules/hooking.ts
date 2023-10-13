@@ -1,6 +1,7 @@
 import * as utils from '../utils'
 import { canUser } from "./job";
 import {ActionMessage} from "@workadventure/iframe-api-typings";
+import { sounds } from '../modules'
 
 let makeHookingAction: ActionMessage|null = null
 
@@ -70,7 +71,7 @@ const makeHooking = (hookingZone: string, callback: Function|null = null) => {
     WA.room.hideLayer(`${hookingZone}/disappear`)
     setTimeout(() => {
       WA.room.hideLayer(`${hookingZone}/search`)
-
+      sounds.playSound('successSound')
       if (callback) {
         callback()
       }

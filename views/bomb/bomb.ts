@@ -7,7 +7,20 @@ const WRONG_TIME = 30
 document.addEventListener("DOMContentLoaded", () => {
   WA.onInit().then(async () => {
 
+    // Sounds initialisation
+    modules.sounds.initiateSounds([
+      {
+        name: 'successSound',
+        path: 'success.mp3'
+      },
+      {
+        name: 'failureSound',
+        path: 'failure.mp3'
+      }
+    ])
+
     const askForDefuseBomb = () => {
+      modules.sounds.playSound('successSound')
       WA.player.state.askForDefuseBomb = true
     }
 
@@ -35,6 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const whenWrong = () => {
+      modules.sounds.playSound('failureSound')
       const losesInfosElement = document.getElementById('losesInfos')
 
       if (losesInfosElement) {

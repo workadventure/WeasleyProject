@@ -1,6 +1,7 @@
 import * as utils from '../utils'
 import { canUser } from "./job";
 import {ActionMessage} from "@workadventure/iframe-api-typings";
+import { sounds } from '../modules'
 
 let makeExcavationAction: ActionMessage|null = null
 
@@ -63,7 +64,7 @@ const makeExcavations = (excavationZone: string, callback: Function|null = null)
     WA.room.showLayer(`${excavationZone}/found`)
     setTimeout(() => {
       WA.room.hideLayer(`${excavationZone}/search`)
-
+      sounds.playSound('successSound')
       if (callback) {
         callback()
       }

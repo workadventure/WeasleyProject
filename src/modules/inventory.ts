@@ -1,7 +1,7 @@
 import {rootLink} from "../config";
 import {UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from '../utils/index.js'
-import { notifications } from '../modules/index.js'
+import { notifications, sounds } from '../modules/index.js'
 
 export type InventoryItem = {
   id: string,
@@ -44,6 +44,7 @@ const addToInventory = (item: InventoryItem) => {
 
   // If the user has not already an item with the same id and inventory is not full
   if (!hasItem(item.id) && currentInventory.length < INVENTORY_MAX_SIZE) {
+    sounds.playSound('successSound')
     currentInventory.push(item)
 
     WA.player.state.inventory = JSON.stringify(currentInventory)

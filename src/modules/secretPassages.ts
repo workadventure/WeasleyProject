@@ -1,6 +1,7 @@
 import * as utils from '../utils'
 import { canUser } from "./job";
 import {ActionMessage} from "@workadventure/iframe-api-typings";
+import { sounds } from '../modules'
 
 let findSecretPassageAction: ActionMessage|null = null
 
@@ -97,7 +98,7 @@ const findSecretPassage = (secretPassageZone: string, callback: Function|null = 
 
     setTimeout(() => {
       WA.room.hideLayer(`${secretPassageZone}/search`)
-
+      sounds.playSound('successSound')
       if (callback) {
         callback()
       }

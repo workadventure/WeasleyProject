@@ -1,5 +1,6 @@
 import * as utils from '../utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
+import { sounds } from '../modules'
 
 let switchTileAction: ActionMessage|null = null
 
@@ -80,6 +81,8 @@ const makeTileSwitch = (switchingTile: string, layerNumber: number, tilesNumber:
 
   // Test if victory condition is fulfilled
   if (testVictory(switchingTile, victoryCondition)) {
+    // PLays victory sound
+    sounds.playSound('successSound')
     // set victory variable so that every user knows
     WA.state[`${switchingTile}IsVictory`] = true
   }

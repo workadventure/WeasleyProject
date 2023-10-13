@@ -1,10 +1,43 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 import {arrayFilling, readRunes} from './modules'
 import {initiateJob} from "./modules/job";
-import {rootLink} from "./config";
+import { sounds } from './modules'
 
 WA.onInit().then(async () => {
+    // Jobs initialisation
     await initiateJob()
+
+    // Sounds initialisation
+    sounds.initiateSounds([
+        {
+            name: 'doSound',
+            path: 'do.mp3'
+        },
+        {
+            name: 'reSound',
+            path: 're.mp3'
+        },
+        {
+            name: 'miSound',
+            path: 'mi.mp3'
+        },
+        {
+            name: 'faSound',
+            path: 'fa.mp3'
+        },
+        {
+            name: 'solSound',
+            path: 'sol.mp3'
+        },
+        {
+            name: 'laSound',
+            path: 'la.mp3'
+        },
+        {
+            name: 'siSound',
+            path: 'si.mp3'
+        }
+    ])
 
     const disableAll = false
     const enableRedirect = true
@@ -25,19 +58,6 @@ WA.onInit().then(async () => {
             removeTiles()
         }
 
-        const soundsPath = `${rootLink}/sounds/`
-        const soundConfig = {
-            volume: 1,
-            loop: false,
-            rate: 1,
-            detune: 1,
-            delay: 0,
-            seek: 0,
-            mute: false
-        }
-
-
-
         WA.state.onVariableChange("victory").subscribe((value) => {
             if (value) {
                 removeTiles()
@@ -51,64 +71,56 @@ WA.onInit().then(async () => {
             ],
             () => {
                 if (enableRedirect) {
+                    sounds.playSound('failureSound')
                     WA.nav.goToRoom('./music.tmj')
                 }
             },
             () => {
                 WA.state.victory = true
+                sounds.playSound('successSound')
                 removeTiles()
             }
         )
 
-        const doSound = WA.sound.loadSound(`${soundsPath}do.mp3`);
-        const reSound = WA.sound.loadSound(`${soundsPath}re.mp3`);
-        const miSound = WA.sound.loadSound(`${soundsPath}mi.mp3`);
-        const faSound = WA.sound.loadSound(`${soundsPath}fa.mp3`);
-        const solSound = WA.sound.loadSound(`${soundsPath}sol.mp3`);
-        const laSound = WA.sound.loadSound(`${soundsPath}la.mp3`);
-        const siSound = WA.sound.loadSound(`${soundsPath}si.mp3`);
-
-        console.log(WA.state.victory)
-
         WA.room.onEnterLayer('notes/do').subscribe(() => {
             if (!WA.state.victory) {
-                doSound.play(soundConfig);
+                sounds.playSound('doSound')
                 arrayFilling.testArrayFilling('musicTiles', 'do')
             }
         })
         WA.room.onEnterLayer('notes/re').subscribe(() => {
             if (!WA.state.victory) {
-                reSound.play(soundConfig);
+                sounds.playSound('reSound')
                 arrayFilling.testArrayFilling('musicTiles', 're')
             }
         })
         WA.room.onEnterLayer('notes/mi').subscribe(() => {
             if (!WA.state.victory) {
-                miSound.play(soundConfig);
+                sounds.playSound('miSound')
                 arrayFilling.testArrayFilling('musicTiles', 'mi')
             }
         })
         WA.room.onEnterLayer('notes/fa').subscribe(() => {
             if (!WA.state.victory) {
-                faSound.play(soundConfig);
+                sounds.playSound('faSound')
                 arrayFilling.testArrayFilling('musicTiles', 'fa')
             }
         })
         WA.room.onEnterLayer('notes/sol').subscribe(() => {
             if (!WA.state.victory) {
-                solSound.play(soundConfig);
+                sounds.playSound('solSound')
                 arrayFilling.testArrayFilling('musicTiles', 'sol')
             }
         })
         WA.room.onEnterLayer('notes/la').subscribe(() => {
             if (!WA.state.victory) {
-                laSound.play(soundConfig);
+                sounds.playSound('laSound')
                 arrayFilling.testArrayFilling('musicTiles', 'la')
             }
         })
         WA.room.onEnterLayer('notes/si').subscribe(() => {
             if (!WA.state.victory) {
-                siSound.play(soundConfig);
+                sounds.playSound('siSound')
                 arrayFilling.testArrayFilling('musicTiles', 'si')
             }
         })

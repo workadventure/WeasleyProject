@@ -1,4 +1,4 @@
-import { readRunes, inventory, switchingTiles, actionForAllPlayers, discussion, notifications } from './modules'
+import { readRunes, inventory, switchingTiles, actionForAllPlayers, discussion, notifications, sounds } from './modules'
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import {getPlayerJob, initiateJob} from "./modules/job";
@@ -6,6 +6,14 @@ import {getPlayerJob, initiateJob} from "./modules/job";
 WA.onInit().then(async () => {
   // Initiate players jobs
   await initiateJob()
+
+  // Initialize sounds
+  sounds.initiateSounds([
+    {
+      name: 'evilGuySound',
+      path: 'evilGuy.mp3'
+    }
+  ])
 
   // Inventory initialisation
   inventory.initiateInventory()
@@ -21,7 +29,6 @@ WA.onInit().then(async () => {
     () => {
       // Hammer visible
       notifications.notify('treasureEnigma.hammer.opened', 'utils.success', 'success')
-      // TODO : success sound
       utils.layers.toggleLayersVisibility('hammerZoneTop', false)
       WA.room.onEnterLayer('hammerZone').subscribe(() => {
         if (!inventory.hasItem('hammer')) {
@@ -55,6 +62,8 @@ WA.onInit().then(async () => {
   let breakHourglassAction: ActionMessage|null = null
 
   actionForAllPlayers.initializeRelativeActionForAllPlayers('openTreasureDoor', ['breakHourglass1', 'breakHourglass2'], () => {
+    // Plays success sound
+    sounds.playSound('successSound')
 
     // Show fire on torcher
     utils.layers.toggleLayersVisibility('torchesOnBottom', true)
@@ -136,6 +145,9 @@ WA.onInit().then(async () => {
       true,
       true,
   )
+
+    // Evil guy sound
+    sounds.playSound('evilGuySound')
 
   // Wait during camera transition
   await utils.main.wait(1000)
