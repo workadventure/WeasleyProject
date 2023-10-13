@@ -6,7 +6,7 @@ import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import {env} from "./config"
 
-WA.onInit().then(() => {
+WA.onInit().then( async () => {
     for (let i = 1; i < 10; i++) {
         hiddenZone.initiateHiddenZones([{stepIn: `fogFloor/fog${[i]}`, hide: `fog/fog${[i]}`}])
     }
@@ -19,7 +19,7 @@ WA.onInit().then(() => {
     inventory.initiateInventory()
 
     // Initiate job
-    initiateJob()
+    await initiateJob()
 
     const blueFireOn = () => {
         if(WA.state.blueFire) {

@@ -18,13 +18,13 @@ const resetCamera = async () => {
   )
 }
 
-WA.onInit().then(() => {
+WA.onInit().then(async () => {
   // Reset camera Zoom
   WA.camera.followPlayer(true)
   WA.camera.set(665, 838)
 
   // Initiate jobs
-  initiateJob()
+  await initiateJob()
 
   // Reset zoom
   resetCamera()

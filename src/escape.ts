@@ -4,8 +4,8 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
 import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling} from './modules'
-import {getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
-import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
+import { initiateJob, setPlayerJob} from "./modules/job";
+import {ActionMessage } from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {
     activateActionForAllPlayer,
@@ -15,8 +15,8 @@ import {
 import {env, rootLink} from "./config";
 
 
-WA.onInit().then(() => {
-    initiateJob()
+WA.onInit().then(async () => {
+    await initiateJob()
 
     const openFinalWebsite = async () => {
         await WA.ui.website.open({

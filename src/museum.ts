@@ -10,10 +10,9 @@ import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {env, rootLink} from "./config";
 import {toggleLayersVisibility} from "./utils/layers";
-import {activateActionForAllPlayer, initializeActionForAllPlayers} from "./modules/actionForAllPlayers";
 
-WA.onInit().then(() => {
-    initiateJob()
+WA.onInit().then(async () => {
+    await initiateJob()
 
     if (env === 'dev') {
         setPlayerJob('spy')

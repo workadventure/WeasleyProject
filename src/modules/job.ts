@@ -132,44 +132,48 @@ const hideJobWallet = () => {
 }
 
 const initiateJob = async () => {
-  console.log("WA.player.state.job : ", WA.player.state.job)
+  // block users while initiating jobs
+  WA.controls.disablePlayerControls()
+
   let playerId = WA.player.uuid
   let slug = playerId?.replaceAll('.', '').replaceAll('@', '')
 
-  await fetch(`https://weasley-project-default-rtdb.europe-west1.firebasedatabase.app/userRole/${slug}.json`, {
+  let response = await fetch(`https://weasley-project-default-rtdb.europe-west1.firebasedatabase.app/userRole/${slug}.json`, {
     method: 'GET',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
   })
-      .then(response => response.json())
-      .then(response => {
-            WA.player.state.job = response?.job
-            if (WA.player.state.job) {
-              showJobWallet()
-            } else {
-              hideJobWallet()
-            }
 
-            WA.player.state.onVariableChange('job').subscribe((value) => {
-              if (value) {
-                console.log(utils.translations.translate('modules.job.jobChanged', {
-                  job: utils.translations.translate(`modules.job.jobs.${value}`)
-                }))
-                showJobWallet()
-              } else {
-                hideJobWallet()
-              }
-            });
+  response = await response.json()
+  WA.player.state.job = response?.job
+  if (WA.player.state.job) {
+    showJobWallet()
+  } else {
+    hideJobWallet()
+  }
 
-            WA.player.state.onVariableChange('askForJobWalletWebsiteClose').subscribe((value) => {
-              if (value) {
-                closeJobWalletWebsite()
-              }
-            })
-          }
-      )
+  WA.player.state.onVariableChange('job').subscribe((value) => {
+    if (value) {
+      console.log(utils.translations.translate('modules.job.jobChanged', {
+        job: utils.translations.translate(`modules.job.jobs.${value}`)
+      }))
+      showJobWallet()
+    } else {
+      hideJobWallet()
+    }
+  });
+
+  WA.player.state.onVariableChange('askForJobWalletWebsiteClose').subscribe((value) => {
+    if (value) {
+      closeJobWalletWebsite()
+    }
+  })
+
+  // block users while initiating jobs
+  WA.controls.restorePlayerControls()
+  return
 }
 
 // See if user has the permission passed as parameter

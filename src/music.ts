@@ -1,10 +1,10 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 import {arrayFilling, readRunes} from './modules'
 import {initiateJob} from "./modules/job";
+import {rootLink} from "./config";
 
-WA.onInit().then(() => {
-
-    initiateJob()
+WA.onInit().then(async () => {
+    await initiateJob()
 
     const disableAll = false
     const enableRedirect = true
@@ -25,7 +25,7 @@ WA.onInit().then(() => {
             removeTiles()
         }
 
-        const soundsPath = '/sounds/'
+        const soundsPath = `${rootLink}/sounds/`
         const soundConfig = {
             volume: 1,
             loop: false,

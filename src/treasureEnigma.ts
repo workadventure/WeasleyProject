@@ -3,9 +3,9 @@ import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import {getPlayerJob, initiateJob} from "./modules/job";
 
-WA.onInit().then(() => {
+WA.onInit().then(async () => {
   // Initiate players jobs
-  initiateJob()
+  await initiateJob()
 
   // Inventory initialisation
   inventory.initiateInventory()

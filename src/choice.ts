@@ -30,13 +30,13 @@ const allPlayersGotJob = async () => {
 
 
 // Waiting for the API to be ready
-WA.onInit().then(() => {
+WA.onInit().then(async () => {
 
     // Initiate inventory
     inventory.initiateInventory()
 
     // Initiate job
-    initiateJob()
+    await initiateJob()
 
     WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
         if(value) {
