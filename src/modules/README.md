@@ -450,5 +450,35 @@ WA.onInit().then(() => {
   })
 })
 ```
+
+## Sounds
+### Description
+Plays sounds on maps.
+
+**Is used on several others modules**
+
+There are two sounds by default : 'successSound' and 'failureSound'
+
+### Script setup
+If you want to add sounds in your script, just do :
+```
+sounds.playSounds('soundName')
+```
+
+If you want to play custom sounds specific for this map, then you must initiate it before calling with the **initiateSounds** function :
+- soundList: Array<{name: STRING, path: STRING}> - List of your custom sounds 
+- soundsPath: STRING - Path root in public folder where to find your customs sounds
+```
+// Initialize sounds
+sounds.initiateSounds([
+  {
+    name: 'soundName',
+    path: 'sound-path.mp3'
+  }
+])
+```
+
+/!\ By default, we looks for custom sounds in '/sounds'. You can change de path with the second parameter of initiateSounds function.
+
 ## Lobby
 Work in progress

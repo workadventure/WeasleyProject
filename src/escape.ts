@@ -3,7 +3,7 @@
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling} from './modules'
+import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling, sounds} from './modules'
 import { initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage } from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
@@ -16,7 +16,16 @@ import {env, rootLink} from "./config";
 
 
 WA.onInit().then(async () => {
+    // Initiate jobs
     await initiateJob()
+
+    // Initiate sounds
+    sounds.initiateSounds([
+        {
+            name: 'finalSound',
+            path: 'final.mp3'
+        }
+    ])
 
     const openFinalWebsite = async () => {
         await WA.ui.website.open({
@@ -40,6 +49,7 @@ WA.onInit().then(async () => {
 
     // Final exit
     WA.room.onEnterLayer('exitZone').subscribe(() => {
+        sounds.playSound('finalSound')
         openFinalWebsite()
     })
 
