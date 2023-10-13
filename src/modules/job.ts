@@ -146,8 +146,9 @@ const initiateJob = async () => {
     }
   })
 
-  response = await response.json()
-  WA.player.state.job = response?.job
+  const responseJson = await response.json()
+
+  WA.player.state.job = responseJson?.job
   if (WA.player.state.job) {
     showJobWallet()
   } else {
