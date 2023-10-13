@@ -1,9 +1,10 @@
 /// <reference types="@workadventure/iframe-api-typings" />
-import {arrayFilling, discussion} from './modules'
-import {ActionMessage} from "@workadventure/iframe-api-typings";
-import * as utils from "./utils";
+import {arrayFilling, readRunes} from './modules'
+import {initiateJob} from "./modules/job";
 
 WA.onInit().then(() => {
+
+    initiateJob()
 
     const disableAll = false
     const enableRedirect = true
@@ -112,18 +113,9 @@ WA.onInit().then(() => {
             }
         })
 
-        let infos: ActionMessage;
-        WA.room.onEnterLayer('infos').subscribe(() => {
-            infos = WA.ui.displayActionMessage({
-                message: utils.translations.translate('utils.executeAction', {action: utils.translations.translate('music.display')}),
-                callback: () => {
-                    discussion.openDiscussionWebsite('views.music.title', 'views.music.text')
-                }
-            });
-        })
-        WA.room.onLeaveLayer('infos').subscribe(() => {
-            infos.remove()
-        })
+        // Runes reading initialisation
+        readRunes.initiateRunesReading()
+        readRunes.setRunesReadingZone('infos', {content : 'views.music.text', title: 'views.music.title'})
     }
 })
 

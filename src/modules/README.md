@@ -174,8 +174,26 @@ WA.onInit().then(() => {
   // secret passages initialisation
   secretPassages.initiateSecretPassages(
     ['secretPassage'], // List of your secretPassageGroups names
-    [() => {console.log('secret passage discovered !')} // List of callbacks for every secretPassageGroups
-  ])
+    [() => {console.log('secret passage discovered !')} // List of callbacks for every secretPassageGroup
+  // )
+})
+```
+If you have a big map, you can also pass a third parameter to the function to tell wich tiles must be removed : 
+```typescript
+import { secretPassages } from './modules'
+
+WA.onInit().then(() => {
+  // secret passages initialisation
+  secretPassages.initiateSecretPassages(
+    ['secretPassage'], // List of your secretPassageGroups names
+    [() => {console.log('secret passage discovered !')}], // List of callbacks for every secretPassageGroups
+    [
+      [
+        {x:1, y:1}, 
+        {x:2, y:2}
+      ]
+    ]
+  )
 })
 ```
 
