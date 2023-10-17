@@ -53,7 +53,7 @@ const openNotification = async (index:number, content: string, title: string|nul
     allowPolicy: "",
     position: {
       vertical: "top",
-      horizontal: "right",
+      horizontal: "left",
     },
     size: {
       height: "100vh",
