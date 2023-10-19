@@ -480,5 +480,18 @@ sounds.initiateSounds([
 
 /!\ By default, we looks for custom sounds in '/sounds'. You can change de path with the second parameter of initiateSounds function.
 
+If you want to play a sound for all players and not only for current player, then you MUST initiate sounds (even if you don't want to add another sound) and then call the function `playSoundForAll`:
+
+```
+// Initialize sounds
+sounds.initiateSounds()
+
+// Play a sound for all players
+sounds.playSoundForAll('successSound')
+```
+
+## Workadventure Features
+This module is usefull to override base workadventure feature we don't want.
+
 ## Lobby
 Work in progress

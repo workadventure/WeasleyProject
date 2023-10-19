@@ -54,10 +54,10 @@ const initializeRelativeActionForAllPlayers = (id: string, idList: Array<string>
   })
 }
 
-const activateActionForAllPlayer = (id: string, value: mapVariableType = null) => {
+const activateActionForAllPlayer = (id: string, value: mapVariableType = null, must_be_null: boolean = false) => {
   let currentValue = JSON.parse(WA.state.mapActionVariables as string)
   if (value === null) {
-    currentValue[id] = true
+    currentValue[id] = must_be_null ? null : true
   } else {
     currentValue[id] = value
   }
