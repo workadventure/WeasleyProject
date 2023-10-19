@@ -83,6 +83,8 @@ const initiateSecretPassages = (
 
         WA.room.showLayer(`${secretPassagesZones[i]}/found`)
         WA.room.hideLayer(`${secretPassagesZones[i]}/disappear`)
+
+        removeBlocksTiles(secretPassagesZones[i], blockTilesToRemove? blockTilesToRemove[i] : null)
       }
     }
 }

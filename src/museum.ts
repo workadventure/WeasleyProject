@@ -4,7 +4,7 @@ import { } from "https://unpkg.com/@workadventure/scripting-api-extra@^1";
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications, workadventurePricingHide } from './modules'
+import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications, workadventureFeatures } from './modules'
 import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
@@ -15,8 +15,10 @@ WA.onInit().then(async () => {
     await initiateJob()
 
     // Hide pricing button
-    console.log('HIDE PRICING BUTTON')
-    workadventurePricingHide.hidePricingButton()
+    workadventureFeatures.hidePricingButton()
+
+    // Hide invite Button
+    workadventureFeatures.hideInviteButton()
 
     if (env === 'dev') {
         setPlayerJob('spy')
