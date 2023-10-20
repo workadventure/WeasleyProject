@@ -18,7 +18,7 @@ import {env, rootLink} from "./config";
 WA.onInit().then(async () => {
     // Initiate jobs
     await initiateJob()
-    setPlayerJob('spy')
+
     // Initiate sounds
     sounds.initiateSounds([
         {
