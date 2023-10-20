@@ -115,39 +115,11 @@
                          "value":false
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":320.175438596491,
                  "y":96.4912280701755
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":15,
-         "name":"jitsiRoom",
-         "objects":[
-                {
-                 "height":434.821428571428,
-                 "id":2,
-                 "name":"choiceJitsiRoom",
-                 "properties":[
-                        {
-                         "name":"jitsiRoom",
-                         "type":"string",
-                         "value":"choiceJitsi"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":624.107142857143,
-                 "x":8.92857142857143,
-                 "y":8.92857142857143
                 }],
          "opacity":1,
          "type":"objectgroup",
