@@ -243,7 +243,9 @@ const closeCheatSheetWebsite = () => {
 }
 
 const closeBombWebsite = () => {
-  bombWebsite?.close()
-  bombWebsite = null
-  WA.controls.restorePlayerControls()
+  if (bombWebsite) {
+    bombWebsite.close()
+    bombWebsite = null
+    WA.controls.restorePlayerControls()
+  }
 }
