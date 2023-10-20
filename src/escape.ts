@@ -102,6 +102,7 @@ WA.onInit().then(async () => {
             }
         ])
         WA.room.hideLayer('victoryRunesWall')
+        WA.room.hideLayer('victoryRunes/victoryFog')
         WA.room.showLayer('victoryRunes/openedWall')
     })
 
@@ -228,6 +229,8 @@ WA.onInit().then(async () => {
         activateActionForAllPlayer('artifactBrok', true)
         WA.room.hideLayer('artifact')
         WA.room.showLayer('brokenArtifact')
+        WA.room.hideLayer('blackFogs/blackFog6')
+
         secretPassages.removeBlocksTiles('finishedDoor', [
             {
                 x: 8,
