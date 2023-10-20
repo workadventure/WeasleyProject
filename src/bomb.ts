@@ -96,7 +96,9 @@ WA.onInit().then(async () => {
       {x: 15, y: 8, tile: null, layer: 'rockCollisions'},
     ]);
 
+    console.log('PLAYER JOB', getPlayerJob())
     if (getPlayerJob() === 'spy') {
+      console.log('IS SPY')
       WA.player.removeOutlineColor()
       WA.controls.restorePlayerControls()
     }
