@@ -73,13 +73,8 @@ WA.onInit().then(async () => {
   )
 
 
-  if (WA.player.state.askForDefuseBomb === undefined) {
     WA.player.state.askForDefuseBomb = false
-  }
-
-  if (WA.player.state.askForBoom === undefined) {
     WA.player.state.askForBoom = false
-  }
 
     // secret passages initialisation
     secretPassages.initiateSecretPassages(
@@ -120,13 +115,13 @@ WA.onInit().then(async () => {
     // Hide bomb layer
     utils.layers.toggleLayersVisibility('bomb', false)
 
-    // Success sound
-    sounds.playSound('successSound');
-
     closeBombWebsite()
 
+    // Success sound
+    sounds.playSound('successSound')
+
     notifications.notify(
-      utils.translations.translate('bomb.success'),
+      utils.translations.translate('bomb.bomb.success'),
       utils.translations.translate('utils.success'),
       'success'
     )

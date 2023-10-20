@@ -5,20 +5,7 @@ import * as modules from '../../src/modules/index.js'
 const WRONG_TIME = 30
 
 document.addEventListener("DOMContentLoaded", () => {
-  WA.onInit().then(async () => {
-
-    // Sounds initialisation
-    modules.sounds.initiateSounds([
-      {
-        name: 'successSound',
-        path: 'success.mp3'
-      },
-      {
-        name: 'failureSound',
-        path: 'failure.mp3'
-      }
-    ])
-
+  WA.onInit().then(() => {
     const askForDefuseBomb = () => {
       modules.sounds.playSound('successSound')
       WA.player.state.askForDefuseBomb = true
@@ -74,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
       for (let i = 0; i < clickableParts.length; i++) {
         clickableParts[i].addEventListener('click', () => {
           console.log(clickableParts[i].getAttribute('id'))
+          console.log('COUCOUCOUCOUC')
           clickableParts[i].classList.add('clicked')
           modules.arrayFilling.testArrayFilling('bomb', clickableParts[i].getAttribute('id'))
         })
