@@ -87,6 +87,7 @@ WA.onInit().then(async () => {
     initializeRelativeActionForAllPlayers('victory', ['blue', 'yellow', 'red'], () => {
         WA.room.hideLayer('runes/lightOff')
         WA.room.showLayer('runes/lightOn')
+        sounds.playSound('successSound')
         secretPassages.removeBlocksTiles('victoryRunes', [
             {
                 x: 30,
@@ -203,6 +204,7 @@ WA.onInit().then(async () => {
             activateActionForAllPlayer('red', false)
             activateActionForAllPlayer('blue', false)
             activateActionForAllPlayer('yellow', false)
+            sounds.playSound('failureSound')
         }, 300)
     }
 
@@ -230,6 +232,7 @@ WA.onInit().then(async () => {
         WA.room.hideLayer('artifact')
         WA.room.showLayer('brokenArtifact')
         WA.room.hideLayer('blackFogs/blackFog6')
+        sounds.playSound('successSound')
 
         secretPassages.removeBlocksTiles('finishedDoor', [
             {
