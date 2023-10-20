@@ -95,6 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
           minutes = Math.floor(counter / 60)
           seconds = Math.floor(counter % 60)
         } else {
+          askForBoom()
           counter = 0;
         }
 

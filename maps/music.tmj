@@ -198,6 +198,35 @@
         }, 
         {
          "draworder":"topdown",
+         "id":22,
+         "name":"mapVariables",
+         "objects":[
+                {
+                 "height":0,
+                 "id":5,
+                 "name":"mapActionVariables",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"default",
+                         "type":"string",
+                         "value":"{}"
+                        }],
+                 "rotation":0,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":282.094190772173,
+                 "y":398.039684437007
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
          "id":4,
          "name":"floorLayer",
          "objects":[
@@ -279,8 +308,8 @@
          "x":0,
          "y":0
         }],
- "nextlayerid":22,
- "nextobjectid":5,
+ "nextlayerid":23,
+ "nextobjectid":6,
  "orientation":"orthogonal",
  "properties":[
         {

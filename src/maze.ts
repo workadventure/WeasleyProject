@@ -1,6 +1,6 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
-import {hiddenZone, excavations, inventory, switchingTiles, hooking} from './modules'
+import {hiddenZone, excavations, inventory, switchingTiles, hooking, sounds, workadventureFeatures} from './modules'
 import {setPlayerJob, initiateJob} from "./modules/job";
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
@@ -20,6 +20,9 @@ WA.onInit().then( async () => {
 
     // Initiate job
     await initiateJob()
+
+    // Hide pricing button
+    workadventureFeatures.hidePricingButton()
 
     const blueFireOn = () => {
         if(WA.state.blueFire) {
@@ -286,6 +289,7 @@ WA.onInit().then( async () => {
     })
     const checkIfAllFireIsOn = () => {
         if(WA.state.blueFire && WA.state.redFire && WA.state.greenFire) {
+            sounds.playSound('successSound')
             WA.room.showLayer('dragonTopLight')
             WA.room.showLayer('dragonLight')
             WA.room.showLayer('mountainDoorAnimate')

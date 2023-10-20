@@ -1,11 +1,14 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 import {arrayFilling, readRunes} from './modules'
 import {initiateJob} from "./modules/job";
-import { sounds } from './modules'
+import { sounds, workadventureFeatures } from './modules'
 
 WA.onInit().then(async () => {
     // Jobs initialisation
     await initiateJob()
+
+    // Hide pricing button
+    workadventureFeatures.hidePricingButton()
 
     // Sounds initialisation
     sounds.initiateSounds([
@@ -71,56 +74,56 @@ WA.onInit().then(async () => {
             ],
             () => {
                 if (enableRedirect) {
-                    sounds.playSound('failureSound')
+                    sounds.playSoundForAll('failureSound')
                     WA.nav.goToRoom('./music.tmj')
                 }
             },
             () => {
                 WA.state.victory = true
-                sounds.playSound('successSound')
+                sounds.playSoundForAll('successSound')
                 removeTiles()
             }
         )
 
         WA.room.onEnterLayer('notes/do').subscribe(() => {
             if (!WA.state.victory) {
-                sounds.playSound('doSound')
+                sounds.playSoundForAll('doSound')
                 arrayFilling.testArrayFilling('musicTiles', 'do')
             }
         })
         WA.room.onEnterLayer('notes/re').subscribe(() => {
             if (!WA.state.victory) {
-                sounds.playSound('reSound')
+                sounds.playSoundForAll('reSound')
                 arrayFilling.testArrayFilling('musicTiles', 're')
             }
         })
         WA.room.onEnterLayer('notes/mi').subscribe(() => {
             if (!WA.state.victory) {
-                sounds.playSound('miSound')
+                sounds.playSoundForAll('miSound')
                 arrayFilling.testArrayFilling('musicTiles', 'mi')
             }
         })
         WA.room.onEnterLayer('notes/fa').subscribe(() => {
             if (!WA.state.victory) {
-                sounds.playSound('faSound')
+                sounds.playSoundForAll('faSound')
                 arrayFilling.testArrayFilling('musicTiles', 'fa')
             }
         })
         WA.room.onEnterLayer('notes/sol').subscribe(() => {
             if (!WA.state.victory) {
-                sounds.playSound('solSound')
+                sounds.playSoundForAll('solSound')
                 arrayFilling.testArrayFilling('musicTiles', 'sol')
             }
         })
         WA.room.onEnterLayer('notes/la').subscribe(() => {
             if (!WA.state.victory) {
-                sounds.playSound('laSound')
+                sounds.playSoundForAll('laSound')
                 arrayFilling.testArrayFilling('musicTiles', 'la')
             }
         })
         WA.room.onEnterLayer('notes/si').subscribe(() => {
             if (!WA.state.victory) {
-                sounds.playSound('siSound')
+                sounds.playSoundForAll('siSound')
                 arrayFilling.testArrayFilling('musicTiles', 'si')
             }
         })

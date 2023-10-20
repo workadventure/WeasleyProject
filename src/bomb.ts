@@ -1,7 +1,7 @@
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import {rootLink} from "./config";
 import {initiateJob, getPlayerJob, setPlayerJob} from "./modules/job";
-import { actionForAllPlayers, discussion, notifications, secretPassages } from './modules'
+import { actionForAllPlayers, discussion, notifications, secretPassages, sounds, workadventureFeatures } from './modules'
 import * as utils from './utils'
 import {env} from "./config"
 
@@ -25,6 +25,17 @@ WA.onInit().then(async () => {
 
   // Initiate jobs
   await initiateJob()
+
+  // Hide pricing button
+  workadventureFeatures.hidePricingButton()
+
+  // Initialize sounds
+  sounds.initiateSounds([
+    {
+      name: 'evilGuySound',
+      path: 'evilGuy.mp3'
+    }
+  ])
 
   // Reset zoom
   resetCamera()
@@ -93,6 +104,9 @@ WA.onInit().then(async () => {
 
   // BOMB EXPLODES ACTION
   actionForAllPlayers.initializeActionForAllPlayers('boom', () => {
+      // Play evil guy sound
+      sounds.playSound('evilGuySound');
+
       discussion.openDiscussionWebsite(
         utils.translations.translate('bomb.bomb.failure.name'),
         utils.translations.translate('bomb.bomb.failure.message'),
@@ -103,7 +117,12 @@ WA.onInit().then(async () => {
 
   // DEFUSE BOMB ACTION
   actionForAllPlayers.initializeActionForAllPlayers('defuseBomb', () => {
+    // Hide bomb layer
     utils.layers.toggleLayersVisibility('bomb', false)
+
+    // Success sound
+    sounds.playSound('success');
+
     closeBombWebsite()
     notifications.notify(
       utils.translations.translate('bomb.success'),

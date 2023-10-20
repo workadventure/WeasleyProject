@@ -1,4 +1,5 @@
 import {rootLink} from "../config";
+import { actionForAllPlayers } from '../modules'
 
 type soundType = {
   name: string,
@@ -21,17 +22,29 @@ const soundConfig = {
 }
 
 // initiate player inventory (reset all items)
-const initiateSounds = (soundList: Array<soundType>, soundsPath: string = `${rootLink}/sounds/`) => {
+const initiateSounds = (soundList: Array<soundType> = [], soundsPath: string = `${rootLink}/sounds/`) => {
   for (let i = 0; i < soundList.length; i++) {
     sounds[soundList[i].name] = WA.sound.loadSound(`${soundsPath}${soundList[i].path}`)
   }
+
+  actionForAllPlayers.initializeActionForAllPlayers('playSoundForAllPlayers', (name: string | null) => {
+    if (name) {
+      sounds[name].play(soundConfig);
+    }
+  })
 }
 
 const playSound = (name: string) => {
   sounds[name].play(soundConfig);
 }
 
+const playSoundForAll = (name: string) => {
+  actionForAllPlayers.activateActionForAllPlayer('playSoundForAllPlayers', name)
+  actionForAllPlayers.activateActionForAllPlayer('playSoundForAllPlayers', null, true)
+}
+
 export {
   initiateSounds,
-  playSound
+  playSound,
+  playSoundForAll
 }
