@@ -18,7 +18,7 @@ import {env, rootLink} from "./config";
 WA.onInit().then(async () => {
     // Initiate jobs
     await initiateJob()
-
+    setPlayerJob('spy')
     // Initiate sounds
     sounds.initiateSounds([
         {
@@ -77,7 +77,7 @@ WA.onInit().then(async () => {
     }
 
     hiddenZone.initiateHiddenZones([{stepIn: 'stepMapFog1', hide: 'mapFog1'}])
-    hiddenZone.initiateHiddenZones([{stepIn: 'stepMapFog2', hide: 'mapFogn'}])
+    hiddenZone.initiateHiddenZones([{stepIn: 'stepMapFog2', hide: 'mapFog2'}])
     // Runes reading initialisation
     readRunes.initiateRunesReading()
 
