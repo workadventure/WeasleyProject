@@ -1,7 +1,7 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { ActionMessage } from '@workadventure/iframe-api-typings';
-import {discussion, inventory} from './modules'
+import {discussion, inventory, workadventureFeatures} from './modules'
 import {getPlayerJob, resetPlayerJob, setPlayerJob, initiateJob} from "./modules/job";
 import * as utils from "./utils";
 
@@ -37,6 +37,15 @@ WA.onInit().then(async () => {
 
     // Initiate job
     await initiateJob()
+
+    // Hide pricing
+    workadventureFeatures.hidePricingButton()
+
+    // Display scenario
+    discussion.openDiscussionWebsite(
+      'utils.voiceOver',
+      'choice.scenario'
+    )
 
     WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
         if(value) {
