@@ -13,6 +13,7 @@ const hideInviteButton = () => {
 
 const hidePremiumBanner = () => {
   setTimeout(() => {
+    // @ts-ignore
     WA.ui.banner.closeBanner('freemium-banner')
   }, 200)
 }
