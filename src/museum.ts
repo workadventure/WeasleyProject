@@ -4,7 +4,7 @@ import { } from "https://unpkg.com/@workadventure/scripting-api-extra@^1";
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications, workadventureFeatures } from './modules'
+import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications, workadventureFeatures, cameraMovingMode } from './modules'
 import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
@@ -19,6 +19,12 @@ WA.onInit().then(async () => {
 
     // Hide invite Button
     workadventureFeatures.hideInviteButton()
+
+    // Hide premium banner
+    workadventureFeatures.hidePremiumBanner()
+
+    // Camera moving mode
+    cameraMovingMode.initializeCameraMovingMode()
 
     if (env === 'dev') {
         setPlayerJob('spy')
@@ -35,7 +41,6 @@ WA.onInit().then(async () => {
             description: 'museum.secretMap.description'
         })
     }
-
 
     WA.state.onVariableChange('chest').subscribe((value) => {
         if (value && !WA.state.mapRetrieved) {
@@ -301,14 +306,15 @@ WA.onInit().then(async () => {
             desktopSearchZone = WA.ui.displayActionMessage({
                 message: utils.translations.translate(`museum.search`),
                 callback: () => {
-                    desktopSearchZone = WA.ui.displayActionMessage({
-                        message: utils.translations.translate(`museum.desktopItems${i}`),
-                        callback: () => {
-                            if(i === 0) {
-                                discussion.openDiscussionWebsite('views.museum.annuaryTitle', 'views.museum.annuaryContent')
+                    if (i === 0) {
+                        discussion.openDiscussionWebsite('views.museum.annuaryTitle', 'views.museum.annuaryContent')
+                    } else {
+                        desktopSearchZone = WA.ui.displayActionMessage({
+                            message: utils.translations.translate(`museum.desktopItems${i}`),
+                            callback: () => {
                             }
-                        }
-                    })
+                        })
+                    }
                 }
             })
         })
@@ -359,48 +365,49 @@ WA.onInit().then(async () => {
     ]
 
     // Rooms list
+    const zoom = cameraMovingMode.getZoom()
     const rooms: Record<string, Record<string, number>> = {
         room1: {
             x: 5*32,
             y: 60*32,
-            width: 500,
-            height: 500,
+            width: zoom,
+            height: zoom,
         },
         room2: {
             x: 5*32,
             y: 44*32,
-            width: 500,
-            height: 500,
+            width: zoom,
+            height: zoom,
         },
         room3: {
             x: 3*32,
             y: 3*32,
-            width: 500,
-            height: 500,
+            width: zoom,
+            height: zoom,
         },
         room4: {
             x: 60*32,
             y: 4*32,
-            width: 900,
-            height: 900,
+            width: zoom,
+            height: zoom,
         },
         room5: {
             x: 50*32,
             y: 32*32,
-            width: 400,
-            height: 400,
+            width: zoom,
+            height: zoom,
         },
         room6: {
             x: 31*32,
             y: 51*32,
-            width: 520,
-            height: 520,
+            width: zoom,
+            height: zoom,
         },
         room7: {
             x: 37*32,
             y: 33*32,
-            width: 1000,
-            height: 1000,
+            width: zoom,
+            height: zoom,
         },
     }
 
@@ -464,14 +471,7 @@ WA.onInit().then(async () => {
         const roomData = rooms['room' + value]
 
         // Move camera to room
-        WA.camera.set(
-          roomData.x,
-          roomData.y,
-          roomData.width,
-          roomData.height,
-          false,
-          false,
-        )
+        cameraMovingMode.moveTo(roomData.x, roomData.y)
 
         utils.layers.toggleLayersVisibility(`fogs/fog${value}`, false)
     })
@@ -539,11 +539,14 @@ WA.onInit().then(async () => {
         })
         WA.controls.disablePlayerControls()
         WA.player.state.askForCloseComputerWebsite = false
+        cameraMovingMode.setCameraPositionToPlayerPosition()
+        cameraMovingMode.openCameraMovingWebsite()
     }
 
     const closeComputerWebsite = () => {
         computerWebsite?.close()
         computerWebsite = null
+        cameraMovingMode.closeCameraMovingWebsite()
         WA.controls.restorePlayerControls()
         WA.camera.followPlayer(true)
     }

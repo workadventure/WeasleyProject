@@ -911,6 +911,42 @@
                  "width":0,
                  "x":1077.32509799264,
                  "y":58.2016866611237
+                }, 
+                {
+                 "height":0,
+                 "id":12,
+                 "name":"mapWidth",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"default",
+                         "type":"int",
+                         "value":69
+                        }],
+                 "rotation":0,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":429.419826404751,
+                 "y":1747.37322978529
+                }, 
+                {
+                 "height":0,
+                 "id":13,
+                 "name":"mapHeight",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"default",
+                         "type":"int",
+                         "value":69
+                        }],
+                 "rotation":0,
+                 "type":"variable",
+                 "visible":true,
+                 "width":0,
+                 "x":481.955230698949,
+                 "y":1738.23663773412
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1529,7 +1565,7 @@
          "y":0
         }],
  "nextlayerid":147,
- "nextobjectid":12,
+ "nextobjectid":14,
  "orientation":"orthogonal",
  "properties":[
         {

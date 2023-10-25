@@ -11,7 +11,14 @@ const hideInviteButton = () => {
   }, 200)
 }
 
+const hidePremiumBanner = () => {
+  setTimeout(() => {
+    WA.ui.banner.closeBanner('freemium-banner')
+  }, 200)
+}
+
 export {
   hidePricingButton,
-  hideInviteButton
+  hideInviteButton,
+  hidePremiumBanner
 }
