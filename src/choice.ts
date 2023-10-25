@@ -5,12 +5,13 @@ import {discussion, inventory, workadventureFeatures} from './modules'
 import {getPlayerJob, resetPlayerJob, setPlayerJob, initiateJob} from "./modules/job";
 import * as utils from "./utils";
 
-
+// Get all players on the map (only close players --> here the map is small enough to always get all the players)
 const getPlayers = async () => {
     await WA.players.configureTracking()
     return WA.players.list()
 }
 
+// Function to determine if all players already have a job
 const allPlayersGotJob = async () => {
     const players = await getPlayers()
     let count = 0
@@ -47,14 +48,17 @@ WA.onInit().then(async () => {
       'choice.scenario'
     )
 
+    // When all players have a job, send them to next map
     WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
         if(value) {
             WA.nav.goToRoom('./museum.tmj')
         }
     })
 
+    // Even if player has already a job set when arriving, we reset his job
     resetPlayerJob()
 
+    // Talk to the NPC
     let talk: ActionMessage;
     WA.room.onEnterLayer('talk').subscribe(() => {
         talk = WA.ui.displayActionMessage({
@@ -68,6 +72,7 @@ WA.onInit().then(async () => {
         talk.remove()
     })
 
+    // Choose spy job
     let becomeSpy: ActionMessage;
     WA.room.onEnterLayer('spy').subscribe(async () => {
         const players = await getPlayers()
@@ -93,6 +98,7 @@ WA.onInit().then(async () => {
         becomeSpy.remove()
     })
 
+    // Choose acheologist job
     let becomeArcheo: ActionMessage;
     WA.room.onEnterLayer('archeo').subscribe(async() => {
         const players = await getPlayers()
@@ -117,6 +123,7 @@ WA.onInit().then(async () => {
         becomeArcheo.remove()
     })
 
+    // Take a croissant (useless, but funny)
     let takeCroissant: ActionMessage
     WA.room.onEnterLayer('croissants').subscribe(() => {
         takeCroissant = WA.ui.displayActionMessage({

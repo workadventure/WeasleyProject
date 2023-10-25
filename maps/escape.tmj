@@ -736,7 +736,7 @@
                          "value":"{}"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":747.136679147097,
@@ -754,7 +754,7 @@
                          "value":false
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":1172.28915662651,
@@ -772,7 +772,7 @@
                          "value":false
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":1104.21686746988,
@@ -790,7 +790,7 @@
                          "value":false
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":1040.36144578313,
@@ -808,7 +808,7 @@
                          "value":false
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":1135.5421686747,
@@ -874,7 +874,7 @@
                          "value":"lavaStoneA3"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":974.787893375053,
@@ -912,7 +912,7 @@
                          "value":true
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":1104.81927710843,
@@ -1066,7 +1066,7 @@
                                  "value":42
                                 }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":1060,
@@ -1084,7 +1084,7 @@
                                  "value":39
                                 }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":940.740740740741,

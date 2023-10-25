@@ -3,7 +3,7 @@
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling, sounds} from './modules'
+import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling, sounds, workadventureFeatures} from './modules'
 import { initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage } from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
@@ -26,6 +26,9 @@ WA.onInit().then(async () => {
             path: 'final.mp3'
         }
     ])
+
+    // Hide pricing button
+    workadventureFeatures.hidePricingButton()
 
     const openFinalWebsite = async () => {
         await WA.ui.website.open({
