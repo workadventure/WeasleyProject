@@ -80,19 +80,36 @@ WA.onInit().then(async () => {
         outMessage = null
     })
 
+    const openPlan = () => {
+        discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
+            // Restore player controls
+            WA.controls.restorePlayerControls()
+        })
+    }
+
     const launchTutorial = () => {
         // Disable player controls
         WA.controls.disablePlayerControls()
 
         // Open tutorial discussion
         discussion.openDiscussionWebsite( 'utils.voiceOver', 'views.museum.beginText', "museum.go", "discussion", 'middle' , 'middle', '50vh', '90vw', () => {
-            discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
-                // Restore player controls
-                WA.controls.restorePlayerControls()
-            })
+            openPlan()
         })
     }
+
+    // Open tutorial at launch
     launchTutorial()
+
+    // Add plan button to read again if needed
+    WA.ui.actionBar.addButton({
+        id: 'planButton',
+        label: 'Plan', // TODO: translations
+        callback:  () => {
+            openPlan()
+        }
+    });
+
+
 
     let isLight1Visible = false
     let lightLoop: NodeJS.Timer|null = null
@@ -117,6 +134,9 @@ WA.onInit().then(async () => {
         toggleLayersVisibility('noLights/conversations', false)
         toggleLayersVisibility('lights/conversations', true)
     }
+
+    // Lights are on at launch
+    turnOnLights()
 
     const turnOffLights = () => {
         stopLightLoop()
@@ -157,7 +177,9 @@ WA.onInit().then(async () => {
     let keeperZone: ActionMessage|null = null
     WA.room.onEnterLayer(`bigRoomAccess/keeperZone`).subscribe(() => {
             keeperZone = WA.ui.displayActionMessage({
-                message: utils.translations.translate('museum.speakToKeeper'),
+                message: utils.translations.translate('utils.executeAction', {
+                    action: utils.translations.translate('museum.speakToKeeper')
+                }),
                 callback: () => {
                     if(inventory.hasItem('id-card')) {
                         discussion.openDiscussionWebsite('views.museum.keeperName', 'views.museum.bigRoomAccess')
@@ -181,7 +203,9 @@ WA.onInit().then(async () => {
         WA.room.onEnterLayer(`search/s${i}`).subscribe(() => {
             if(i === 5 && !inventory.hasItem('id-card')) {
                 searchZone = WA.ui.displayActionMessage({
-                    message: utils.translations.translate('museum.search'),
+                    message: utils.translations.translate('utils.executeAction', {
+                        action: utils.translations.translate('museum.search')
+                    }),
                     callback: () => {
                             inventory.addToInventory({
                                 id: 'id-card',
@@ -193,7 +217,9 @@ WA.onInit().then(async () => {
                 })
             } else {
                 searchZone = WA.ui.displayActionMessage({
-                    message: utils.translations.translate('museum.search'),
+                    message: utils.translations.translate('utils.executeAction', {
+                        action: 'museum.search'
+                    }),
                     callback: () => {
                         searchZone = WA.ui.displayActionMessage({
                             message: utils.translations.translate('museum.searchEmpty'),
@@ -217,7 +243,9 @@ WA.onInit().then(async () => {
         let searchZone: ActionMessage|null = null
         WA.room.onEnterLayer(`pickPocketInvited/i${i}`).subscribe(() => {
                 searchZone = WA.ui.displayActionMessage({
-                    message: utils.translations.translate('museum.pickpocket'),
+                    message: utils.translations.translate('utils.executeAction', {
+                        action: utils.translations.translate('museum.pickpocket')
+                    }),
                     callback: () => {
                         if (!actionForAllPlayers.currentValue('switchLights')) {
                             if(i === 8 && !inventory.hasItem('access-card')) {
@@ -284,7 +312,9 @@ WA.onInit().then(async () => {
             })
         } else {
             desktopZone = WA.ui.displayActionMessage({
-                message: utils.translations.translate('museum.desktopOpen'),
+                message: utils.translations.translate('utils.executeAction', {
+                    action: utils.translations.translate('museum.desktopOpen')
+                }),
                 callback: () => {
                     desktopZone = WA.ui.displayActionMessage({
                         message: utils.translations.translate('museum.desktopOpenMsg'),
@@ -295,7 +325,6 @@ WA.onInit().then(async () => {
                 }
             })
         }
-
     })
     WA.room.onLeaveLayer(`desktopAccessZone`).subscribe(() => {
         desktopZone?.remove()
@@ -304,7 +333,9 @@ WA.onInit().then(async () => {
         let desktopSearchZone: ActionMessage|null = null
         WA.room.onEnterLayer(`desktopItems/i${i}`).subscribe(() => {
             desktopSearchZone = WA.ui.displayActionMessage({
-                message: utils.translations.translate(`museum.search`),
+                message: utils.translations.translate('utils.executeAction', {
+                    action: utils.translations.translate('museum.search')
+                }),
                 callback: () => {
                     if (i === 0) {
                         discussion.openDiscussionWebsite('views.museum.annuaryTitle', 'views.museum.annuaryContent')

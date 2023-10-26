@@ -1,17 +1,17 @@
 export default {
     go: 'C\'est parti !',
     doorClosed : "Cette porte semble fermée",
-    search : "[FOUILLER]",
+    search : "Fouiller",
     idCardTitle: "Carte d'identité",
     idCardDescription : "La carte d'identité de quelqu'un qui a l'air vraiment très très important",
     searchEmpty: "Rien d'intéressant...",
-    speakToKeeper: "[PARLER]",
-    pickpocket: "[PICKPOCKETER]",
+    speakToKeeper: "Parler",
+    pickpocket: "Pickpocketer",
     pickpocketEmpty: "mmmh... non, rien d'intéressant",
     accessCard: "Clé dorée",
     accessCardDescription: "Clé dorée d'une pièce qui a l'air importante",
     desktopOpenMsg: "*Clic clac* c'est ouvert !",
-    desktopOpen: "[INTRODUIRE LA CLE DOREE]",
+    desktopOpen: "Introduire la clé dorée",
     desktopItems0 : "Un livre qui semble être intéressant",
     desktopItems1 : "Je crois que je connais cette personne... ah ! c'est un mirroir",
     desktopItems2 : "L'australie ! Oh non encore ? Et oui c'est le jeu ma pauvre Lucette...",
@@ -32,5 +32,6 @@ export default {
         title: 'Carte top secrète',
         description: 'Une carte qui permet de trouver le remède à tous les maux de l\'humanité'
     },
-    escape: 'S\'enfuir'
+    escape: 'S\'enfuir',
+    plan: 'Plan'
 }
