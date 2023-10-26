@@ -36,10 +36,10 @@ const getCameraPosition: () => Promise<Position> = async () => {
 const move = async (direction: directionType) => {
   let position = await getCameraPosition()
 
-  let maxPosX = WA.state.mapWidth ? (WA.state.mapWidth as number)*32 - (WA.player.state.currentCameraZoom as number) : null
+  let maxPosX = WA.state.mapWidth ? (WA.state.mapWidth as number)*32 - (WA.player.state.currentCameraZoom as number)/2 : null
   let maxPosY = WA.state.maxHeight ? (WA.state.maxHeight as number)*32 - (WA.player.state.currentCameraZoom as number)/2 : null
 
-  let minPosX = (WA.player.state.currentCameraZoom as number)
+  let minPosX = (WA.player.state.currentCameraZoom as number)/2
   let minPosY = (WA.player.state.currentCameraZoom as number)/2
 
   switch (direction) {

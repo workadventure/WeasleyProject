@@ -752,7 +752,7 @@
                  "name":"d7",
                  "point":true,
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":178.260869565217,
@@ -770,29 +770,11 @@
                          "value":"{}"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":886.95652173913,
                  "y":856.521739130435
-                }, 
-                {
-                 "height":0,
-                 "id":5,
-                 "name":"hookingD7Discovered",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"default",
-                         "type":"bool",
-                         "value":false
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":176.086956521739,
-                 "y":1563.04347826087
                 }, 
                 {
                  "height":0,
@@ -875,24 +857,6 @@
                  "width":0,
                  "x":181.973272675576,
                  "y":1987.48933750355
-                }, 
-                {
-                 "height":0,
-                 "id":8,
-                 "name":"mapActionVariables",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"default",
-                         "type":"string",
-                         "value":"{}"
-                        }],
-                 "rotation":0,
-                 "type":"variable",
-                 "visible":true,
-                 "width":0,
-                 "x":112.785517960383,
-                 "y":1985.59378257985
                 }, 
                 {
                  "height":0,
