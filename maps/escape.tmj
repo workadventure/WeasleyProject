@@ -841,7 +841,7 @@
                          "value":"lavaStoneD3"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":1041.5789156989,
@@ -1102,7 +1102,7 @@
                                  "value":false
                                 }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":1096.2962962963,

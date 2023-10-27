@@ -106,7 +106,17 @@ WA.onInit().then(async () => {
         utils.translations.translate('bomb.bomb.failure.name'),
         utils.translations.translate('bomb.bomb.failure.message'),
         'views.choice.close',
-        "discussion"
+        "discussion",
+        'middle',
+        'middle',
+        '50vh',
+        '50vh',
+        () => {
+          if (getPlayerJob() === 'spy') {
+            // Is blocked under a rock
+            WA.controls.disablePlayerControls()
+          }
+        }
       )
     })
 
