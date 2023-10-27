@@ -1,6 +1,5 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 import * as modules from '../../src/modules/index.js'
-import {askForCode} from "../../src/modules/digicode";
 
 document.addEventListener("DOMContentLoaded", () => {
   let currentCode = ''

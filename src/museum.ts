@@ -168,10 +168,10 @@ WA.onInit().then(async () => {
     }
 
     // Lights are on at launch
-    if (!actionForAllPlayers.hasBeenTriggered('switchLights')) {
-        turnOnLights()
-    } else {
+    if (!actionForAllPlayers.currentValue('switchLights')) {
         turnOffLights()
+    } else {
+        turnOnLights()
     }
 
 

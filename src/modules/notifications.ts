@@ -4,7 +4,7 @@ import {rootLink} from "../config";
 type notificationType = 'info'|'error'|'success'|'warning'
 
 
-let notificationWebsite: Record<number, {index: number, website: UIWebsite}> = {}
+let notificationWebsite: Record<string, {index: number, website: UIWebsite}> = {}
 
 const getAvailableIndex = () => {
   const keys = Object.keys(notificationWebsite)
@@ -28,16 +28,17 @@ const getAvailableIndex = () => {
 // - type : the type of the notification (error, info, success, warning)
 const notify = async (content: string, title: string|null = null, type: notificationType = 'info') => {
   const timestamp = Date.now()
+  const token: string = Math.random().toString(36).substring(2) + timestamp
   const newIndex = getAvailableIndex()
-  notificationWebsite[timestamp] = {
+  notificationWebsite[token] = {
     index: newIndex,
     website: await openNotification(newIndex, content, title, type)
   }
 
   setTimeout(() => {
-    if (notificationWebsite[timestamp]) {
-      notificationWebsite[timestamp].website.close()
-      delete notificationWebsite[timestamp]
+    if (notificationWebsite[token]) {
+      notificationWebsite[token].website.close()
+      delete notificationWebsite[token]
     }
   }, 4000) // Stay four seconds on screen
 }
@@ -49,7 +50,7 @@ const openNotification = async (index:number, content: string, title: string|nul
     allowPolicy: "",
     position: {
       vertical: "top",
-      horizontal: "left",
+      horizontal: "right",
     },
     size: {
       height: "100vh",

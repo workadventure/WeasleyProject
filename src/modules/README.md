@@ -493,5 +493,33 @@ sounds.playSoundForAll('successSound')
 ## Workadventure Features
 This module is usefull to override base workadventure feature we don't want.
 
+## Camera moving mode
+This module is used to move camera in the map. It includes a view with arrow and functions you can use to move to a specific point or on the sides.
+
+## Digicode
+This module is used to display a digicode and trigger actions when right values.
+
+```js
+// Create digicode for chest
+digicode.createDigicode('myDigicode', [{
+    code: '0000',
+    callback: () => {
+      console.log('SUCCESS')
+    }
+}])
+
+// Digicodes initialisation --> IMPORTANT : MUST BE INITIALIZED AFTER ALL DIGICODES CREATION
+digicode.initiateDigicodes('myDigicode')
+
+// Open digicode
+digicode.openDigicode()
+```
+
+Note: For now, there is no limitation on number of digits. Perhaps we should put a limit ?
+
+Note : for now, on error, failureSound is played and digicode is closed. Nothing to manage action to make on error. Perhaps we should do this in the future
+
+Note : Maybe we can make a phone in the future to extend this module
+
 ## Lobby
 Work in progress
