@@ -51,6 +51,7 @@ WA.onInit().then(() => {
 
         WA.state.randomDuos = JSON.stringify(randomDuos)
       } else {
+        // @ts-ignore
         WA.ui.banner.openBanner({
           id: "banner-players-not-even",
           text: utils.translations.translate('lobby.notValid'),
