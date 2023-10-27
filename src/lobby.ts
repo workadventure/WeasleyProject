@@ -5,6 +5,7 @@ import {ActionMessage} from "@workadventure/iframe-api-typings";
 bootstrapExtra();
 
 import * as utils from "./utils";
+import { discussion } from './modules'
 
 const shuffle: (array: Array<unknown>) => Array<unknown> = (array: Array<unknown>) => {
   let currentIndex = array.length,  randomIndex;
@@ -36,7 +37,6 @@ WA.onInit().then(() => {
     setTimeout(() => {
       let randomDuos: Record<string, string> = {}
       let players: Array<string> = (WA.state.playersInSelectionZone as string).split('/')
-      // TODO : test regex
       const emailRegex = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
       players = players.filter((str) => str !== '' && str.match(emailRegex))
 
@@ -110,12 +110,14 @@ WA.onInit().then(() => {
     ])
   })
 
-  WA.state.onVariableChange('askForRandomDuos').subscribe(() => {
-    if (WA.player.state.isInSelectionZone) {
-      // TODO : display loading
-      console.log('LOADING')
+  WA.state.onVariableChange('askForRandomDuos').subscribe((value) => {
+    if (value) {
+      if (WA.player.state.isInSelectionZone) {
+        // TODO : display loading
+        console.log('LOADING')
 
-      WA.state.playersInSelectionZone = WA.state.playersInSelectionZone + '/' + WA.player.uuid
+        WA.state.playersInSelectionZone = WA.state.playersInSelectionZone + '/' + WA.player.uuid
+      }
     }
   })
 
@@ -128,5 +130,21 @@ WA.onInit().then(() => {
     }
   })
 
-  // TODO : explanation
+  // INFOS
+  let infosMessage: ActionMessage | null = null
+  WA.room.onEnterLayer('infos_zone').subscribe(() => {
+    infosMessage = WA.ui.displayActionMessage({
+      message: utils.translations.translate('utils.executeAction', {
+        action: utils.translations.translate('lobby.displayInfos')
+      }),
+      callback: () => {
+        discussion.openDiscussionWebsite('lobby.infoPanel', 'lobby.whatIsThat')
+      }
+    })
+  })
+
+  WA.room.onLeaveLayer('infos_zone').subscribe(() => {
+    infosMessage?.remove()
+    infosMessage = null
+  })
 })
