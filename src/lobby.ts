@@ -113,9 +113,6 @@ WA.onInit().then(() => {
   WA.state.onVariableChange('askForRandomDuos').subscribe((value) => {
     if (value) {
       if (WA.player.state.isInSelectionZone) {
-        // TODO : display loading
-        console.log('LOADING')
-
         WA.state.playersInSelectionZone = WA.state.playersInSelectionZone + '/' + WA.player.uuid
       }
     }
