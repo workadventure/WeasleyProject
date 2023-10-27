@@ -8,13 +8,11 @@ let notificationWebsite: Record<number, {index: number, website: UIWebsite}> = {
 
 const getAvailableIndex = () => {
   const keys = Object.keys(notificationWebsite)
-  console.log('keys', keys)
   const takenIndexes = []
   for (let i = 0; i < keys.length; i++) {
     // @ts-ignore
     takenIndexes.push(notificationWebsite[keys[i]].index)
   }
-  console.log('taken indexes', takenIndexes)
 
   for (let i = 0; i < takenIndexes.length; i++) {
     if (!takenIndexes.includes(i)) {
@@ -31,8 +29,6 @@ const getAvailableIndex = () => {
 const notify = async (content: string, title: string|null = null, type: notificationType = 'info') => {
   const timestamp = Date.now()
   const newIndex = getAvailableIndex()
-  console.log('notificationWebsite', notificationWebsite)
-  console.log('new Index', newIndex)
   notificationWebsite[timestamp] = {
     index: newIndex,
     website: await openNotification(newIndex, content, title, type)

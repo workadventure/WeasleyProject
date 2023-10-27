@@ -32,5 +32,7 @@ export default {
         description: 'A map to find the cure for all mankind\'s ills'
     },
     escape: 'Escape',
-    plan: 'Plan'
+    plan: 'Plan',
+    inspect: 'Inspect',
+    mapRetrieved: "The map has been retrieved"
 }

@@ -4,7 +4,7 @@ import { } from "https://unpkg.com/@workadventure/scripting-api-extra@^1";
 import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
-import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications, workadventureFeatures, cameraMovingMode } from './modules'
+import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications, workadventureFeatures, cameraMovingMode, digicode } from './modules'
 import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
@@ -13,6 +13,57 @@ import {toggleLayersVisibility} from "./utils/layers";
 
 WA.onInit().then(async () => {
     await initiateJob()
+
+    actionForAllPlayers.initializeActionForAllPlayers('retrieveMap', () => {
+        // Get map
+        inventory.addToInventory({
+            id: 'secret-map',
+            name: 'museum.secretMap.title',
+            image: 'secret-map.png',
+            description: 'museum.secretMap.description'
+        })
+
+        notifications.notify('museum.mapRetrieved', 'utils.success', 'success')
+
+        // Show chest open state
+        utils.layers.toggleLayersVisibility(['chestOpened'], true)
+
+        // Close digicode
+        digicode.closeDigicode()
+    })
+
+
+    // Create digicode for chest
+    digicode.createDigicode('chestDigicode', [{
+        code: '160616',
+        callback: () => {
+            WA.state.mapRetrieved = true
+            actionForAllPlayers.activateActionForAllPlayer('retrieveMap')
+        }
+    }])
+
+    // Digicodes initialisation
+    digicode.initiateDigicodes()
+
+    let chestMessage: ActionMessage | null = null
+    // Open digicode when walking on chest zone
+    WA.room.onEnterLayer('chestZone').subscribe(() => {
+        if (!actionForAllPlayers.hasBeenTriggered('retrieveMap')) {
+            chestMessage = WA.ui.displayActionMessage({
+                message: utils.translations.translate('utils.executeAction', {
+                    action: utils.translations.translate('museum.inspect')
+                }),
+                callback: () => {
+                    digicode.openDigicode('chestDigicode')
+                }
+            })
+        }
+    })
+
+    WA.room.onLeaveLayer('chestMessage').subscribe(() => {
+        chestMessage?.remove()
+        chestMessage = null
+    })
 
     // Hide pricing button
     workadventureFeatures.hidePricingButton()
@@ -31,34 +82,6 @@ WA.onInit().then(async () => {
     }
     // Inventory initialisation
     inventory.initiateInventory()
-
-    // Add copy of the map to inventory if has already been retrieved (in case of reload)
-    if (WA.state.mapRetrieved) {
-        inventory.addToInventory({
-            id: 'secret-map',
-            name: 'museum.secretMap.title',
-            image: 'secret-map.png',
-            description: 'museum.secretMap.description'
-        })
-    }
-
-    WA.state.onVariableChange('chest').subscribe((value) => {
-        if (value && !WA.state.mapRetrieved) {
-            WA.state.mapRetrieved = true
-        }
-    })
-
-    WA.state.onVariableChange('mapRetrieved').subscribe((value) => {
-        if (value) {
-            notifications.notify('La carte a été récupérée !', 'utils.success', 'success')
-            inventory.addToInventory({
-                id: 'secret-map',
-                name: 'museum.secretMap.title',
-                image: 'secret-map.png',
-                description: 'museum.secretMap.description'
-            })
-        }
-    })
 
     // Go out after retrieving the map
     let outMessage: ActionMessage | null = null
@@ -103,7 +126,7 @@ WA.onInit().then(async () => {
     // Add plan button to read again if needed
     WA.ui.actionBar.addButton({
         id: 'planButton',
-        label: 'Plan', // TODO: translations
+        label: utils.translations.translate('museum.plan'),
         callback:  () => {
             openPlan()
         }
@@ -135,9 +158,6 @@ WA.onInit().then(async () => {
         toggleLayersVisibility('lights/conversations', true)
     }
 
-    // Lights are on at launch
-    turnOnLights()
-
     const turnOffLights = () => {
         stopLightLoop()
         toggleLayersVisibility('lights/lights1', false)
@@ -146,6 +166,14 @@ WA.onInit().then(async () => {
         toggleLayersVisibility('noLights/conversations', true)
         toggleLayersVisibility('lights/conversations', false)
     }
+
+    // Lights are on at launch
+    if (!actionForAllPlayers.hasBeenTriggered('switchLights')) {
+        turnOnLights()
+    } else {
+        turnOffLights()
+    }
+
 
     hooking.setHooking('hookingD7', () => {
         const tiles = []

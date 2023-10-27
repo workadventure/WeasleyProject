@@ -33,5 +33,7 @@ export default {
         description: 'Une carte qui permet de trouver le remède à tous les maux de l\'humanité'
     },
     escape: 'S\'enfuir',
-    plan: 'Plan'
+    plan: 'Plan',
+    inspect: 'Inspecter',
+    mapRetrieved: "La carte a été récupérée"
 }

@@ -823,7 +823,7 @@
                          "value":"chestZone"
                         }],
                  "rotation":0,
-                 "type":"variable",
+                 "type":"",
                  "visible":true,
                  "width":0,
                  "x":1038.55232100708,
