@@ -34,9 +34,17 @@ WA.onInit().then(() => {
     WA.state.playersInSelectionZone = ''
     WA.state.randomDuos = null
     WA.state.askForRandomDuos = true
+
+    let players: Array<string> = []
+    WA.state.onVariableChange('playersInSelectionZone').subscribe((value) => {
+      if (value) {
+        console.log('NEW PLAYER', value)
+        players.push(value as string)
+      }
+    })
+
     setTimeout(() => {
       let randomDuos: Record<string, string> = {}
-      let players: Array<string> = (WA.state.playersInSelectionZone as string).split('/')
       console.log('PLAYERS', players)
 
       const emailRegex = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
@@ -116,12 +124,9 @@ WA.onInit().then(() => {
   })
 
   WA.state.onVariableChange('askForRandomDuos').subscribe((value) => {
-    console.log('ASKED FOR DUOS')
     if (value) {
-      console.log('TRUE')
       if (WA.player.state.isInSelectionZone) {
-        console.log('IN SELECTION ZONE', WA.state.playersInSelectionZone)
-        WA.state.playersInSelectionZone = WA.state.playersInSelectionZone + '/' + WA.player.uuid
+        WA.state.playersInSelectionZone = WA.player.uuid
       }
     }
   })
