@@ -37,9 +37,13 @@ WA.onInit().then(() => {
     setTimeout(() => {
       let randomDuos: Record<string, string> = {}
       let players: Array<string> = (WA.state.playersInSelectionZone as string).split('/')
+      console.log('PLAYERS', players)
+
       const emailRegex = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
       players = players.filter((str) => str !== '' && str.match(emailRegex))
+      console.log('PLAYERS AFTER EMAIL REGEX', players)
 
+      console.log('PLAYERS LENGTH', players.length)
       if (players.length % 2 === 0 && players.length > 0) {
         players = shuffle(players) as Array<string>
 
