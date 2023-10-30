@@ -116,8 +116,11 @@ WA.onInit().then(() => {
   })
 
   WA.state.onVariableChange('askForRandomDuos').subscribe((value) => {
+    console.log('ASKED FOR DUOS')
     if (value) {
+      console.log('TRUE')
       if (WA.player.state.isInSelectionZone) {
+        console.log('IN SELECTION ZONE', WA.state.playersInSelectionZone)
         WA.state.playersInSelectionZone = WA.state.playersInSelectionZone + '/' + WA.player.uuid
       }
     }
