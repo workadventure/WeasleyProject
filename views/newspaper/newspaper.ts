@@ -13,7 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (title) {
-      title.innerText = utils.translations.translate('views.newspaper.title')
+      title.innerText = utils.translations.translate('views.newspaper.title', {
+        name: WA.player.name
+      })
     }
 
     if (picture) {
