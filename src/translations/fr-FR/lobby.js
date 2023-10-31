@@ -6,5 +6,7 @@ export default {
     '/!\\ Attention : Vous devez être connectés si vous souhaitez que la sélection fonctionne',
   notValid: 'Le nombre de joueur n\'est pas valide',
   displayInfos: 'Informations',
-  infoPanel: 'Panneau d\'informations'
+  infoPanel: 'Panneau d\'informations',
+  admin: 'Administrateur',
+  connectToParticipate: 'Connectez-vous pour participer'
 }

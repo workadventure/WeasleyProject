@@ -34,8 +34,6 @@ const getAllFromDirectory = async (directoryName: string, wantedExtension: strin
 }
 
 export default defineConfig(async () => {
-  console.log('ALL FROM DIR', await getAllFromDirectory('views', 'html'))
-  console.log('ALL FROM DIR', getMapsScripts("./maps"))
   return {
     base: "./",
     build: {

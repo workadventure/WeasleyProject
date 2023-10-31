@@ -29,6 +29,8 @@ const hash = (message: string) => {
   return window.btoa(message)
 }
 
+const emailRegex = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
+
 
 WA.onInit().then(() => {
   WA.player.state.isInSelectionZone = false
@@ -51,7 +53,6 @@ WA.onInit().then(() => {
       let randomDuos: Record<string, string> = {}
       console.log('PLAYERS', players)
 
-      const emailRegex = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
       players = players.filter((str) => str !== '' && str.match(emailRegex))
       console.log('PLAYERS AFTER EMAIL REGEX', players)
 
@@ -100,31 +101,39 @@ WA.onInit().then(() => {
   })
 
   // On enter selection zone
-  WA.room.onEnterLayer('selection_zone').subscribe(() => {
-    // Set variable to detect player is in selection zone
-    WA.player.state.isInSelectionZone = true
+  WA.room.onEnterLayer('selection_zone').subscribe(async () => {
+    // TODO : if pas email return
+    if (!(WA.player.uuid as string).match(emailRegex)) {
+      WA.controls.disablePlayerControls()
+      await WA.player.moveTo(5*32, 15*32)
+      WA.controls.restorePlayerControls()
+      discussion.openDiscussionWebsite('lobby.admin', 'lobby.connectToParticipate')
+    } else {
+      // Set variable to detect player is in selection zone
+      WA.player.state.isInSelectionZone = true
 
-    // Add collisions to prevent from going outside during random
-    WA.room.setTiles([
-      {
-        x: 4,
-        y: 14,
-        tile: 'block',
-        layer: 'collisions'
-      },
-      {
-        x: 5,
-        y: 14,
-        tile: 'block',
-        layer: 'collisions'
-      },
-      {
-        x: 6,
-        y: 14,
-        tile: 'block',
-        layer: 'collisions'
-      }
-    ])
+      // Add collisions to prevent from going outside during random
+      WA.room.setTiles([
+        {
+          x: 4,
+          y: 14,
+          tile: 'block',
+          layer: 'collisions'
+        },
+        {
+          x: 5,
+          y: 14,
+          tile: 'block',
+          layer: 'collisions'
+        },
+        {
+          x: 6,
+          y: 14,
+          tile: 'block',
+          layer: 'collisions'
+        }
+      ])
+    }
   })
 
   WA.state.onVariableChange('askForRandomDuos').subscribe((value) => {

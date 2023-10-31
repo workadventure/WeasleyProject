@@ -6,5 +6,7 @@ export default {
   'Warning: You MUST be logged in if you want the selection to work properly',
   notValid: 'Player number is not valid',
   displayInfos: 'Informations',
-  infoPanel: 'Infos Pannel'
+  infoPanel: 'Infos Pannel',
+  admin: 'Administrator',
+  connectToParticipate: 'Please connect to participate'
 }
