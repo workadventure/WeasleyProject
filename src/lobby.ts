@@ -25,6 +25,10 @@ const shuffle: (array: Array<unknown>) => Array<unknown> = (array: Array<unknown
   return array;
 }
 
+const hash = (message: string) => {
+  return window.btoa(message)
+}
+
 
 WA.onInit().then(() => {
   WA.player.state.isInSelectionZone = false
@@ -43,7 +47,7 @@ WA.onInit().then(() => {
       }
     })
 
-    setTimeout(() => {
+    setTimeout( () => {
       let randomDuos: Record<string, string> = {}
       console.log('PLAYERS', players)
 
@@ -56,7 +60,7 @@ WA.onInit().then(() => {
         players = shuffle(players) as Array<string>
 
         for (let i = 0; i < players.length; i += 2) {
-          const urlInstance = players[i] + '-' + players[i+1]
+          const urlInstance = hash(players[i]) + '-' + hash(players[i+1])
           randomDuos[players[i]] = urlInstance
           randomDuos[players[i+1]] = urlInstance
         }
@@ -136,7 +140,9 @@ WA.onInit().then(() => {
       const randomDuos = JSON.parse(value as string)
       const urlInstance = randomDuos[WA.player.uuid as string]
 
-      WA.nav.goToPage(`https://play.workadventu.re/_/${urlInstance}/morganehuebra.github.io/WeasleyProject/maps/choice.tmj`)
+      if (urlInstance) {
+        WA.nav.goToPage(`https://play.workadventu.re/_/${urlInstance}/morganehuebra.github.io/WeasleyProject/maps/choice.tmj`)
+      }
     }
   })
 
