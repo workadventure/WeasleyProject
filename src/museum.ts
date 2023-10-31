@@ -167,13 +167,6 @@ WA.onInit().then(async () => {
         toggleLayersVisibility('lights/conversations', false)
     }
 
-    // Lights are on at launch
-    if (!actionForAllPlayers.currentValue('switchLights')) {
-        turnOffLights()
-    } else {
-        turnOnLights()
-    }
-
 
     hooking.setHooking('hookingD7', () => {
         const tiles = []
@@ -493,6 +486,15 @@ WA.onInit().then(async () => {
             turnOffLights()
         }
     }, true)
+
+    // Lights are on at launch (Wait 200 for initialization)
+    setTimeout(() => {
+        if (!actionForAllPlayers.currentValue('switchLights')) {
+            turnOffLights()
+        } else {
+            turnOnLights()
+        }
+    }, 200)
 
     if (WA.player.state.askForSwitchLights === undefined) {
         WA.player.state.askForSwitchLights = true

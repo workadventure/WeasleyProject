@@ -712,17 +712,6 @@
          "id":126,
          "name":"chestZone",
          "opacity":1,
-         "properties":[
-                {
-                 "name":"code",
-                 "type":"string",
-                 "value":"160616"
-                }, 
-                {
-                 "name":"doorVariable",
-                 "type":"string",
-                 "value":"chest"
-                }],
          "type":"tilelayer",
          "visible":false,
          "width":70,
