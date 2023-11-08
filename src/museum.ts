@@ -60,7 +60,7 @@ WA.onInit().then(async () => {
         }
     })
 
-    WA.room.onLeaveLayer('chestMessage').subscribe(() => {
+    WA.room.onLeaveLayer('chestZone').subscribe(() => {
         chestMessage?.remove()
         chestMessage = null
     })
