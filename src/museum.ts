@@ -239,7 +239,7 @@ WA.onInit().then(async () => {
             } else {
                 searchZone = WA.ui.displayActionMessage({
                     message: utils.translations.translate('utils.executeAction', {
-                        action: 'museum.search'
+                        action: utils.translations.translate('museum.search')
                     }),
                     callback: () => {
                         searchZone = WA.ui.displayActionMessage({
