@@ -19,6 +19,7 @@ const resetCamera = async () => {
 }
 
 WA.onInit().then(async () => {
+
   // Reset camera Zoom
   WA.camera.followPlayer(true)
   WA.camera.set(665, 838)
@@ -36,6 +37,17 @@ WA.onInit().then(async () => {
       path: 'evilGuy.mp3'
     }
   ])
+
+  const bombSound = WA.sound.loadSound(`${rootLink}/sounds/bomb.mp3`)
+  bombSound.play({
+    volume: 0.3,
+    loop: true,
+    rate: 1,
+    detune: 1,
+    delay: 0,
+    seek: 0,
+    mute: false
+  })
 
   // Reset zoom
   resetCamera()

@@ -16,6 +16,17 @@ import {env, rootLink} from "./config";
 
 
 WA.onInit().then(async () => {
+
+    const cave = WA.sound.loadSound(`${rootLink}/sounds/cavedark.mp3`)
+    cave.play({
+        volume: 0.3,
+        loop: true,
+        rate: 1,
+        detune: 1,
+        delay: 0,
+        seek: 0,
+        mute: false
+    })
     // Initiate jobs
     await initiateJob()
 

@@ -8,7 +8,7 @@ type soundType = {
 
 const sounds: Record<string, any> = {
   successSound: WA.sound.loadSound(`${rootLink}/sounds/success.mp3`),
-  failureSound: WA.sound.loadSound(`${rootLink}/sounds/failure.mp3`)
+  failureSound: WA.sound.loadSound(`${rootLink}/sounds/failure.mp3`),
 }
 
 const soundConfig = {

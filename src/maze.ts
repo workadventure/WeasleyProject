@@ -4,9 +4,23 @@ import {hiddenZone, excavations, inventory, switchingTiles, hooking, sounds, wor
 import {setPlayerJob, initiateJob} from "./modules/job";
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
-import {env} from "./config"
+import {env, rootLink} from "./config"
 
 WA.onInit().then( async () => {
+
+    const forestSound = WA.sound.loadSound(`${rootLink}/sounds/forest.mp3`)
+    let soundConfig = {
+        volume: 0.5,
+        loop: true,
+        rate: 1,
+        detune: 1,
+        delay: 0,
+        seek: 0,
+        mute: false
+    }
+
+    forestSound.play(soundConfig)
+
     for (let i = 1; i < 10; i++) {
         hiddenZone.initiateHiddenZones([{stepIn: `fogFloor/fog${[i]}`, hide: `fog/fog${[i]}`}])
     }

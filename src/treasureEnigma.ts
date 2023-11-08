@@ -2,10 +2,24 @@ import { readRunes, inventory, switchingTiles, actionForAllPlayers, discussion, 
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import {getPlayerJob, initiateJob} from "./modules/job";
+import {rootLink} from "./config";
 
 WA.onInit().then(async () => {
   // Initiate players jobs
   await initiateJob()
+
+  const treasureSound = WA.sound.loadSound(`${rootLink}/sounds/treasure.mp3`)
+  let soundConfig = {
+    volume: 0.5,
+    loop: true,
+    rate: 1,
+    detune: 1,
+    delay: 0,
+    seek: 0,
+    mute: false
+  }
+
+  treasureSound.play(soundConfig)
 
   // Initialize sounds
   sounds.initiateSounds([

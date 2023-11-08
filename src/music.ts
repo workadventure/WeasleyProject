@@ -2,6 +2,7 @@
 import {arrayFilling, readRunes} from './modules'
 import {initiateJob} from "./modules/job";
 import { sounds, workadventureFeatures } from './modules'
+import {rootLink} from "./config";
 
 WA.onInit().then(async () => {
     // Jobs initialisation
@@ -9,6 +10,19 @@ WA.onInit().then(async () => {
 
     // Hide pricing button
     workadventureFeatures.hidePricingButton()
+
+    const caveSound = WA.sound.loadSound(`${rootLink}/sounds/cavewater.mp3`)
+    let soundConfig = {
+        volume: 0.3,
+        loop: true,
+        rate: 1,
+        detune: 1,
+        delay: 0,
+        seek: 0,
+        mute: false
+    }
+
+    caveSound.play(soundConfig)
 
     // Sounds initialisation
     sounds.initiateSounds([

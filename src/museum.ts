@@ -14,6 +14,44 @@ import {toggleLayersVisibility} from "./utils/layers";
 WA.onInit().then(async () => {
     await initiateJob()
 
+
+    const electro = WA.sound.loadSound(`${rootLink}/sounds/electro.mp3`)
+    const electroLow = WA.sound.loadSound(`${rootLink}/sounds/electroLow.mp3`)
+    let soundConfigLow = {
+        volume: 0.4,
+        loop: true,
+        rate: 1,
+        detune: 1,
+        delay: 0,
+        seek: 0,
+        mute: false
+    }
+    let soundConfig = {
+        volume: 1,
+        loop: true,
+        rate: 1,
+        detune: 1,
+        delay: 0,
+        seek: 0,
+        mute: false
+    }
+
+    electroLow.play(soundConfigLow)
+
+    let electroH: ActionMessage | null = null
+    // Open digicode when walking on chest zone
+    WA.room.onEnterLayer('electroH').subscribe(() => {
+        electroLow.stop()
+        electro.play(soundConfig)
+
+    })
+
+    WA.room.onLeaveLayer('electroH').subscribe(() => {
+        electro.stop()
+        electroLow.play(soundConfigLow)
+        electroH?.remove()
+    })
+
     actionForAllPlayers.initializeActionForAllPlayers('retrieveMap', () => {
         // Get map
         inventory.addToInventory({
@@ -82,6 +120,13 @@ WA.onInit().then(async () => {
     }
     // Inventory initialisation
     inventory.initiateInventory()
+
+    inventory.addToInventory({
+        id: 'id-card',
+        name: 'museum.idCardTitle',
+        image: 'indentity-card.png',
+        description: 'museum.idCardDescription'
+    })
 
     // Go out after retrieving the map
     let outMessage: ActionMessage | null = null

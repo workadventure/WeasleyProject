@@ -6,6 +6,7 @@ bootstrapExtra();
 
 import * as utils from "./utils";
 import { discussion } from './modules'
+import {rootLink} from "./config";
 
 const shuffle: (array: Array<unknown>) => Array<unknown> = (array: Array<unknown>) => {
   let currentIndex = array.length,  randomIndex;
@@ -34,7 +35,18 @@ const emailRegex = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
 
 WA.onInit().then(() => {
   WA.player.state.isInSelectionZone = false
+  const starterSound = WA.sound.loadSound(`${rootLink}/sounds/starter.mp3`)
+  let soundConfig = {
+    volume: 0.2,
+    loop: true,
+    rate: 1,
+    detune: 1,
+    delay: 0,
+    seek: 0,
+    mute: false
+  }
 
+  starterSound.play(soundConfig)
   // Random launch
   const randomTeams = () => {
     WA.state.playersInSelectionZone = ''
