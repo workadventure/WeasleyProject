@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
 
-        displayTimer.textContent = minutes + ":" + seconds;
+        displayTimer.textContent = minutes + ":" + (seconds < 10 ? '0'+seconds.toString() : seconds)
 
         if (counter <= 0) {
           if (bombInterval) {
