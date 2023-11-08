@@ -4,6 +4,7 @@ import { ActionMessage } from '@workadventure/iframe-api-typings';
 import {discussion, inventory, workadventureFeatures} from './modules'
 import {getPlayerJob, resetPlayerJob, setPlayerJob, initiateJob} from "./modules/job";
 import * as utils from "./utils";
+import {rootLink} from "./config";
 
 // Get all players on the map (only close players --> here the map is small enough to always get all the players)
 const getPlayers = async () => {
@@ -32,6 +33,19 @@ const allPlayersGotJob = async () => {
 
 // Waiting for the API to be ready
 WA.onInit().then(async () => {
+
+    const choiceSound = WA.sound.loadSound(`${rootLink}/sounds/choice.mp3`)
+    let soundConfig = {
+        volume: 0.2,
+        loop: true,
+        rate: 1,
+        detune: 1,
+        delay: 0,
+        seek: 0,
+        mute: false
+    }
+
+    choiceSound.play(soundConfig)
 
     // Initiate inventory
     inventory.initiateInventory()

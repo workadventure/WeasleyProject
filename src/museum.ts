@@ -121,13 +121,6 @@ WA.onInit().then(async () => {
     // Inventory initialisation
     inventory.initiateInventory()
 
-    inventory.addToInventory({
-        id: 'id-card',
-        name: 'museum.idCardTitle',
-        image: 'indentity-card.png',
-        description: 'museum.idCardDescription'
-    })
-
     // Go out after retrieving the map
     let outMessage: ActionMessage | null = null
     WA.room.onEnterLayer('start').subscribe(() => {
