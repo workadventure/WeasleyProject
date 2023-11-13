@@ -142,9 +142,12 @@ WA.onInit().then(async () => {
     })
 
     const openPlan = () => {
+        removePlanButton()
         discussion.openDiscussionWebsite(WA.player.name, 'views.museum.beginDiscussion', 'views.choice.close', 'discussion', "bottom", 'middle', '50vh', '90vw', () => {
             // Restore player controls
             WA.controls.restorePlayerControls()
+            // Add plan button
+            addPlanButton()
         })
     }
 
@@ -162,13 +165,19 @@ WA.onInit().then(async () => {
     launchTutorial()
 
     // Add plan button to read again if needed
-    WA.ui.actionBar.addButton({
-        id: 'planButton',
-        label: utils.translations.translate('museum.plan'),
-        callback:  () => {
-            openPlan()
-        }
-    });
+    const addPlanButton = () => {
+        WA.ui.actionBar.addButton({
+            id: 'planButton',
+            label: utils.translations.translate('museum.plan'),
+            callback:  () => {
+                openPlan()
+            }
+        });
+    }
+
+    const removePlanButton = () => {
+        WA.ui.actionBar.removeButton('planButton')
+    }
 
 
 
