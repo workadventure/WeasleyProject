@@ -54,7 +54,7 @@ WA.onInit().then(async () => {
 
   // FOR DEVELOPMENT PURPOSE ONLY
   if(env === 'dev'){
-    setPlayerJob('archaeologist')
+    setPlayerJob('spy')
   }
 
   // Speech at arriving
@@ -150,6 +150,7 @@ WA.onInit().then(async () => {
   })
 
   if (getPlayerJob() === 'spy') {
+    WA.player.state.askForCloseCheatSheet = false
     // Can see cheatSheet
     WA.ui.actionBar.addButton({
       id: 'cheatSheetButton',
@@ -162,6 +163,12 @@ WA.onInit().then(async () => {
         }
       }
     });
+
+    WA.player.state.onVariableChange('askForCloseCheatSheet').subscribe((value) => {
+      if (value) {
+        closeCheatSheetWebsite()
+      }
+    })
   }
 
   // On enter free spy layer
@@ -262,6 +269,7 @@ const openCheatSheetWebsite = async () => {
 const closeCheatSheetWebsite = () => {
   cheatSheetWebsite?.close()
   cheatSheetWebsite = null
+  WA.player.state.askForCloseCheatSheet = false
 }
 
 const closeBombWebsite = () => {
