@@ -187,7 +187,7 @@
                          "value":2
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":495.088102292219,
@@ -703,7 +703,7 @@
                          "value":"{}"
                         }],
                  "rotation":0,
-                 "type":"",
+                 "type":"variable",
                  "visible":true,
                  "width":0,
                  "x":651.502039807146,
