@@ -240,7 +240,7 @@
                                  "value":false
                                 }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":1173.01587301587,
@@ -258,7 +258,7 @@
                                  "value":false
                                 }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":1231.74603174603,
@@ -276,7 +276,7 @@
                                  "value":false
                                 }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":1317.46031746032,
@@ -288,7 +288,7 @@
                          "name":"excavations\/exca4Discovered",
                          "point":true,
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":1355.55555555556,
@@ -306,7 +306,7 @@
                                  "value":false
                                 }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":1307.93650793651,
@@ -324,7 +324,7 @@
                                  "value":false
                                 }],
                          "rotation":0,
-                         "type":"",
+                         "type":"variable",
                          "visible":true,
                          "width":0,
                          "x":1079.36507936508,
@@ -332,7 +332,7 @@
                         }],
                  "opacity":1,
                  "type":"objectgroup",
-                 "visible":true,
+                 "visible":false,
                  "x":0,
                  "y":0
                 }, 
@@ -970,7 +970,7 @@
                  "value":9
                 }],
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
