@@ -130,6 +130,7 @@ WA.onInit().then(async () => {
                     action: utils.translations.translate('museum.escape')
                 }),
                 callback: () => {
+                    electroLow.stop()
                     WA.nav.goToRoom('maze.tmj');
                 }
             })

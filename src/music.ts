@@ -146,6 +146,9 @@ WA.onInit().then(async () => {
         readRunes.initiateRunesReading()
         readRunes.setRunesReadingZone('infos', {content : 'views.music.text', title: 'views.music.title'})
     }
+    WA.room.onEnterLayer('exit').subscribe(() => {
+        caveSound.stop()
+    })
 })
 
 export {};

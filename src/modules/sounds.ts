@@ -28,7 +28,7 @@ const initiateSounds = (soundList: Array<soundType> = [], soundsPath: string = `
   }
 
   actionForAllPlayers.initializeActionForAllPlayers('playSoundForAllPlayers', (name: string | null) => {
-    if (name) {
+    if (name !== undefined && name !== null) {
       sounds[name].play(soundConfig);
     }
   })
@@ -40,7 +40,9 @@ const playSound = (name: string) => {
 
 const playSoundForAll = (name: string) => {
   actionForAllPlayers.activateActionForAllPlayer('playSoundForAllPlayers', name)
-  actionForAllPlayers.activateActionForAllPlayer('playSoundForAllPlayers', null, true)
+  setTimeout(()=> {
+    actionForAllPlayers.activateActionForAllPlayer('playSoundForAllPlayers', null, true)
+  }, 500)
 }
 
 export {

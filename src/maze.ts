@@ -315,6 +315,10 @@ WA.onInit().then( async () => {
     }
     checkIfAllFireIsOn()
 
+    WA.room.onEnterLayer('exit').subscribe(() => {
+        forestSound.stop()
+    })
+
 })
 
 export {};

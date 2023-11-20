@@ -185,6 +185,8 @@ WA.onInit().then(async () => {
       "100vw",
       () => {
         // Redirect to next map
+        treasureSound.stop()
+
         WA.nav.goToRoom(`./bomb.tmj#${getPlayerJob()}-entry`)
       }
     )

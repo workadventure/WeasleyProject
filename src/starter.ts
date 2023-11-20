@@ -162,6 +162,7 @@ WA.onInit().then(() => {
       const urlInstance = randomDuos[WA.player.uuid as string]
 
       if (urlInstance) {
+        starterSound.stop()
         WA.nav.goToPage(`https://play.workadventu.re/_/${urlInstance}/morganehuebra.github.io/WeasleyProject/maps/choice.tmj`)
       }
     }

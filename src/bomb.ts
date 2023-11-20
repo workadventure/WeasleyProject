@@ -112,8 +112,8 @@ WA.onInit().then(async () => {
   // BOMB EXPLODES ACTION
   actionForAllPlayers.initializeActionForAllPlayers('boom', () => {
       // Play evil guy sound
+      bombSound.stop()
       sounds.playSound('evilGuySound');
-
       discussion.openDiscussionWebsite(
         utils.translations.translate('bomb.bomb.failure.name'),
         utils.translations.translate('bomb.bomb.failure.message'),
@@ -140,8 +140,8 @@ WA.onInit().then(async () => {
     closeBombWebsite()
 
     // Success sound
+    bombSound.stop()
     sounds.playSound('successSound')
-
     notifications.notify(
       utils.translations.translate('bomb.bomb.success'),
       utils.translations.translate('utils.success'),
@@ -248,6 +248,8 @@ WA.onInit().then(async () => {
       actionForAllPlayers.activateActionForAllPlayer('defuseBomb')
     }
   })
+
+
 })
 
 const openCheatSheetWebsite = async () => {

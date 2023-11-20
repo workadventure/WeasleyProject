@@ -42,6 +42,7 @@ WA.onInit().then(async () => {
     workadventureFeatures.hidePricingButton()
 
     const openFinalWebsite = async () => {
+        cave.stop()
         await WA.ui.website.open({
             url: `${rootLink}/views/newspaper/newspaper.html`,
             allowApi: true,

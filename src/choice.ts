@@ -65,6 +65,7 @@ WA.onInit().then(async () => {
     // When all players have a job, send them to next map
     WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
         if(value) {
+            choiceSound.stop()
             WA.nav.goToRoom('./museum.tmj')
         }
     })
