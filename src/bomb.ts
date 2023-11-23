@@ -113,6 +113,7 @@ WA.onInit().then(async () => {
   actionForAllPlayers.initializeActionForAllPlayers('boom', () => {
       // Play evil guy sound
       bombSound.stop()
+      WA.ui.actionBar.removeButton('cheatSheetButton');
       sounds.playSound('evilGuySound');
       discussion.openDiscussionWebsite(
         utils.translations.translate('bomb.bomb.failure.name'),
@@ -141,6 +142,7 @@ WA.onInit().then(async () => {
 
     // Success sound
     bombSound.stop()
+    WA.ui.actionBar.removeButton('cheatSheetButton');
     sounds.playSound('successSound')
     notifications.notify(
       utils.translations.translate('bomb.bomb.success'),

@@ -131,6 +131,7 @@ WA.onInit().then(async () => {
                 }),
                 callback: () => {
                     electroLow.stop()
+                    removePlanButton()
                     WA.nav.goToRoom('maze.tmj');
                 }
             })
