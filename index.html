@@ -20,15 +20,7 @@
             const instanceId = Math.random().toString(36).substring(2, 15);
             const url = `https://play.workadventu.re/_/${instanceId}/${host}${path}maps/starter.tmj`;
             document.getElementById('testMapURL').href = url;
-            document.getElementById('testMapBtnURL').href = url;
-            document.getElementById('testMapURL').innerText = url;
-
-            const tmjURL = window.location.protocol + '//' + window.location.host + path + 'maps/starter.tmj';
-            document.getElementById('tmjURL').innerText = tmjURL;
-
-            const gettingStartedLink = 'https://workadventu.re/getting-started?name=Map&mapUrl=' + tmjURL;
-            document.getElementById('gettingStartedLink').href = gettingStartedLink;
-
+            document.getElementById('testMapAdminURL').href = url + '#admin-entry';
         };
     </script>
     <style>
@@ -192,7 +184,7 @@
                 <br>
                 <br>
                 <p>To play, you need to go to the starter map with an even number of people. Everyone must enter the red zone, and wait for the administrator to start the draw.</p>
-                <p>The administrator is someone who goes to the url of this map with <b>"#admin-entry"</b> to launch the draw that will send players to their instance.</p>
+                <p>The administrator is someone who goes to the url of this map with <b><a id="testMapAdminURL" href="" target="_blank">"#admin-entry"</a></b> to launch the draw that will send players to their instance.</p>
                 <br>
                 <p><a id="testMapURL" href="" class="nes-btn is-primary">Start the adventure</a></p>
                 <br>
