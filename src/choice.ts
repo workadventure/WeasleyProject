@@ -5,16 +5,31 @@ import {discussion, inventory, workadventureFeatures} from './modules'
 import {getPlayerJob, resetPlayerJob, setPlayerJob, initiateJob} from "./modules/job";
 import * as utils from "./utils";
 import {rootLink} from "./config";
+import { RemotePlayerInterface } from '@workadventure/iframe-api-typings/front/Api/Iframe/Players/RemotePlayer';
 
-// Get all players on the map (only close players --> here the map is small enough to always get all the players)
-const getPlayers = async () => {
-    await WA.players.configureTracking()
-    return WA.players.list()
-}
+const bannerInviteUser = () => {
+    WA.ui.banner.closeBanner();
+    WA.ui.banner.openBanner({
+        id: "banner-players-not-even",
+        text: "You need to be at least 2 players to play this game 🙏",
+        closable: false,
+        timeToClose: 0
+    });
+};
+
+const bannerTheTeamIsComplete = () => {
+    WA.ui.banner.closeBanner();
+    WA.ui.banner.openBanner({
+        id: "banner-players-not-even",
+        text: "The team is complete, choose your job and let's go to the museum 🚀",
+        closable: false,
+        timeToClose: 0
+    });
+};
 
 // Function to determine if all players already have a job
 const allPlayersGotJob = async () => {
-    const players = await getPlayers()
+    const players = WA.players.list();
     let count = 0
     for (let player of players) {
         count++
@@ -54,7 +69,7 @@ WA.onInit().then(async () => {
     await initiateJob()
 
     // Hide pricing
-    workadventureFeatures.hidePricingButton()
+    workadventureFeatures.hidePricingButton();
 
     // Display scenario
     discussion.openDiscussionWebsite(
@@ -90,7 +105,7 @@ WA.onInit().then(async () => {
     // Choose spy job
     let becomeSpy: ActionMessage;
     WA.room.onEnterLayer('spy').subscribe(async () => {
-        const players = await getPlayers()
+        const players = WA.players.list();
         let spySelected = false
         for (let player of players) {
             if(player.state.job === 'spy') {
@@ -102,9 +117,9 @@ WA.onInit().then(async () => {
             becomeSpy = WA.ui.displayActionMessage({
                 message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.spyMessage')}),
                 callback: () => {
-                    setPlayerJob('spy')
-                    console.log(getPlayerJob())
-                    allPlayersGotJob()
+                    setPlayerJob('spy');
+                    allPlayersGotJob();
+                    WA.controls.disablePlayerControls();
                 }
             });
         }
@@ -116,7 +131,7 @@ WA.onInit().then(async () => {
     // Choose acheologist job
     let becomeArcheo: ActionMessage;
     WA.room.onEnterLayer('archeo').subscribe(async() => {
-        const players = await getPlayers()
+        const players = WA.players.list();
         let archeoSelected = false
         for (let player of players) {
             if(player.state.job === 'archaeologist') {
@@ -127,9 +142,9 @@ WA.onInit().then(async () => {
             becomeArcheo = WA.ui.displayActionMessage({
                 message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.archeoMessage')}),
                 callback: () => {
-                    setPlayerJob('archaeologist')
-                    console.log(getPlayerJob())
-                    allPlayersGotJob()
+                    setPlayerJob('archaeologist');
+                    allPlayersGotJob();
+                    WA.controls.disablePlayerControls();
                 }
             });
         }
@@ -157,7 +172,53 @@ WA.onInit().then(async () => {
 
     WA.room.onLeaveLayer('croissants').subscribe(() => {
         takeCroissant.remove()
-    })
+    });
+
+    // Door left on choice room
+    WA.room.onEnterLayer('door_left_zone').subscribe(() => {
+        WA.room.hideLayer('closedoor_left');
+        WA.room.showLayer('opendoor_left');
+    });
+    WA.room.onLeaveLayer('door_left_zone').subscribe(() => {
+        WA.room.showLayer('closedoor_left');
+        WA.room.hideLayer('opendoor_left');
+    });
+
+    WA.room.onEnterLayer('door_right_zone').subscribe(() => {
+        WA.room.hideLayer('closedoor_right');
+        WA.room.showLayer('opendoor_right');
+    });
+    WA.room.onLeaveLayer('door_right_zone').subscribe(() => {
+        WA.room.showLayer('closedoor_right');
+        WA.room.hideLayer('opendoor_right');
+    });
+
+    // Get players
+    await WA.players.configureTracking()
+    WA.players.onPlayerEnters.subscribe(async (player: RemotePlayerInterface) => {
+        console.log(`Player ${player.name} entered your nearby zone`);
+        if([...WA.players.list()].length === 1) {
+            bannerTheTeamIsComplete();
+        }else{
+            bannerInviteUser();   
+        }
+    });
+
+    WA.players.onPlayerLeaves.subscribe(async (player: RemotePlayerInterface) => {
+        console.log(`Player ${player.name} leave your nearby zone`);
+        if([...WA.players.list()].length === 1) {
+            bannerTheTeamIsComplete();
+        }else{
+            bannerInviteUser();   
+        }
+    });
+
+    const list = WA.players.list()
+    if([...list].length === 1) {
+        bannerTheTeamIsComplete();
+    }else{
+        bannerInviteUser();   
+    }
 
 }).catch(e => console.error(e))
 

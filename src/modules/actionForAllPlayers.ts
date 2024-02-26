@@ -65,7 +65,7 @@ const activateActionForAllPlayer = (id: string, value: mapVariableType = null, m
 }
 
 WA.onInit().then(() => {
-  oldValue = JSON.parse(WA.state.mapActionVariables as string)
+  oldValue = WA.state.mapActionVariables != undefined ? JSON.parse(WA.state.mapActionVariables as string) : {};
   WA.state.onVariableChange('mapActionVariables').subscribe((value) => {
     let currentValue = JSON.parse(value as string)
     Object.keys(currentValue).forEach((key) => {

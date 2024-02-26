@@ -20,20 +20,15 @@ const openDiscussionWebsite = async (
   // Disable controls while card is open
   WA.controls.disablePlayerControls()
 
-  // Open card
-  discussionWebsite = await WA.ui.website.open({
-    url: `${rootLink}/views/discussions/${view}.html?title=${title}&text=${text}&close=${close}`,
+  // Open popup
+  WA.ui.modal.openModal({
+    title: title,
+    src: `${rootLink}/views/discussions/${view}.html?title=${title}&text=${text}&close=${close}`,
     allowApi: true,
-    allowPolicy: "",
-    position: {
-      vertical: verticalPosition,
-      horizontal: horizontalPosition,
-    },
-    size: {
-      height: height,
-      width: width,
-    },
+    allow: "fullscreen;camera;microphone",
+    position: "center",
   })
+
   WA.player.state.askForDiscussionWebsiteClose = false
 
   WA.player.state.onVariableChange('askForDiscussionWebsiteClose').subscribe((value) => {
@@ -50,8 +45,7 @@ const askForDiscussionWebsiteClose = () => {
 
 // Close discussion website
 const closeDiscussionWebsite = (callback: Function|null = null) => {
-  discussionWebsite?.close()
-  discussionWebsite = null
+  WA.ui.modal.closeModal();
 
   // Restore player controle after closing card
   WA.controls.restorePlayerControls()

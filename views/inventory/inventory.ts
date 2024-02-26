@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           const itemName = document.createElement('div')
           itemName.classList.add('inventory-item-name')
-          itemName.classList.add('bg-white')
+          itemName.classList.add('bg-main')
           itemName.innerText = utils.translations.translate(inventory[i].name)
 
           const itemImageContainer = document.createElement('div')
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
           emptyDiv.innerText = utils.translations.translate('modules.inventory.empty')
           item.appendChild(emptyDiv)
           item.classList.add('empty')
-          item.classList.add('text-white')
+          item.classList.add('text-black')
         }
         inventoryContent.appendChild(item)
       }

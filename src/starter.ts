@@ -63,12 +63,8 @@ WA.onInit().then(() => {
 
     setTimeout( () => {
       let randomDuos: Record<string, string> = {}
-      console.log('PLAYERS', players)
 
       players = players.filter((str) => str !== '' && str.match(emailRegex))
-      console.log('PLAYERS AFTER EMAIL REGEX', players)
-
-      console.log('PLAYERS LENGTH', players.length)
       if (players.length % 2 === 0 && players.length > 0) {
         players = shuffle(players) as Array<string>
 
@@ -114,7 +110,7 @@ WA.onInit().then(() => {
 
   // On enter selection zone
   WA.room.onEnterLayer('selection_zone').subscribe(async () => {
-    // TODO : if pas email return
+    console.log('WA.player.uuid', WA.player.uuid);
     if (!(WA.player.uuid as string).match(emailRegex)) {
       WA.controls.disablePlayerControls()
       await WA.player.moveTo(5*32, 15*32)

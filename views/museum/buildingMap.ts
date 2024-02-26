@@ -1,6 +1,4 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
-import * as utils from '../../src/utils/index.js'
-import * as modules from '../../src/modules/index.js'
 
 document.addEventListener("DOMContentLoaded", () => {
   WA.onInit().then(async () => {
@@ -68,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             hackingWindow.classList.add('show')
             setTimeout(() => {
               const roomId = rooms[i].getAttribute('id');
-              console.log('room', roomId.replace('room', ''))
+              console.log('room', roomId?.replace('room', ''))
               if (roomId) {
                 askForSeeRoom(roomId.replace('room', ''))
               }
@@ -85,5 +83,18 @@ document.addEventListener("DOMContentLoaded", () => {
         askForCloseComputerWebsite()
       })
     }
+
+    let wokaCircle = document.getElementById('WokaCircle') as SVGCircleElement | null;
+    WA.state.onVariableChange('currentCameraPosition').subscribe((value) => {
+      const {x, y} = value as {x: number, y: number};
+      if(!wokaCircle){
+        wokaCircle = document.getElementById('WokaCircle') as SVGCircleElement | null;
+      }
+      if(wokaCircle){
+        console.log('wokaCircle', wokaCircle, x, y);
+        wokaCircle.setAttribute('cx', `${x + 100}`);
+        wokaCircle.setAttribute('cy', `${y + 200}`);
+      }
+    });
   })
 })

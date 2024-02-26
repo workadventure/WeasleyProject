@@ -40,7 +40,7 @@ const notify = async (content: string, title: string|null = null, type: notifica
       notificationWebsite[token].website.close()
       delete notificationWebsite[token]
     }
-  }, 4000) // Stay four seconds on screen
+  }, 8000) // Stay four seconds on screen
 }
 
 const openNotification = async (index:number, content: string, title: string|null, type: notificationType) => {

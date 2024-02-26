@@ -6,10 +6,15 @@ bootstrapExtra();
 
 import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications, workadventureFeatures, cameraMovingMode, digicode } from './modules'
 import {canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
-import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
+import {ActionMessage, CoWebsite, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {env, rootLink} from "./config";
 import {toggleLayersVisibility} from "./utils/layers";
+import { RemotePlayerMoved } from "@workadventure/iframe-api-typings/front/Api/Iframe/Players/RemotePlayer";
+import { HasPlayerMovedEvent } from "@workadventure/iframe-api-typings/front/Api/Events/HasPlayerMovedEvent";
+
+let moveCameraTimeout: NodeJS.Timeout|undefined = undefined;
+let smothCameraUpdate = 0;
 
 WA.onInit().then(async () => {
     await initiateJob()
@@ -634,23 +639,28 @@ WA.onInit().then(async () => {
 
     let computerWebsite: UIWebsite|null = null
     const openComputerWebsite = async () => {
-        computerWebsite = await WA.ui.website.open({
-            url: `${rootLink}/views/museum/buildingMap.html`,
+        // Open modal
+        WA.ui.modal.openModal({
+            title: 'Camera Map',
+            src : `${rootLink}/views/museum/buildingMap.html`,
+            position: 'right',
             allowApi: true,
-            allowPolicy: "",
-            position: {
-                vertical: "middle",
-                horizontal: "right",
-            },
-            size: {
-                height: "100vh",
-                width: "50vw",
-            },
+            allow: "fullscreen",
+        }, () => {
+            closeComputerWebsite();
         })
-        WA.controls.disablePlayerControls()
-        WA.player.state.askForCloseComputerWebsite = false
-        cameraMovingMode.setCameraPositionToPlayerPosition()
-        cameraMovingMode.openCameraMovingWebsite()
+
+        const position = WA.state.loadVariable('currentCameraPosition');
+        if (position) {
+            const {x, y} = position as {x: number, y: number};
+            moveCamera(x, y);
+        }
+
+        WA.controls.disablePlayerControls();
+        WA.player.state.askForCloseComputerWebsite = false;
+        cameraMovingMode.setCameraPositionToPlayerPosition();
+        cameraMovingMode.openCameraMovingWebsite();
+
     }
 
     const closeComputerWebsite = () => {
@@ -686,7 +696,43 @@ WA.onInit().then(async () => {
     WA.room.onLeaveLayer('computerZone').subscribe(() => {
         computerMessage?.remove()
         computerMessage = null
-    })
+    });
+
+    WA.state.saveVariable('currentCameraPosition', {
+        x: 0,
+        y: 0
+    }).catch(e => console.error('Something went wrong while saving variable', e));
+
+    if(canUser('useComputers')) {
+        WA.state.onVariableChange('currentCameraPosition').subscribe((value) => {
+            const {x, y} = value as {x: number, y: number};
+            moveCamera(x, y);
+        });
+    }else{
+        WA.player.onPlayerMove((event: HasPlayerMovedEvent) => {
+            savePositionEverySecond(event);
+        });
+    }
 })
+
+const moveCamera = (x: number, y: number) => {
+    WA.camera.set(x, y, undefined, undefined, true, true);
+    smothCameraUpdate = 0;
+    moveCameraTimeout = undefined;
+}
+
+const savePositionEverySecond = (event: HasPlayerMovedEvent) => {
+    smothCameraUpdate++;
+    if (smothCameraUpdate > 5) {
+        WA.state.currentCameraPosition = {x: event.x, y: event.y};
+        smothCameraUpdate = 0;
+    }else{
+        if(moveCameraTimeout) clearTimeout(moveCameraTimeout);
+        moveCameraTimeout = setTimeout(() => {
+            WA.state.currentCameraPosition = {x: event.x, y: event.y};
+            smothCameraUpdate = 0;
+        }, 1000);
+    }
+};
 
 export {};

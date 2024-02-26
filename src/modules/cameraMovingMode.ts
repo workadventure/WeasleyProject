@@ -95,7 +95,7 @@ const moveTo = (x: number, y: number) => {
 let cameraMovingWebsite: UIWebsite|null = null
 const openCameraMovingWebsite = async () => {
   console.log('OPEN WEBSITE')
-  cameraMovingWebsite = await WA.ui.website.open({
+  /*cameraMovingWebsite = await WA.ui.website.open({
     url: `${rootLink}/views/cameraMoving/cameraMoving.html`,
     allowApi: true,
     allowPolicy: "",
@@ -107,7 +107,7 @@ const openCameraMovingWebsite = async () => {
       height: "100vh",
       width: "50vw",
     },
-  })
+  })*/
   WA.player.state.askForCloseComputerWebsite = false
 }
 

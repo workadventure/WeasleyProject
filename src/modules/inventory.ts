@@ -19,7 +19,9 @@ const initiateInventory = () => {
 
   WA.ui.actionBar.addButton({
     id: 'inventory',
-    label: utils.translations.translate('modules.inventory.inventory'),
+    type: 'action',
+    imageSrc: `${rootLink}/images/inventory/school-bag.svg`,
+    toolTip: utils.translations.translate('modules.inventory.inventory'),
     callback: async () => {
       if (!inventoryWebsite) {
         await openInventory()

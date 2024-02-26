@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       container.classList.remove('hidden')
       setTimeout(() => {
         container.classList.add('hidden')
-      }, 2000)
+      }, 4000);
     }
   })
 })
