@@ -15,7 +15,9 @@ const INVENTORY_MAX_SIZE = 3
 
 // initiate player inventory (reset all items)
 const initiateInventory = () => {
-  WA.player.state.inventory = '[]' // Initiate to empty array
+  if(!WA.player.state.inventory){
+    WA.player.state.inventory = '[]' // Initiate to empty array
+  }
 
   WA.ui.actionBar.addButton({
     id: 'inventory',

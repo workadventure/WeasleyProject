@@ -1,6 +1,7 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 import * as modules from '../../src/modules/index.js'
 import * as utils from '../../src/utils/index.js'
+import { onInit } from '../../src/utils/init.ts'
 
 const getInvitorName = () => {
   return 'TEST' // TODO
@@ -16,7 +17,7 @@ const acceptInvitation = () => {
 
 window.addEventListener("DOMContentLoaded", () => {
   console.log('DOM content loaded')
-  WA.onInit().then(async () => {
+  onInit().then(async () => {
     const spanInvitation = document.getElementById('youHaveBeenInvited')
     const spanName       = document.getElementById('name')
     const acceptButton   = document.getElementById('accept')

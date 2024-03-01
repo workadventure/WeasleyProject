@@ -1,9 +1,10 @@
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import {rootLink} from "./config";
-import {initiateJob, getPlayerJob, setPlayerJob} from "./modules/job";
+import {initiateJob, getPlayerJob, setPlayerJob, Job} from "./modules/job";
 import { actionForAllPlayers, discussion, notifications, secretPassages, sounds, workadventureFeatures } from './modules'
 import * as utils from './utils'
 import {env} from "./config"
+import { onInit } from "./utils/init";
 
 let bombWebsite:UIWebsite|null = null
 let cheatSheetWebsite:UIWebsite|null = null
@@ -18,7 +19,7 @@ const resetCamera = async () => {
   )
 }
 
-WA.onInit().then(async () => {
+onInit().then(async () => {
 
   // Reset camera Zoom
   WA.camera.followPlayer(true)
@@ -54,7 +55,7 @@ WA.onInit().then(async () => {
 
   // FOR DEVELOPMENT PURPOSE ONLY
   if(env === 'dev'){
-    setPlayerJob('spy')
+    setPlayerJob(Job.spy)
   }
 
   // Speech at arriving

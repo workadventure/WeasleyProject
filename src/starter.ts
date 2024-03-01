@@ -7,6 +7,7 @@ bootstrapExtra();
 import * as utils from "./utils";
 import { discussion } from './modules'
 import {rootLink} from "./config";
+import { onInit } from "./utils/init";
 
 const shuffle: (array: Array<unknown>) => Array<unknown> = (array: Array<unknown>) => {
   let currentIndex = array.length,  randomIndex;
@@ -33,7 +34,13 @@ const hash = (message: string) => {
 const emailRegex = new RegExp('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
 
 
-WA.onInit().then(() => {
+onInit().then(() => {
+
+  // Get Room id and redirect user to choice map
+  const roomId = WA.room.id;
+  WA.nav.goToRoom(roomId.replace('starter', 'choice'));
+  return;
+
   WA.player.state.isInSelectionZone = false
   const starterSound = WA.sound.loadSound(`${rootLink}/sounds/starter.mp3`)
   let soundConfig = {
@@ -159,7 +166,7 @@ WA.onInit().then(() => {
 
       if (urlInstance) {
         starterSound.stop()
-        WA.nav.goToPage(`https://play.workadventu.re/_/${urlInstance}/morganehuebra.github.io/WeasleyProject/maps/choice.tmj`)
+        WA.nav.goToPage(`http://play.workadventure.localhost/_/${urlInstance}/morganehuebra.github.io/WeasleyProject/maps/choice.tmj`)
       }
     }
   })

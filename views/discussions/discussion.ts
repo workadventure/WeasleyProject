@@ -1,6 +1,7 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 import * as utils from '../../src/utils/index.js'
 import * as modules from '../../src/modules/index.js'
+import { onInit } from '../../src/utils/init.ts'
 
 const getTitle = (params:string|null) => {
   console.log(params)
@@ -21,7 +22,7 @@ const closeDiscussionWebsite = () => {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  WA.onInit().then(async () => {
+  onInit().then(async () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const title = document.getElementById('title')

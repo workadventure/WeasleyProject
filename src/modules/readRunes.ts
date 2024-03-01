@@ -2,12 +2,13 @@ import * as utils from '../utils'
 import { canUser } from "./job";
 import {rootLink} from "../config";
 import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
+import { onInit } from '../utils/init';
 
 let runeWebsite: UIWebsite|null = null
 let readRunesAction: ActionMessage|null = null
 
 const initiateRunesReading = () => {
-  WA.onInit().then(() => {
+  onInit().then(() => {
     // Detect when user want to close website
     WA.player.state.onVariableChange('askForRuneWebsiteClose').subscribe((value) => {
       if (value) {

@@ -1,8 +1,9 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 import * as utils from '../../src/utils/index.js'
+import { onInit } from '../../src/utils/init.ts'
 
 document.addEventListener("DOMContentLoaded", () => {
-  WA.onInit().then(async () => {
+  onInit().then(async () => {
     const picture = document.getElementById('picture')
     const title = document.getElementById('title')
     const content = document.getElementById('content')

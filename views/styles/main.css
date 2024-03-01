@@ -121,6 +121,10 @@ main{
     height: 2.5rem;
 }
 
+button.btn:hover{
+    opacity: 0.8;
+}
+
 .bg-success {
     background-color: var(--bg-color-success);
 }
@@ -135,6 +139,11 @@ main{
 
 .bg-info {
     background-color: var(--bg-color-info);
+}
+.bg-info-outline {
+    border: 1px solid var(--bg-color-info);
+    background-color: transparent;
+    color: var(--bg-color-info);
 }
 
 .bg-main {
@@ -216,4 +225,17 @@ main{
 
 button{
     cursor: pointer;
+}
+
+main{
+    background: transparent; 
+    color: white;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
 }

@@ -3,8 +3,9 @@ import {arrayFilling, readRunes} from './modules'
 import {initiateJob} from "./modules/job";
 import { sounds, workadventureFeatures } from './modules'
 import {rootLink} from "./config";
+import { onInit } from './utils/init';
 
-WA.onInit().then(async () => {
+onInit().then(async () => {
     // Jobs initialisation
     await initiateJob()
 

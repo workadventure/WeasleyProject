@@ -3,8 +3,9 @@ import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import {getPlayerJob, initiateJob} from "./modules/job";
 import {rootLink} from "./config";
+import { onInit } from './utils/init';
 
-WA.onInit().then(async () => {
+onInit().then(async () => {
   // Initiate players jobs
   await initiateJob()
 

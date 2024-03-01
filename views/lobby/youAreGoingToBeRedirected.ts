@@ -1,7 +1,8 @@
 import * as utils from '../../src/utils/index.js'
+import { onInit } from '../../src/utils/init.ts'
 
 window.addEventListener("DOMContentLoaded", () => {
-  WA.onInit().then(async () => {
+  onInit().then(async () => {
 
     const redirectionButton = document.getElementById('redirectionButton')
     const explanation = document.getElementById('explanation')

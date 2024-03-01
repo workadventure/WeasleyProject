@@ -4,7 +4,7 @@ import { bootstrapExtra } from "@workadventure/scripting-api-extra";
 bootstrapExtra();
 
 import {hiddenZone, actionForAllPlayers, secretPassages, readRunes, arrayFilling, sounds, workadventureFeatures} from './modules'
-import { initiateJob, setPlayerJob} from "./modules/job";
+import { Job, initiateJob, setPlayerJob} from "./modules/job";
 import {ActionMessage } from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {
@@ -13,9 +13,10 @@ import {
     initializeRelativeActionForAllPlayers
 } from "./modules/actionForAllPlayers";
 import {env, rootLink} from "./config";
+import { onInit } from "./utils/init";
 
 
-WA.onInit().then(async () => {
+onInit().then(async () => {
 
     const cave = WA.sound.loadSound(`${rootLink}/sounds/cavedark.mp3`)
     cave.play({
@@ -59,7 +60,7 @@ WA.onInit().then(async () => {
     }
 
     if(env === 'dev'){
-        setPlayerJob('spy')
+        setPlayerJob(Job.spy)
     }
 
     // Final exit

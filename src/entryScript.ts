@@ -1,9 +1,10 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import {job, excavations, lobby, secretPassages, hiddenZone, switchingTiles, readRunes, inventory, hooking, notifications, arrayFilling} from './modules'
+import { onInit } from './utils/init'
 
 // Waiting for the API to be ready
-WA.onInit().then(() => {
+onInit().then(() => {
     console.log('INITIALISATION')
     job.initiateJob()
 

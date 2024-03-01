@@ -1,12 +1,13 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import {hiddenZone, excavations, inventory, switchingTiles, hooking, sounds, workadventureFeatures} from './modules'
-import {setPlayerJob, initiateJob} from "./modules/job";
+import {setPlayerJob, initiateJob, Job} from "./modules/job";
 import * as utils from './utils'
 import {ActionMessage} from "@workadventure/iframe-api-typings";
 import {env, rootLink} from "./config"
+import { onInit } from './utils/init';
 
-WA.onInit().then( async () => {
+onInit().then( async () => {
 
     const forestSound = WA.sound.loadSound(`${rootLink}/sounds/forest.mp3`)
     let soundConfig = {
@@ -95,7 +96,7 @@ WA.onInit().then( async () => {
         WA.player.state.hasFoundBlueSeed = true
         WA.player.state.hasFoundGreenSeed = true
         WA.player.state.hasFoundRedSeed = true
-        setPlayerJob('archaeologist')
+        setPlayerJob(Job.archaeologist)
         inventory.addToInventory({
             id: 'powder',
             name: utils.translations.translate('maze.powder'),

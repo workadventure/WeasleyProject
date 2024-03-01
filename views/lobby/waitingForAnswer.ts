@@ -1,5 +1,6 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 import * as modules from '../../src/modules/index.js'
+import { onInit } from '../../src/utils/init.ts'
 
 const cancelInvitation = () => {
   console.log('modules.lobby.askforcancelinvitation')
@@ -7,7 +8,7 @@ const cancelInvitation = () => {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  WA.onInit().then(async () => {
+  onInit().then(async () => {
     const utils = await import('../../src/utils/index.js')
 
     const cancelButton     = document.getElementById('cancelButton')

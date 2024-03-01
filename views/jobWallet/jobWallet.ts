@@ -1,6 +1,7 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 import * as utils from '../../src/utils/index.js'
 import * as modules from '../../src/modules/index.js'
+import { onInit } from '../../src/utils/init.ts'
 
 const getTitle = () => {
   return utils.translations.translate(`views.jobWallet.title`, {
@@ -40,7 +41,7 @@ const closeJobWalletWebsite = () => {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  WA.onInit().then(async () => {
+  onInit().then(async () => {
     console.log('coucou')
     // Get html parts
     const photo = document.getElementById('photo')

@@ -1,11 +1,12 @@
 /// <reference types="@workadventure/iframe-api-typings" />
 
 import { ActionMessage } from '@workadventure/iframe-api-typings';
-import {discussion, inventory, workadventureFeatures} from './modules'
-import {getPlayerJob, resetPlayerJob, setPlayerJob, initiateJob} from "./modules/job";
+import { discussion, inventory, workadventureFeatures } from './modules'
+import { JobPlayerVaraible, initiateJob } from "./modules/job";
 import * as utils from "./utils";
-import {rootLink} from "./config";
+import { rootLink } from "./config";
 import { RemotePlayerInterface } from '@workadventure/iframe-api-typings/front/Api/Iframe/Players/RemotePlayer';
+import { onInit } from './utils/init';
 
 const bannerInviteUser = () => {
     WA.ui.banner.closeBanner();
@@ -17,38 +18,46 @@ const bannerInviteUser = () => {
     });
 };
 
+const jobSpy = () => {
+    const player = [...WA.players.list()].find(player => player.state.job == "spy");
+    return player?.name;
+}
+
+const jobArcheo = () => {
+    const player = [...WA.players.list()].find(player => player.state.job == "archaeologist");
+    return player?.name;
+}
+
 const bannerTheTeamIsComplete = () => {
+    const spyPlayer = WA.state.loadVariable(JobPlayerVaraible.spyPlayer) as {name: string, uuid: string} | false;
+    const archaeologistPlayer = WA.state.loadVariable(JobPlayerVaraible.archaeologistPlayer) as {name: string, uuid: string} | false;
     WA.ui.banner.closeBanner();
     WA.ui.banner.openBanner({
         id: "banner-players-not-even",
-        text: "The team is complete, choose your job and let's go to the museum 🚀",
+        text: `${spyPlayer ? spyPlayer.name : "----"} 👀   ${archaeologistPlayer ? archaeologistPlayer.name : "----"} 👨‍🌾`,
         closable: false,
         timeToClose: 0
     });
 };
 
 // Function to determine if all players already have a job
-const allPlayersGotJob = async () => {
-    const players = WA.players.list();
-    let count = 0
-    for (let player of players) {
-        count++
-        if(!player.state.job) {
-            return false
-        }
-    }
-    if(count > 0){
-        WA.state.allPlayersGotJob = true
-        return true
-    }
-    return false
+export const checkAllPlayersGotJob = () => {
+    WA.state.saveVariable('allPlayersGotJob', false);
+    const jobs = [...WA.players.list()].length === 1 && [...WA.players.list(), WA.player].reduce((tab, player) => {
+        tab.push(player.state.job);
+        return tab;
+    }, Array<unknown>());
+    if(!jobs || !jobs.includes('spy') || !jobs.includes('archaeologist')) return;
+    // Save the variable to indicate that all players have a job
+    WA.state.saveVariable('allPlayersGotJob', true);
 }
 
 
 
 // Waiting for the API to be ready
-WA.onInit().then(async () => {
+onInit().then(async () => {
 
+    // Load and play sound of the room
     const choiceSound = WA.sound.loadSound(`${rootLink}/sounds/choice.mp3`)
     let soundConfig = {
         volume: 0.2,
@@ -59,7 +68,6 @@ WA.onInit().then(async () => {
         seek: 0,
         mute: false
     }
-
     choiceSound.play(soundConfig)
 
     // Initiate inventory
@@ -77,81 +85,58 @@ WA.onInit().then(async () => {
       'choice.scenario'
     )
 
-    // When all players have a job, send them to next map
-    WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
-        if(value) {
-            choiceSound.stop()
-            WA.nav.goToRoom('./museum.tmj')
-        }
-    })
-
-    // Even if player has already a job set when arriving, we reset his job
-    resetPlayerJob()
-
     // Talk to the NPC
-    let talk: ActionMessage;
+    let messageSent = false;
     WA.room.onEnterLayer('talk').subscribe(() => {
-        talk = WA.ui.displayActionMessage({
-            message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.talk')}),
-            callback: () => {
-                discussion.openDiscussionWebsite('views.choice.title', 'views.choice.text')
-            }
-        });
-    })
-    WA.room.onLeaveLayer('talk').subscribe(() => {
-        talk.remove()
-    })
+        if(messageSent) {
+            WA.chat.open();
+            return;
+        }
+        WA.chat.sendChatMessage(utils.translations.translate('views.choice.text'), `${utils.translations.translate('views.choice.title')} 🕵️‍♂️`);
+        messageSent = true;
+    });
 
     // Choose spy job
-    let becomeSpy: ActionMessage;
     WA.room.onEnterLayer('spy').subscribe(async () => {
-        const players = WA.players.list();
-        let spySelected = false
-        for (let player of players) {
-            if(player.state.job === 'spy') {
+        // Check if the Spy job is already taken
+        if(jobSpy() != undefined) {
+            WA.chat.sendChatMessage('Sorry, the spy job is already taken 😱', `${utils.translations.translate('views.choice.title')} 🕵️‍♂️`);
+            return;
+        }
 
-                spySelected = true
-            }
-        }
-        if(!spySelected && !getPlayerJob()) {
-            becomeSpy = WA.ui.displayActionMessage({
-                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.spyMessage')}),
-                callback: () => {
-                    setPlayerJob('spy');
-                    allPlayersGotJob();
-                    WA.controls.disablePlayerControls();
-                }
-            });
-        }
-    })
-    WA.room.onLeaveLayer('spy').subscribe(() => {
-        becomeSpy.remove()
+        // Open the modal to choose the Spy job
+        WA.ui.modal.openModal({
+            allowApi: true,
+            position: "center",
+            allow: "fullscreen",
+            title: "become spy",
+            src : `${rootLink}/views/choice/becomeSpy.html`,
+        }, () => {
+            WA.controls.restorePlayerControls();
+            checkAllPlayersGotJob();
+        });
     })
 
     // Choose acheologist job
-    let becomeArcheo: ActionMessage;
     WA.room.onEnterLayer('archeo').subscribe(async() => {
-        const players = WA.players.list();
-        let archeoSelected = false
-        for (let player of players) {
-            if(player.state.job === 'archaeologist') {
-                archeoSelected = true
-            }
-        }
-        if(!archeoSelected && !getPlayerJob()) {
-            becomeArcheo = WA.ui.displayActionMessage({
-                message: utils.translations.translate('utils.executeAction', {action : utils.translations.translate('choice.archeoMessage')}),
-                callback: () => {
-                    setPlayerJob('archaeologist');
-                    allPlayersGotJob();
-                    WA.controls.disablePlayerControls();
-                }
-            });
-        }
-    })
-    WA.room.onLeaveLayer('archeo').subscribe(() => {
-        becomeArcheo.remove()
-    })
+        // Check if the Archeo job is already taken
+        if(jobArcheo() != undefined) {
+            WA.chat.sendChatMessage('Sorry, the spy job is already taken 😱', `${utils.translations.translate('views.choice.title')} 🕵️‍♂️`);
+            return;
+        };
+
+        // Open the modal to choose the Archeo job
+        WA.ui.modal.openModal({
+            allowApi: true,
+            position: "center",
+            allow: "fullscreen",
+            title: "become spy",
+            src : `${rootLink}/views/choice/becomeArchaeologist.html`,
+        }, () => {
+            WA.controls.restorePlayerControls();
+            checkAllPlayersGotJob();
+        });
+    });
 
     // Take a croissant (useless, but funny)
     let takeCroissant: ActionMessage
@@ -168,7 +153,7 @@ WA.onInit().then(async () => {
                 })
             }
         });
-    })
+    });
 
     WA.room.onLeaveLayer('croissants').subscribe(() => {
         takeCroissant.remove()
@@ -219,6 +204,25 @@ WA.onInit().then(async () => {
     }else{
         bannerInviteUser();   
     }
+
+    // When all players have a job, send them to next map
+    WA.state.onVariableChange('allPlayersGotJob').subscribe((value) => {
+        bannerTheTeamIsComplete();
+        if(value) {
+            choiceSound.stop();
+            WA.nav.goToRoom('./museum.tmj');
+        }
+    });
+
+    WA.state.onVariableChange(JobPlayerVaraible.spyPlayer).subscribe((value) => {
+        console.info('onVariableChange => spyPlayer', value);
+        bannerTheTeamIsComplete();
+    });
+
+    WA.state.onVariableChange(JobPlayerVaraible.archaeologistPlayer).subscribe((value) => {
+        console.info('onVariableChange => archaeologistPlayer', value);
+        bannerTheTeamIsComplete();
+    });
 
 }).catch(e => console.error(e))
 

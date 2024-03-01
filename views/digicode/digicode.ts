@@ -1,9 +1,10 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 import * as modules from '../../src/modules/index.js'
+import { onInit } from '../../src/utils/init.ts'
 
 document.addEventListener("DOMContentLoaded", () => {
   let currentCode = ''
-  WA.onInit().then(async () => {
+  onInit().then(async () => {
     const urlParams = new URLSearchParams(window.location.search)
     const id = urlParams.get('id')
 

@@ -1,7 +1,9 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 
+import { onInit } from "../../src/utils/init"
+
 document.addEventListener("DOMContentLoaded", () => {
-  WA.onInit().then(async () => {
+  onInit().then(async () => {
     const askForDeactivateCamera = (value: string | null) => {
       WA.player.state.askForDeactivateCamera = value ? 'cameraZones/' + value : null
     }
