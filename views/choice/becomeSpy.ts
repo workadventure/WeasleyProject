@@ -1,8 +1,26 @@
 /// <reference types="../../node_modules/@workadventure/iframe-api-typings" />
 
+import * as utils from '../../src/utils/index.js'
+import * as modules from '../../src/modules/index.js'
 import { onInit } from "../../src/utils/init";
 import { setSypJob, unclaimSpyJob } from "../../src/modules/job";
 import { checkAllPlayersGotJob } from "../../src/choice";
+
+const getTitle = () => {
+  return utils.translations.translate(`views.jobWallet.title`, {
+    job: utils.translations.translate(`views.jobWallet.jobs.${modules.job.getPlayerJob()}.name`)
+  })
+}
+
+const getAttributes = () => {
+  return utils.translations.translate(`views.jobWallet.jobs.${modules.job.getPlayerJob()}.attributes`, {
+    name: WA.player.name
+  })
+}
+
+const getDescription = () => {
+  return utils.translations.translate(`views.jobWallet.jobs.${modules.job.getPlayerJob()}.description`)
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   await onInit();

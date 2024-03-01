@@ -22,6 +22,8 @@ const getDescription = () => {
 const getPermissions = () => {
   const ul = document.createElement('ul')
   const permissions = modules.job.getUserPermissions()
+  
+  if(!permissions) return ul;
   for (let i = 0; i < permissions.length; i++) {
     const li = document.createElement('li')
     li.innerHTML = utils.translations.translate(
@@ -42,7 +44,6 @@ const closeJobWalletWebsite = () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   onInit().then(async () => {
-    console.log('coucou')
     // Get html parts
     const photo = document.getElementById('photo')
     const title = document.getElementById('title')

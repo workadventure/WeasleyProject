@@ -1,7 +1,6 @@
 import * as utils from '../utils'
 import {UIWebsite} from "@workadventure/iframe-api-typings";
 import {rootLink} from "../config";
-import { openBanner } from '../utils/ui';
 
 export enum Job {
   archaeologist = 'archaeologist',
@@ -19,6 +18,10 @@ export type Permissions =
   | 'makeExcavation'
   | 'findSecretPassages'
   | 'makeHooking'
+
+export const JOB_VARIABLE = 'job'
+export type presistOption = {public?: boolean, persist?: boolean, scope: "world" | "room", ttl?: number}
+export const PERSIST_OPTION: presistOption  = { public: true, persist: true, scope: "world"}
 
 const permissionsByJob: Record<Job, Record<Permissions, boolean>> = {
   archaeologist: {
@@ -45,7 +48,7 @@ let jobWalletWebsite: UIWebsite|null = null
 
 // Choose player job
 const setPlayerJob = (newJob: Job|undefined) => {
-  WA.player.state.saveVariable('job', newJob, {public: true, persist: true, scope: "world"});
+  WA.player.state.saveVariable(JOB_VARIABLE, newJob, PERSIST_OPTION);
 
   WA.player.removeOutlineColor();
   if(newJob === 'spy'){
@@ -122,7 +125,7 @@ const unclaimArchaeologistJob = () => {
   const archaeologistPlayer = WA.state.loadVariable(JobPlayerVaraible.archaeologistPlayer) as {name: string, uuid: string} | false;
   
   if(archaeologistPlayer && archaeologistPlayer.uuid !== WA.player.uuid)
-  WA.state.saveVariable(JobPlayerVaraible.archaeologistPlayer, false);
+  WA.state.saveVariable(JobPlayerVaraible.archaeologistPlayer, false, );
   setPlayerJob(undefined);
 }
 
@@ -150,11 +153,11 @@ const openJobWalletWebsite = async () => {
     },
   })
 
-  WA.player.state.askForJobWalletWebsiteClose = false
+  WA.player.state.saveVariable('askForJobWalletWebsiteClose', false, PERSIST_OPTION)
 }
 
 const askForJobWalletWebsiteClose = () => {
-  WA.player.state.askForJobWalletWebsiteClose = true
+  WA.player.state.saveVariable('askForJobWalletWebsiteClose', true, PERSIST_OPTION)
 }
 
 // Close job wallet website
@@ -187,58 +190,51 @@ const hideJobWallet = () => {
 }
 
 const initiateJob = async () => {
-  try{
-    // block users while initiating jobs
-    WA.controls.disablePlayerControls();
+  // block users while initiating jobs
+  WA.controls.disablePlayerControls();
 
-    /*let playerId = WA.player.uuid
-    let slug = playerId?.replaceAll('.', '').replaceAll('@', '')
+  /*let playerId = WA.player.uuid
+  let slug = playerId?.replaceAll('.', '').replaceAll('@', '')
 
-    let response = await fetch(`https://weasley-project-default-rtdb.europe-west1.firebasedatabase.app/userRole/${slug}.json`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
+  let response = await fetch(`https://weasley-project-default-rtdb.europe-west1.firebasedatabase.app/userRole/${slug}.json`, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
 
-    const responseJson = await response.json()*/
+  const responseJson = await response.json()*/
 
-    //WA.player.state.job = responseJson?.job
-    if (WA.player.state.job) {
+  //WA.player.state.job = responseJson?.job
+  console.info('initiateJob => My job is', WA.player.state.job);
+  if (WA.player.state.job) {
+    showJobWallet();
+  } else {
+    hideJobWallet();
+    WA.player.state.saveVariable(JOB_VARIABLE, false, PERSIST_OPTION);
+  }
+
+  WA.player.state.onVariableChange(JOB_VARIABLE).subscribe((value) => {
+    if (value) {
+      console.log(utils.translations.translate('modules.job.jobChanged', {
+        job: utils.translations.translate(`modules.job.jobs.${value}`)
+      }))
       showJobWallet();
     } else {
       hideJobWallet();
-      WA.player.state.saveVariable('job', undefined, {public: true, persist: true});
     }
+  });
 
-    WA.player.state.onVariableChange('job').subscribe((value) => {
-      if (value) {
-        console.log(utils.translations.translate('modules.job.jobChanged', {
-          job: utils.translations.translate(`modules.job.jobs.${value}`)
-        }))
-        showJobWallet();
-      } else {
-        hideJobWallet();
-      }
-    });
+  WA.player.state.onVariableChange('askForJobWalletWebsiteClose').subscribe((value) => {
+    if (value) {
+      closeJobWalletWebsite();
+    }
+  })
 
-    WA.player.state.onVariableChange('askForJobWalletWebsiteClose').subscribe((value) => {
-      if (value) {
-        closeJobWalletWebsite();
-      }
-    })
-
-    // block users while initiating jobs
-    WA.controls.restorePlayerControls();
-    return;
-  }catch(err){
-    console.error('Could not load the Gmae, maybe bad connection ?!😱');
-    openBanner('error-info', 'Could not load the Gmae, maybe bad connection ?!😱', 10000);
-    setTimeout(() => {
-      return initiateJob();
-    }, 10000);
-  }
+  // block users while initiating jobs
+  WA.controls.restorePlayerControls();
+  return;
 }
 
 // See if user has the permission passed as parameter

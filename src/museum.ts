@@ -6,11 +6,10 @@ bootstrapExtra();
 
 import {discussion, hiddenZone, hooking, inventory, actionForAllPlayers, notifications, workadventureFeatures, cameraMovingMode, digicode } from './modules'
 import {Job, canUser, getPlayerJob, initiateJob, setPlayerJob} from "./modules/job";
-import {ActionMessage, CoWebsite, UIWebsite} from "@workadventure/iframe-api-typings";
+import {ActionMessage, UIWebsite} from "@workadventure/iframe-api-typings";
 import * as utils from "./utils";
 import {env, rootLink} from "./config";
 import {toggleLayersVisibility} from "./utils/layers";
-import { RemotePlayerMoved } from "@workadventure/iframe-api-typings/front/Api/Iframe/Players/RemotePlayer";
 import { HasPlayerMovedEvent } from "@workadventure/iframe-api-typings/front/Api/Events/HasPlayerMovedEvent";
 import { onInit } from "./utils/init";
 
